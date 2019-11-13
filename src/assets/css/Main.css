@@ -1,37 +1,39 @@
-body{
+body {
     margin: 0px;
     padding: 0px;
-    background-image: url("img/fondo1.jpg");
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-#box{
+
+#box {
     height: 500px;
     width: 850px;
-    background-color:#1d4858;
+    background-color: #1d4858;
     border-radius: 10px;
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
-#main{
+
+#main {
     height: 500px;
     width: 400px;
-    background-color:rgb(250, 250, 250);
+    background-color: rgb(250, 250, 250);
     border-radius: 5px;
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 70%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 99;
     /*background-image: url("img/logo.jpg");*/
 }
 
-#loginform,#signupform{
+#loginform,
+#signupform {
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 70%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 999;
 }
 
@@ -49,18 +51,21 @@ body{
     float: right;
 }
 
-#signupform{
-    top:45%;
+#signupform {
+    top: 45%;
     left: 75%;
     visibility: hidden;
 }
 
-#loginform h1,#signupform h1{
+#loginform h1,
+#signupform h1 {
     /*font-family: arial;*/
     font-size: 25px;
     color: rgb(7, 6, 6);
 }
-#loginform input,#signupform input{
+
+#loginform input,
+#signupform input {
     height: 40px;
     width: 300px;
     border: 0px;
@@ -68,73 +73,72 @@ body{
     border-bottom: 1px solid black;
     margin: 5px;
 }
-#loginform button,#signupform button{
+
+#loginform button,
+#signupform button {
     height: 35px;
     width: 130px;
-    background-color:#215569;
+    background-color: #215569;
     /*font-family: monospace;*/
     font-size: 16px;
-    color:white;
+    color: white;
     border: none;
     outline: none;
     border-radius: 5px;
     margin-top: 30px;
     margin-left: 175px;
 }
-#login_btn,#signup_btn{
+
+#login_btn,
+#signup_btn {
     height: 35px;
     width: 120px;
-    background-color:transparent;
-    color:white;
-    border:1px solid white;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
     border-radius: 5px;
     outline: none;
     position: absolute;
     left: 75%;
-    top:65%;
-    transform: translate(-50%,-50%);
+    top: 65%;
+    transform: translate(-50%, -50%);
     transition: all .5s;
 }
-#signup_btn{
+
+#signup_btn {
     left: 25%;
 }
-#login_btn:hover,#signup_btn:hover{
-    background-color:white;
-    color:#0f0e04;
+
+#login_btn:hover,
+#signup_btn:hover {
+    background-color: white;
+    color: #0f0e04;
     cursor: pointer;
 }
 
-#login:hover,#signup:hover{
-    background-color:rgb(8, 6, 6);
-    color:white;
+#login:hover,
+#signup:hover {
+    background-color: rgb(8, 6, 6);
+    color: white;
     cursor: pointer;
 }
 
-#login_msg,#signup_msg{
+#login_msg,
+#signup_msg {
     /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
     font-size: 25px;
-    color:white;
+    color: white;
     position: absolute;
-    top:35%;
+    top: 35%;
     left: 75%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 1;
 }
-#signup_msg{
+
+#signup_msg {
     left: 25%;
 }
 
 input {
     background-color: rgb(250, 250, 250);
 }
-
-
-
-
-
-
-
-
-
-
-
