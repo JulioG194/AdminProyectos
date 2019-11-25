@@ -1,14 +1,11 @@
-body {
-    margin: 0px;
-    padding: 0px;
-    background-image: url("../../assets/img/fondo2.jpg");
+* {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #box {
     height: 500px;
     width: 850px;
-    background-color: #1d4858;
+    background-color: #19352e;
     border-radius: 10px;
     position: absolute;
     top: 50%;
@@ -26,7 +23,6 @@ body {
     left: 70%;
     transform: translate(-50%, -50%);
     z-index: 99;
-    /*background-image: url("img/logo.jpg");*/
 }
 
 #loginform,
@@ -79,7 +75,7 @@ body {
 #signupform button {
     height: 35px;
     width: 130px;
-    background-color: #215569;
+    background-color: #19352e;
     /*font-family: monospace;*/
     font-size: 16px;
     color: white;
@@ -119,7 +115,7 @@ body {
 
 #loginform button:hover,
 #signupform button:hover {
-    background-color: rgb(7, 4, 4);
+    background-color: rgb(68, 107, 104);
 }
 
 #login_msg,

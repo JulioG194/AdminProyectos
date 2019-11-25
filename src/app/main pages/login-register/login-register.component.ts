@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 
@@ -10,7 +11,12 @@ import { Location } from '@angular/common';
 })
 export class LoginRegisterComponent implements OnInit {
 
-  constructor(  ) { }
+  constructor( private router: Router ) { }
+
+  public ProbarlaApp() {
+    this.router.navigate(['/dashboard']);
+  }
+
 
   ngOnInit() {
     if (!localStorage.getItem('foo')) {

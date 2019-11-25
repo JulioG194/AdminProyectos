@@ -7,7 +7,7 @@
             <h1>Ingresar</h1>
             <input type="text" placeholder="Usuario" /><br>
             <input type="password" placeholder="Contraseña" /><br>
-            <button id="login">INGRESAR</button>
+            <button (click)="ProbarlaApp()" id="login">INGRESAR</button>
         </div>
 
         <div id="signupform">
@@ -17,14 +17,14 @@
             <input type="email" placeholder="Correo Electrónico" /><br>
             <input type="password" placeholder="Contraseña" /><br>
             <input type="password" placeholder="Confirmar Contraseña" /><br>
-            <button id="signup">REGISTRAR</button>
+            <button (click)="ProbarlaApp()" id="signup">REGISTRAR</button>
         </div>
 
         <div id="login_msg">Tienes Cuenta?</div>
         <div id="signup_msg">No tienes cuenta?</div>
 
         <button id="login_btn">INGRESAR</button>
-        <button id="signup_btn">REGISTRASE</button>
+        <button id="signup_btn">REGISTRARSE</button>
 
     </div>
 </section>
