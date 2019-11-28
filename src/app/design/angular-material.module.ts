@@ -70,6 +70,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 const modules: any[] = [
@@ -117,7 +118,9 @@ const modules: any[] = [
 
   MatPaginatorModule,
   MatSortModule,
-  MatTableModule
+  MatTableModule,
+  FormsModule,
+  ReactiveFormsModule
   //BrowserAnimationsModule
 
 ];

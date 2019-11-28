@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PAGES_ROUTES } from './pages.routes';
 import { SharedModule } from '../shared/shared.module';
+import { AngularMaterialModule } from '../design/angular-material.module';
 
 
 
@@ -11,7 +12,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     PAGES_ROUTES,
-    SharedModule
+    SharedModule,
+    AngularMaterialModule
   ],
   exports: [
     DashboardComponent

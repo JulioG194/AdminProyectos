@@ -7,6 +7,7 @@ import { APP_ROUTES } from './app.routes';
 // temporal
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 // Modulos
 import { SharedModule } from './shared/shared.module';
@@ -38,7 +39,8 @@ import { PagesComponent } from './pages/pages.component';
     SharedModule,
     AngularMaterialModule,
     IgniteModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   exports: [
   ],
