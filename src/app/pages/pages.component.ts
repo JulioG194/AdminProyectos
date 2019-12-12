@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IgxNavigationDrawerComponent } from 'igniteui-angular';
+import { AuthService } from '../services/auth.service';
+import { User } from 'src/app/models/user.interface';
 
 @Component({
   selector: 'app-pages',
@@ -8,13 +10,18 @@ import { IgxNavigationDrawerComponent } from 'igniteui-angular';
 })
 export class PagesComponent implements OnInit {
 
-  constructor() { }
+  constructor( public _auth: AuthService) { }
+
+  userApp: User = {
+    id: '',
+    name: '',
+    email: '',
+    password: ''
+};
 
    // tslint:disable-next-line:member-ordering
    @ViewChild(IgxNavigationDrawerComponent, { static: true })
    public drawer: IgxNavigationDrawerComponent;
-
-
 
     public navItems = [
       { name: 'home', text: 'Inicio' },
@@ -33,6 +40,7 @@ export class PagesComponent implements OnInit {
     };
 
   ngOnInit() {
+    
   }
 
     /** Select item and close drawer if not pinned */

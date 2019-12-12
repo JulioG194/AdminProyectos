@@ -14,12 +14,17 @@ import { SharedModule } from './shared/shared.module';
 import { AngularMaterialModule } from './design/angular-material.module';
 import { IgniteModule } from './design/ignite.module';
 
+// Firebase
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // Componentes
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './main pages/homepage/homepage.component';
 import { LoginRegisterComponent } from './main pages/login-register/login-register.component';
 import { PagesComponent } from './pages/pages.component';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -40,7 +45,10 @@ import { PagesComponent } from './pages/pages.component';
     AngularMaterialModule,
     IgniteModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   exports: [
   ],
