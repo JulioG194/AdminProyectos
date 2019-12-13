@@ -3,17 +3,15 @@ import { CommonModule } from '@angular/common';
 
 
 import { HeaderComponent } from './header/header.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 
 import { AngularMaterialModule } from '../design/angular-material.module';
-import { NavdrawerComponent } from './navdrawer/navdrawer.component';
 import { IgniteModule } from '../design/ignite.module';
 
 
 
 @NgModule({
-  declarations: [HeaderComponent, SidebarComponent, NopagefoundComponent, NavdrawerComponent],
+  declarations: [HeaderComponent, NopagefoundComponent],
   imports: [
     AngularMaterialModule,
     CommonModule,
@@ -23,8 +21,7 @@ import { IgniteModule } from '../design/ignite.module';
     AngularMaterialModule,
     CommonModule,
     IgniteModule,
-    HeaderComponent,
-    NavdrawerComponent
+    HeaderComponent
   ]
 })
 export class SharedModule { }

@@ -2,6 +2,11 @@
 @import url("https://unpkg.com/@fortawesome/fontawesome-free-webfonts@^1.0.9/css/fa-regular.css");
 @import url("https://unpkg.com/@fortawesome/fontawesome-free-webfonts@^1.0.9/css/fa-solid.css");
 @import '~igniteui-angular/lib/core/styles/themes/index';
+
+/* * {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+} */
+
 .customIcon {
     vertical-align: middle;
     font-size: 50px;
@@ -10,18 +15,21 @@
 }
 
 .custom-size {
-    font-size: 50px;
-    width: 50px;
-    height: 50px;
+    font-size: 35px;
+    width: 35px;
+    height: 35px;
+    /* letter-spacing: 25px; */
 }
 
+$dark-navbar: igx-navbar-theme( $text-color: white,
 
-/*BASIC THEMING*/
+/* $background: linear-gradient( to bottom , white, black), */
 
-$dark-navbar: igx-navbar-theme( $text-color: #FFCD0F,
-$background: #292826,
-$idle-icon-color: #FFCD0F,
-$hover-icon-color: gray);
+$background: black,
+$idle-icon-color: rgb(223,
+230,
+164),
+$hover-icon-color: white);
 :host {
      ::ng-deep {
         @include igx-navbar($dark-navbar);

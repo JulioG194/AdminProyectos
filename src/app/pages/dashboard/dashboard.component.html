@@ -1,4 +1,4 @@
-<h2>
+<!-- <h2>
     Bienvenid@: <span class="setting-title">{{ userApp.name }}</span>
 </h2>
 
@@ -6,4 +6,122 @@
     <input matInput placeholder="Nombre" type="text">
 </mat-form-field>
 
-<button click="testing()">probar</button>
+<button click="testing()">probar</button> -->
+<mat-list>
+    <h1>Bienvenido {{ userApp.name }}</h1>
+    <!-- <mat-spinner ></mat-spinner> -->
+    <mat-divider class="space1"></mat-divider>
+    <ul>
+        <li>
+            <div class="box">
+                <div class="cart">
+                    <div class="front">
+                        <mat-card>
+                            <mat-card-title>Test 1</mat-card-title>
+                            <mat-card-subtitle>Redes</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de informacion estudiante de la escuela politecnica nacional dedicados al desarrollo de programas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                        </mat-card>
+                    </div>
+                    <div class="front back">
+                        <mat-card>
+                            <mat-card-title>Test 1</mat-card-title>
+                            <mat-card-subtitle>Tele</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de telecomunicaciones estudiante de la escuela politecnica nacional dedicados a la instalacion de antenas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo2.jpg">
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="box">
+                <div class="cart">
+                    <div class="front">
+                        <mat-card>
+                            <mat-card-title>Test 2</mat-card-title>
+                            <mat-card-subtitle>Redes</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de informacion estudiante de la escuela politecnica nacional dedicados al desarrollo de programas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                        </mat-card>
+                    </div>
+                    <div class="front back">
+                        <mat-card>
+                            <mat-card-title>Test 2</mat-card-title>
+                            <mat-card-subtitle>Tele</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de telecomunicaciones estudiante de la escuela politecnica nacional dedicados a la instalacion de antenas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo2.jpg">
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="box">
+                <div class="cart">
+                    <div class="front">
+                        <mat-card>
+                            <mat-card-title>Test 3</mat-card-title>
+                            <mat-card-subtitle>Redes</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de informacion estudiante de la escuela politecnica nacional dedicados al desarrollo de programas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                        </mat-card>
+                    </div>
+                    <div class="front back">
+                        <mat-card>
+                            <mat-card-title>Test 3</mat-card-title>
+                            <mat-card-subtitle>Control</mat-card-subtitle>
+                            <mat-card-content>
+                                Nosotros somo un equipo de redes de telecomunicaciones estudiante de la escuela politecnica nacional dedicados a la instalacion de antenas.
+                            </mat-card-content>
+                            <img mat-card-image src="../../../assets/img/fondo2.jpg">
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <mat-divider class="space2"></mat-divider>
+    <button>Agregar Equipo</button>
+    <mat-divider class="space2"></mat-divider>
+    <div>
+        <div>
+            <div class="chart">
+                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
+        </canvas>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button mat-button mat-raised-button color="primary" (click)="pieChartLegend=!pieChartLegend">Toggle Legend</button>
+        <button mat-button mat-raised-button color="primary" (click)="changeLabels()">Change Labels</button>
+        <button mat-button mat-raised-button color="primary" (click)="addSlice()">Add Slice</button>
+        <button mat-button mat-raised-button color="primary" (click)="removeSlice()">Remove Slice</button>
+        <button mat-button mat-raised-button color="primary" (click)="changeLegendPosition()">Change Legend Position</button>
+    </div>
+    <!--   <div>
+    <div>
+      <div>
+        <div style="display: block">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+        <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button>
+      </div>
+    </div>
+  </div> -->
+</mat-list>

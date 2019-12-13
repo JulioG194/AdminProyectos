@@ -1,0 +1,42 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.box {
+    border: solid 1px green;
+    background: rgb(241, 243, 242);
+    margin-top: 15px;
+}
+
+.box h4 {
+    background: linear-gradient(to bottom, rgb(18, 114, 90), rgb(218, 233, 7));
+    font-size: 25px;
+    padding: 10px;
+}
+
+.end {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 10px;
+}
+
+.end p {
+    color: rgb(7, 6, 73);
+}
+
+button {
+    background: black;
+    color: white;
+    width: 150px;
+    height: 40px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 20px;
+}
+
+button:hover {
+    background: rgb(127, 185, 18);
+    color: black;
+}

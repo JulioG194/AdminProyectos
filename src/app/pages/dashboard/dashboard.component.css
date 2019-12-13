@@ -1,0 +1,87 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.test {
+    background-image: url("../../../assets/img/gg1.jpg");
+}
+
+.box {
+    margin-top: 30px;
+    /* margin: 5px; */
+    width: 250px;
+    height: 350px;
+    /* position: relative; */
+    perspective: 1000px;
+}
+
+.box:hover .cart {
+    transform: rotateY(180deg);
+}
+
+.cart {
+    transform-style: preserve-3d;
+    transition: all 0.5s linear;
+}
+
+.front {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.front.back {
+    transform: rotateY(180deg);
+}
+
+.space1 {
+    margin-top: -15px;
+}
+
+.space2 {
+    margin-top: 60px;
+}
+
+mat-list h1 {
+    margin-top: -15px;
+    font-size: 50px;
+    text-align: center;
+}
+
+button {
+    background: rgb(74, 177, 33);
+    padding: 15px;
+    font-size: 20px;
+    margin-top: 20px;
+    border-radius: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    width: 200px;
+}
+
+button:hover {
+    background: rgb(213, 216, 20);
+    color: white;
+    cursor: pointer;
+}
+
+ul {
+    text-align: center;
+}
+
+li {
+    display: inline-block;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+mat-card {
+    width: 250px;
+    height: 350px;
+    /* border: solid black; */
+}
+
+mat-divider {
+    border-style: dotted;
+}

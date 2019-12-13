@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IgxNavigationDrawerComponent } from 'igniteui-angular';
-import { AuthService } from '../services/auth.service';
-import { User } from 'src/app/models/user.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pages',
@@ -10,25 +9,21 @@ import { User } from 'src/app/models/user.interface';
 })
 export class PagesComponent implements OnInit {
 
-  constructor( public _auth: AuthService) { }
-
-  userApp: User = {
-    id: '',
-    name: '',
-    email: '',
-    password: ''
-};
-
+  constructor(private router: Router) { }
    // tslint:disable-next-line:member-ordering
    @ViewChild(IgxNavigationDrawerComponent, { static: true })
    public drawer: IgxNavigationDrawerComponent;
 
+
+
     public navItems = [
-      { name: 'home', text: 'Inicio' },
-      { name: 'group', text: 'Mi Equipo' },
-      { name: 'today', text: 'Proyectos' },
-      { name: 'av_timer', text: 'Cronograma' },
-      { name: 'chat', text: 'Chat' }
+      { name: 'home', text: 'Inicio' , path:'/dashboard'},
+      { name: 'group', text: 'Mi Equipo' , path:'/my-team'},
+      { name: 'today', text: 'Proyectos' , path: '/projects'},
+      { name: 'av_timer', text: 'Cronograma' , path: '/schedule'},
+      { name: 'chat', text: 'Chat' , path: '/chat'},
+      { name: 'home', text: 'Perfil' , path: '/user-profile'},
+      { name: 'group', text: 'kanban' , path: '/activities'}
     ];
     public selected = 'Avatar';
     // tslint:disable-next-line:member-ordering
@@ -40,12 +35,14 @@ export class PagesComponent implements OnInit {
     };
 
   ngOnInit() {
-    
   }
 
     /** Select item and close drawer if not pinned */
     public navigate(item) {
       this.selected = item.text;
+      this.router.navigate([item.path]);
+
+
       if (!this.drawer.pin) {
         this.drawer.close();
       }

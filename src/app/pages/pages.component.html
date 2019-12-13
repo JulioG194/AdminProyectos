@@ -4,7 +4,7 @@
         <ng-template igxDrawer>
             <nav>
                 <!-- <span igxDrawerItem [isHeader]="true">Components</span> -->
-                <h1>GUUUUU.GOOOO</h1>
+                <!-- <h1>GUUUUU.GOOOO</h1> -->
                 <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
                 <igx-icon fontSet="material">{{ item.name }}</igx-icon>
                 <span>{{ item.text }}</span>
@@ -25,7 +25,7 @@
         </ng-template>
     </igx-nav-drawer>
 
-    <main igxFlex [class.mini-padding]="!drawerState.pin && drawerState.miniTemplate">
+    <main class="aux" igxFlex [class.mini-padding]="!drawerState.pin && drawerState.miniTemplate">
         <span igxButton="icon" igxToggleAction="navigation">
             <igx-icon fontSet="material">menu</igx-icon>
           </span>

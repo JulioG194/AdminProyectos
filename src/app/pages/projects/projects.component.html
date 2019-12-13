@@ -1,0 +1,40 @@
+<div class="box">
+    <h1>Nuevo Proyecto</h1>
+    <div class="container">
+        <mat-form-field>
+            <input matInput placeholder="Nombre" type="text" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Cliente" type="text" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Tipo" type="text" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Descripción"></textarea>
+        </mat-form-field>
+        <div>
+            <button>Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Copyright 2019 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->
