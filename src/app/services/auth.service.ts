@@ -25,11 +25,13 @@ export class AuthService {
   // Variables auxiliares
   usersAuth: User [];
   userAuth: User;
+  userGuGo: User;
   userToken: string;
   idUser: string;
 
   constructor( private http: HttpClient,
-               private afs: AngularFirestore ) {
+               private afs: AngularFirestore
+               ) {
 
       // Obtiene los documentos de la coleccion de usuarios
       this.loadUsers(afs);
@@ -37,6 +39,7 @@ export class AuthService {
         this.usersAuth = users;
       });
       this.loadStorage();
+
    }
 
 
@@ -51,36 +54,21 @@ export class AuthService {
           return data;
         });
       }));
-
   }
 
-  // Funcion para el cierre de la sesion
-  logout() {
-    localStorage.removeItem('token');
+   // Funcion para cargar el loadStorage con todos los datos de la sesion
+   loadStorage() {
+    if ( localStorage.getItem('token')) {
+        this.userToken = localStorage.getItem('token');
+        this.userAuth = JSON.parse( localStorage.getItem('usuario'));
+    } else {
+      this.userToken = '';
+      this.userAuth = null;
+    }
   }
 
-  // Funcion para que el usuario pueda iniciar sesion
-  login( user: User ) {
-    const authData = {
-      ...user,
-      returnSecureToken: true
-    };
-
-    return this.http.post(
-      `${ this.url }/accounts:signInWithPassword?key=${ this.apikey }`,
-      authData
-    ).pipe(
-      map( (resp: any) => {
-       this.saveTokenOnStorage(resp.localId, resp.idToken );
-       this.saveUserOnStorage(user);
-       return resp;
-      })
-    );
-
-  }
-
-  // Guardar el token del usuario en el localstorage para tener la sesion activa
-  saveTokenOnStorage( id: string, token: string ) {
+   // Guardar el token del usuario en el localstorage para tener la sesion activa
+   saveTokenOnStorage( id: string, token: string ) {
 
     localStorage.setItem('idSession', id);
     localStorage.setItem('token', token);
@@ -101,8 +89,6 @@ export class AuthService {
       authData
     ).pipe(
       map( (resp: any) => {
-
-
         this.saveTokenOnStorage(resp.localId, resp.idToken );
         return resp;
       })
@@ -110,16 +96,41 @@ export class AuthService {
 
   }
 
+ // Funcion para que el usuario pueda iniciar sesion
+  login( user: User ) {
+  const authData = {
+    ...user,
+    returnSecureToken: true
+  };
+
+  return this.http.post(
+    `${ this.url }/accounts:signInWithPassword?key=${ this.apikey }`,
+    authData
+  ).pipe(
+    map( (resp: any) => {
+     this.saveTokenOnStorage(resp.localId, resp.idToken );
+     this.saveUserOnStorage(user);
+     this.userAuth = JSON.parse( localStorage.getItem('usuario'));
+     return resp;
+    })
+  );
+
+}
+
+  // Funcion para el cierre de la sesion
+  logout() {
+    localStorage.removeItem('token');
+  }
+
+
+
   // Funcion para guardar un nuevo usuario en la base Firestore
   addNewUser( user: User ) {
-
     this.userCollection.add(user);
-    localStorage.setItem('usuario', JSON.stringify(user));
-    this.userAuth = user;
   }
 
   // *Opcional* Funcion para ver si el usuario esta autenticado
-  isAuthenticated(): boolean {
+  /* isAuthenticated(): boolean {
 
     if ( this.userToken.length < 2 ) {
       return false;
@@ -134,7 +145,7 @@ export class AuthService {
     } else {
       return false;
     }
-  }
+  } */
 
   // Funcion que retorna un observable para obtener un usuario como parametro de entrada su Id
   showUser( user: User ) {
@@ -153,31 +164,56 @@ export class AuthService {
 
   }
 
+  updateUser( user: User ) {
+    this.afs.collection('users').doc(user.id).update(
+      {
+        name: user.name,
+        password: user.password,
+        birthdate: user.birthdate,
+        career: user.career,
+        description: user.description,
+        gender: user.gender,
+        photo: user.photo
+      }
+    );
+  }
+
+
   // Funcion que retorna un observable para obtener todos los usuarios de la base
   showUsers() {
     return this.users;
   }
 
+  getUsers(): Observable<User[]> {
+    this.users = this.userCollection.snapshotChanges().pipe(
+      map(changes => {
+        return changes.map(action => {
+          const data = action.payload.doc.data() as User;
+          data.id = action.payload.doc.id;
+          return data;
+        });
+      }));
+    return this.users;
+
+  }
+
   // Funcion para guardar un usuario en el localstorage
   saveUserOnStorage( user: User) {
-    this.usersAuth.forEach(userAux => {
+     const userAu: User = {
+      id : '',
+      name : '',
+      email : ''
+    };
+     this.usersAuth.forEach(userAux => {
       if (userAux.email === user.email) {
-        localStorage.setItem('usuario', JSON.stringify(userAux));
-        this.userAuth = userAux;
+        userAu.id = userAux.id;
+        userAu.name = userAux.name;
+        userAu.email = userAux.email;
+
+        localStorage.setItem('usuario', JSON.stringify(userAu));
         return userAux;
     }
    });
   }
 
-
-  // Funcion para cargar el loadStorage con todos los datos de la sesion
-  loadStorage() {
-    if ( localStorage.getItem('token')) {
-        this.userToken = localStorage.getItem('token');
-        this.userAuth = JSON.parse( localStorage.getItem('usuario'));
-    } else {
-      this.userToken = '';
-      this.userAuth = null;
-    }
-  }
 }

@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user.interface';
 // tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2';
 import { ProjectService } from '../../services/project.service';
+import { UserService } from '../../services/users.service';
 
 
 @Component({
@@ -23,14 +24,19 @@ export class LoginRegisterComponent implements OnInit {
   user: User = {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        career: '',
+        description: '',
+        gender: '',
+        photo: '',
+        birthdate: new Date()
   };
 
 
   users: User[];
-  constructor( private auth: AuthService,
-               private proj: ProjectService,
-               private router: Router ) { }
+  constructor( private _authService: AuthService,
+               private router: Router
+               ) { }
 
   public ProbarlaApp() {
     this.router.navigate(['/dashboard']);
@@ -59,12 +65,13 @@ export class LoginRegisterComponent implements OnInit {
     Swal.showLoading();
 
 
-    this.auth.register( this.user )
+    this._authService.register( this.user )
     .subscribe( resp => {
 
       Swal.close();
 
-      this.auth.addNewUser(this.user);
+      this._authService.addNewUser(this.user);
+      console.log(this.user);
 
       Swal.fire({
         allowOutsideClick: false,
@@ -73,7 +80,7 @@ export class LoginRegisterComponent implements OnInit {
         text: 'Bienvenido a la plataforma'
       });
 
-
+      this._authService.login(this.user).subscribe(() => {});
       this.router.navigateByUrl('/dashboard');
 
     }, (err) => {
@@ -109,11 +116,14 @@ export class LoginRegisterComponent implements OnInit {
     Swal.showLoading();
 
 
-    this.auth.login( this.user )
+    this._authService.login( this.user )
     .subscribe( resp => {
-      Swal.close();
-      this.proj.projbb();
-      this.router.navigateByUrl('/dashboard');
+      setTimeout(() => {
+        Swal.close();
+        this.router.navigateByUrl('/dashboard');
+      }, 1000);
+
+
 
     }, (err) => {
 
@@ -122,6 +132,7 @@ export class LoginRegisterComponent implements OnInit {
           title: 'Error al autenticar',
           text: this.respError2(err.error.error.message)
         });
+
     });
     }
     respError2( respuesta: string ) {

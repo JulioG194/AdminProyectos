@@ -1,18 +1,20 @@
-<h2>Elige tu equipo de trabajo</h2>
+<h2>Elige tu equipo de trabajo {{ userGugo.name }}</h2>
 <mat-divider></mat-divider>
 
 <div class="box">
     <h4>Mi equipo</h4>
     <div class="container">
-        <mat-selection-list #shoes>
-            <mat-list-option *ngFor="let shoe of typesOfShoes">
-                {{shoe}}
+        <mat-selection-list #usersList [(ngModel)]="selectedUsers" (ngModelChange)="onGroupsChange($event)">
+            <mat-list-option *ngFor="let user of usersGugo" [value]="user">
+                <div>
+                    Nombre: {{user.name}} Correo: {{ user.email}}
+                </div>
             </mat-list-option>
         </mat-selection-list>
     </div>
     <div class="end">
-        <p>Has elegido {{shoes.selectedOptions.selected.length}} personas para conformar tu equipo de trabajo</p>
-        <button>Ok</button>
+        <p>Has elegido {{usersList.selectedOptions.selected.length}} personas para conformar tu equipo de trabajo</p>
+        <button (click)="addNewTeam()">Ok</button>
     </div>
 
 </div>

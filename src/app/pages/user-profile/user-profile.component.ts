@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.interface';
+import { NgForm } from '@angular/forms';
 
-export interface Food {
-  value: string;
-  viewValue: string;
-}
+// tslint:disable-next-line:import-spacing
+import  Swal  from 'sweetalert2';
+import { UserService } from '../../services/users.service';
 
 
 @Component({
@@ -14,17 +14,56 @@ export interface Food {
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  userApp: User;
+  userAux: User;
+  userApp: User = {
+        name: '',
+        email: '',
+        password: '',
+        id: '',
+        birthdate: new Date(),
+        career: '',
+        description: '',
+        gender: '',
+        photo: ''
+  };
 
-  foods: Food[] = [
-    {value: 'femenino-0', viewValue: 'Femenino'},
-    {value: 'masculino-1', viewValue: 'Masculino'},
-    {value: 'otro-2', viewValue: 'Otros'}
-  ];
-  constructor( public auth: AuthService ) { }
+  selected: string;
+
+  constructor( public _authService: AuthService
+               ) {
+    // this.userAux =  JSON.parse( localStorage.getItem('usuario'));
+    this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user, this.selected = user.gender); } );
+
+    }
 
   ngOnInit() {
-    this.userApp = this.auth.userAuth;
+      console.log(this.userApp.birthdate);
   }
 
-}
+  onProfileUpdate( form: NgForm ) {
+
+    if ( form.invalid ) { return; }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor...'
+    });
+    Swal.showLoading();
+
+
+    this._authService.updateUser( this.userApp );
+
+
+    Swal.close();
+
+
+    Swal.fire({
+        allowOutsideClick: false,
+        type: 'success',
+        title: 'Perfil actualizado con exito'
+      });
+    }
+  }
+
+

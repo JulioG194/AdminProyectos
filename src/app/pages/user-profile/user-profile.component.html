@@ -1,56 +1,58 @@
 <div class="box">
     <h2>Mi perfil</h2>
-    <img src="../../../assets/img/user.jpg" alt="">
-    <mat-tab-group>
-        <mat-tab label="Informacion básica">
-            <div class="container">
-                <mat-form-field>
-                    <input matInput placeholder="Nombre" type="text" [value]="userApp.name" required>
-                </mat-form-field>
+    <img [src]="userApp.photo" alt="">
+    <form (ngSubmit)="onProfileUpdate( f )" #f="ngForm">
+        <mat-tab-group>
+            <mat-tab label="Informacion básica">
+                <div class="container">
+                    <mat-form-field>
+                        <input matInput placeholder="Nombre" type="text" [value]="userApp.name" name="name" [(ngModel)]="userApp.name" required>
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <input matInput placeholder="Correo electrónico" [value]="userApp.email" type="email" required>
-                </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Correo electrónico" [value]="userApp.email" type="email" name="email" [(ngModel)]="userApp.email" required>
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <input class="aux" matInput placeholder="Nueva contraseña" [value]="userApp.password" type="password" required>
-                </mat-form-field>
+                    <mat-form-field>
+                        <input class="aux" matInput placeholder="Nueva contraseña" [value]="userApp.password" type="password" name="password" [(ngModel)]="userApp.password" required>
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <input matInput placeholder="Confirmar nueva contraseña" [value]="userApp.password" type="password" required>
-                </mat-form-field>
-            </div>
-        </mat-tab>
-        <mat-tab label="Acerca de mi">
-            <div class="container">
-                <mat-form-field>
-                    <input matInput placeholder="Profesión" type="text">
-                </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Confirmar nueva contraseña" [value]="userApp.password" type="password" name="password2" required>
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+            <mat-tab label="Acerca de mi">
+                <div class="container">
+                    <mat-form-field>
+                        <input matInput placeholder="Profesión" [value]="userApp.career" type="text" name="career" [(ngModel)]="userApp.career">
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" [value]="userApp.birthdate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Genero</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let food of foods" [value]="food.value">
-                            {{food.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Genero</mat-label>
+                        <mat-select [(value)]="selected" name="gender" [(ngModel)]="userApp.gender">
+                            <mat-option value="Femenino">Femenino</mat-option>
+                            <mat-option value="Masculino">Masculino</mat-option>
+                            <mat-option value="Otros">Otros</mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-                <mat-form-field>
-                    <textarea matInput placeholder="Descripción"></textarea>
-                </mat-form-field>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
-    <div>
-        <button>Guardar</button>
-    </div>
+                    <mat-form-field>
+                        <textarea matInput placeholder="Descripción" [value]="userApp.description" name="description" [(ngModel)]="userApp.description"></textarea>
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
 
 </div>
 

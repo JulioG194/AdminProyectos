@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class PagesComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor( private router: Router ) { }
    // tslint:disable-next-line:member-ordering
    @ViewChild(IgxNavigationDrawerComponent, { static: true })
    public drawer: IgxNavigationDrawerComponent;
@@ -17,13 +17,13 @@ export class PagesComponent implements OnInit {
 
 
     public navItems = [
-      { name: 'home', text: 'Inicio' , path:'/dashboard'},
-      { name: 'group', text: 'Mi Equipo' , path:'/my-team'},
-      { name: 'today', text: 'Proyectos' , path: '/projects'},
-      { name: 'av_timer', text: 'Cronograma' , path: '/schedule'},
-      { name: 'chat', text: 'Chat' , path: '/chat'},
-      { name: 'home', text: 'Perfil' , path: '/user-profile'},
-      { name: 'group', text: 'kanban' , path: '/activities'}
+      { name: 'home', text: 'Inicio' , path: '/dashboard', submodule: false },
+      { name: 'group', text: 'Mi Equipo' , path: '/my-team', submodule: false },
+      { name: 'today', text: 'Proyectos' , path: '/projects', submodule: true },
+      { name: 'av_timer', text: 'Cronograma' , path: '/schedule', submodule: false },
+      { name: 'chat', text: 'Chat' , path: '/chat', submodule: false },
+      { name: 'home', text: 'Perfil' , path: '/user-profile', submodule: false },
+      { name: 'group', text: 'kanban' , path: '/activities', submodule: false }
     ];
     public selected = 'Avatar';
     // tslint:disable-next-line:member-ordering

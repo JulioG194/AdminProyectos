@@ -1,38 +1,42 @@
 <div class="box">
-    <h1>Nuevo Proyecto</h1>
-    <div class="container">
-        <mat-form-field>
-            <input matInput placeholder="Nombre" type="text" required>
-        </mat-form-field>
+    <form #f="ngForm" (ngSubmit)="onSaveProject( f )">
+        <h1>Nuevo Proyecto de {{ userApp.name }}</h1>
+        <div class="container">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" type="text" name="name" [(ngModel)]="projectApp.name" required>
+            </mat-form-field>
 
-        <mat-form-field>
-            <input matInput placeholder="Cliente" type="text" required>
-        </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Cliente" type="text" name="client" [(ngModel)]="projectApp.client" required>
+            </mat-form-field>
 
-        <mat-form-field>
-            <input matInput placeholder="Tipo" type="text" required>
-        </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Tipo" type="text" name="type" [(ngModel)]="projectApp.type" required>
+            </mat-form-field>
 
-        <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="projectApp.start_date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
 
-        <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" required>
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="projectApp.end_date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
 
-        <mat-form-field>
-            <textarea matInput placeholder="Descripción"></textarea>
-        </mat-form-field>
-        <div>
-            <button>Guardar</button>
+            <mat-form-field>
+                <textarea matInput placeholder="Descripción" name="description" [(ngModel)]="projectApp.description"></textarea>
+            </mat-form-field>
+            <div *ngFor="let delegate of teamAux.delegates">
+                {{ delegate.name }}
+            </div>
+            <div>
+                <button type="submit">Guardar</button>
+            </div>
         </div>
-
-    </div>
+    </form>
 </div>
 
 <!-- Copyright 2019 Google LLC. All Rights Reserved.

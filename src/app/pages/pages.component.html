@@ -8,7 +8,7 @@
                 <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
                 <igx-icon fontSet="material">{{ item.name }}</igx-icon>
                 <span>{{ item.text }}</span>
-                <i class="material-icons">
+                <i *ngIf="item.submodule === true" class="material-icons">
                         keyboard_arrow_right
                         </i>
                 </span>

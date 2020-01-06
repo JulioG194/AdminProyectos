@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +29,6 @@ export class ProjectService {
       this.loadProjects(afs);
       this.projectsObs.subscribe(projects => {
         this.projects = projects;
-        console.log(this.projects);
       });
    }
 
@@ -39,13 +39,17 @@ export class ProjectService {
             return actions.map(a => {
             const data = a.payload.doc.data() as Project;
             data.id = a.payload.doc.id;
-            console.log(data);
             return data;
             });
   }));
   }
-      projbb() {
-        return this.projectsObs;
-      }
+
+  addNewProject( project: Project ) {
+    this.projectCollection.add(project);
+  }
+
+
+
+
 
 }

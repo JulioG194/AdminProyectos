@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
-import { Project } from 'src/app/models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { UserService } from '../../services/users.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,9 +14,20 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 })
 export class DashboardComponent implements OnInit {
 
-  userApp: User;
-  userApps: User[];
-  projectsApp: Project[];
+
+  userAux: User;
+  userApp: User = {
+    name: '',
+    email: '',
+    password: '',
+    id: '',
+    birthdate: new Date(),
+    career: '',
+    description: '',
+    gender: '',
+    photo: ''
+};
+
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -44,23 +55,19 @@ export class DashboardComponent implements OnInit {
   ];
 
   // tslint:disable-next-line: variable-name
-  constructor( public auth: AuthService,
-               public proj: ProjectService ) {
+  constructor( public _authService: AuthService,
+               public proj: ProjectService
+               ) {
+
+     this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); } );
 
   }
 
    ngOnInit() {
-     this.userApps = this.auth.usersAuth;
-     this.userApp = this.auth.userAuth;
-     this.projectsApp = this.proj.projects;
-     console.log(this.userApps);
-     console.log(this.projectsApp);
+  //this.userAux =  JSON.parse( localStorage.getItem('usuario'));
 
-  }
 
-  testing() {
-    console.log(this.userApps);
-    console.log(this.projectsApp);
+
   }
 
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {

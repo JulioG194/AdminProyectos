@@ -5,5 +5,6 @@ export interface Project {
     type: string;
     start_date: Date;
     end_date: Date;
+    status: string;
     id?: string;
     }
