@@ -6,5 +6,7 @@ export interface Project {
     start_date: Date;
     end_date: Date;
     status: string;
+    ownerId: string;
+    teamId?: string;
     id?: string;
     }

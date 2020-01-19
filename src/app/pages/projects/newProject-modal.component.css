@@ -1,0 +1,40 @@
+.box2 {
+    width: 650px;
+    height: 575px;
+    background: rgb(241, 243, 242);
+    border: solid rgb(77, 83, 71);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* border: solid rgb(92, 92, 92); */
+    padding: -10px;
+    /* max-width: 500px; */
+}
+
+.box2 h1 {
+    color: white;
+    font-size: 25px;
+    padding: 10px;
+    /* font-weight: 200; */
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+}
+
+button {
+    background: black;
+    color: white;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 20px;
+    float: right;
+  
+}
+
+button:hover {
+    background: rgb(20, 109, 112);
+    color: black;
+}
+

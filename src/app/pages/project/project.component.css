@@ -1,0 +1,240 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+/*section por colores*/
+
+.section1 {
+    background: white;
+    /* background: rgb(239, 245, 248);
+    border: 1px solid rgb(17, 123, 184); */
+    padding: 15px;
+}
+
+.section2 {
+    background: #FFFAF0;
+    /* background: rgb(237, 248, 240);
+    border: 1px solid rgb(159, 199, 78); */
+    padding: 15px;
+    /* margin-left: 40px; */
+}
+
+.section3 {
+    background: #FFFAF0;
+    /* background: rgb(248, 241, 241);
+    border: 1px solid rgb(146, 144, 144); */
+    padding: 15px;
+    /* margin-left: 100px; */
+}
+
+
+/*CSS form proyecto*/
+
+.main {
+    text-align: center;
+    letter-spacing: 10px;
+}
+
+.box {
+    width: 100%;
+    /*  height: 575px; */
+    background: rgb(241, 243, 242);
+    border: 1px solid rgb(17, 123, 184);
+    margin: 0px auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* border: solid rgb(92, 92, 92); */
+    padding: 10px;
+    /* max-width: 500px; */
+}
+
+.box h1 {
+    color: black;
+    font-size: 25px;
+    padding: 10px;
+    /* font-weight: 200; */
+    /* background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131)); */
+    background: #fcbf71;
+    text-align: center;
+}
+
+.align1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.align2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.align1 mat-form-field {
+    width: 50%;
+}
+
+.container h5 {
+    /* background: #050505; */
+    color: black;
+    padding: 10px;
+}
+
+.btnGuardar {
+    background: black;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    padding: 10px;
+    width: 120px;
+    font-size: 15px;
+    float: right;
+    margin-bottom: 25px;
+}
+
+.btnAct {
+    width: 160px;
+}
+
+
+/* button {
+    background: black;
+    color: white;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 20px;
+    float: right;
+}
+
+button:hover {
+    background: rgb(20, 109, 112);
+    color: black;
+} */
+
+
+/*CSS para listar actividades*/
+
+table {
+    width: 100%;
+    background-color: white;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    /*  border: 0.1px solid black; */
+}
+
+.title1,
+.title2 {
+    text-align: center;
+}
+
+.title1 {
+    /* background: rgb(17, 123, 184); */
+    background: rgb(24, 127, 153);
+}
+
+.title2 {
+    background: rgb(159, 199, 78);
+}
+
+.title1 th,
+.title2 th {
+    padding: 10px;
+    color: white;
+    font-size: 22px;
+    letter-spacing: 10px;
+}
+
+thead {
+    width: calc(100% - 1em);
+}
+
+thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 250px;
+    width: 100%;
+}
+
+.thead {
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+.thead th {
+    padding: 10px;
+}
+
+tr:hover td {
+    /* background-color: rgb(245, 213, 125); */
+    background: rgb(143, 141, 141);
+    color: white;
+}
+
+mat-icon {
+    font-size: 20px;
+}
+
+
+/*CSS form de Actividades*/
+
+.space {
+    margin-top: 50px;
+}
+
+
+/*Form Tareas*/
+
+.lookFiles {
+    margin: 0px auto;
+    width: 100%;
+    background: rgb(235, 233, 233);
+    border: 1px solid rgb(67, 68, 66);
+    height: 450px;
+    margin-bottom: 10px;
+}
+
+
+/*Cuando no existe registro*/
+
+.empty {
+    text-align: center;
+    border: 1px solid black;
+    background: rgb(252, 252, 252);
+    color: black;
+    padding: 10px;
+    height: 160px;
+}
+
+.empty p {
+    color: rgb(170, 54, 54);
+}
+
+mat-form-field input {
+    color: black;
+}
+
+mat-form-field textarea {
+    color: black;
+}

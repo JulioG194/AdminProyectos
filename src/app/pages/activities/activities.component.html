@@ -1,32 +1,99 @@
-<h2>Controla tus actividades</h2>
-<mat-divider></mat-divider>
-<!-- <div class="box"> -->
-<div cdkDropListGroup class="space">
-    <div class="container to-do">
-        <h3>Por hacer</h3>
-        <div cdkDropList [cdkDropListData]="todo" class="container-list" (cdkDropListDropped)="drop($event)">
-            <div class="box " *ngFor="let item of todo" cdkDrag>{{item}}</div>
+<div class="box">
+    <form #f="ngForm" (ngSubmit)="onSaveActivity( f )">
+        <h1>Nueva Actividad</h1>
+
+        <div class="container">
+            <h2>{{ projectApp.name }}</h2>
+            <!-- <mat-form-field>
+            <input matInput type="text" [(ngModel)]="projectApp.name" disabled required>
+        </mat-form-field> -->
+
+            <mat-form-field>
+                <input matInput placeholder="Nombre de la actividad" type="text" name="name" [(ngModel)]="activityProject.name" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Estado de la actividad" type="text" name="status" [(ngModel)]="activityProject.status" disabled required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Tiempo que dura la actividad en dias" type="number" name="time_activity" [(ngModel)]="activityProject.activity_time" required>
+            </mat-form-field>
+            <div>
+                <button class="btnGuardar" type="submit">Guardar</button>
+                <br>
+            </div>
+            <br>
         </div>
-    </div>
-  
-    <div class="container doing">
-        <h3>Haciendo</h3>
-        <div cdkDropList [cdkDropListData]="doing" class="container-list" (cdkDropListDropped)="drop($event)">
-          <div class="box" *ngFor="let item of doing" cdkDrag>{{item}}</div>
+    </form>
+
+
+    <!-- 
+    <mat-label>Tareas a realizar</mat-label><br>
+ -->
+    <div *ngIf="tasks.length > 0 ; else postTasks ">
+        <div>
+            <br>
+            <div class="containerTask">
+                <table>
+                    <thead>
+                        <tr>
+                            <td class="lengthT">Tarea</td>
+                            <td class="lengthD">Encargado</td>
+                            <td class="lengthH">Herramientas</td>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let task of tasks">
+                        <td>{{task.name}}</td>
+                        <td>{{task.delegate}}</td>
+                        <td>
+                            <button class="btn btn-danger">
+                                    <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
+                                </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div class="container done">
-        <h3>Hecho</h3>
-        <div cdkDropList [cdkDropListData]="done" class="container-list" (cdkDropListDropped)="drop($event)">
-          <div class="box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-        </div>
+    <div *ngIf="post == true; else taskbutton ">
+        <br>
     </div>
+
+
+    <ng-template #postTasks>
+        <div class="box1">
+            <div class="subcontainer">
+                <h5>No existe registro !!!</h5><br>
+                <h6>Usted no tiene tareas asignadas</h6>
+                <img src="../../../assets/img/sinTarea.jpg">
+            </div>
+        </div>
+        <br>
+        <br>
+    </ng-template>
+
+    <ng-template #taskbutton>
+        <div class="space btn-style">
+            <button (click)="openTask()">Agregar Tareas</button>
+        </div>
+    </ng-template>
+
+
+
+
+    <!-- <div>
+                <mat-form-field>
+                    <input matInput placeholder="Evidencia" type="file" accept=".pdf,.jpg,.png" multiple>
+                </mat-form-field>
+            </div>
+             -->
+    <!-- 
+    </div> -->
 </div>
-<!-- </div> -->  
 
-  
-  
-  <!-- Copyright 2019 Google LLC. All Rights Reserved.
-      Use of this source code is governed by an MIT-style license that
-      can be found in the LICENSE file at http://angular.io/license -->
+<!-- 
+<div *ngIf="post2 == true; else postTasks ">
+    <br>
+</div> -->

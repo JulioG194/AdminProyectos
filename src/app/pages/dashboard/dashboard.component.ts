@@ -5,7 +5,6 @@ import { ProjectService } from '../../services/project.service';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { UserService } from '../../services/users.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -64,9 +63,6 @@ export class DashboardComponent implements OnInit {
   }
 
    ngOnInit() {
-  //this.userAux =  JSON.parse( localStorage.getItem('usuario'));
-
-
 
   }
 

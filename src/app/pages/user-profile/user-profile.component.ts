@@ -28,11 +28,13 @@ export class UserProfileComponent implements OnInit {
   };
 
   selected: string;
+  birthdate = new Date();
 
   constructor( public _authService: AuthService
                ) {
     // this.userAux =  JSON.parse( localStorage.getItem('usuario'));
-    this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user, this.selected = user.gender); } );
+    this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user, this.selected = user.gender, this.userApp.birthdate = new Date(user.birthdate['seconds'] * 1000));
+                                                                              console.log(this.userApp.birthdate['seconds'] ); console.log(this.birthdate ); } );
 
     }
 
@@ -63,6 +65,9 @@ export class UserProfileComponent implements OnInit {
         type: 'success',
         title: 'Perfil actualizado con exito'
       });
+    }
+
+    inputEvent($event) {
     }
   }
 

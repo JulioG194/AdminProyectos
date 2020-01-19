@@ -1,92 +1,154 @@
 * {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-/* .box{
-  background-color: green;
+
+
+/*CSS para el form Actividades*/
+
+.box {
+    width: 900px;
+    background: rgb(241, 243, 242);
+    border: 1px solid rgb(77, 83, 71);
+    margin: 0px auto;
 }
- */
-.space {
-  margin-top: 15px;
+
+.box1 {
+    width: 890px;
+    background: rgb(241, 243, 242);
+    margin: 0px auto;
 }
 
 .container {
-  width: 350px;
-  max-width: 100%;
-  margin: 0 25px 25px 0;
-  display: inline-block;
-  vertical-align: top;
-  height: 100%;
-  /* background: rgb(237, 233, 241); */
+    display: flex;
+    flex-direction: column;
+    padding: -10px;
 }
 
-h3 {
-  font-size: 25px;
- /*  color: white; */
- /*  background: linear-gradient(to bottom , rgb(18, 114, 90), rgb(218, 233, 7)); */
-  /* background: linear-gradient(to bottom , rgb(48, 198, 209), rgb(19, 10, 102)); */
-  color: white;
-  padding: 10px;
-
-}
-.container-list {
-  border: solid 1px transparent;
-  min-height: 400px;
-  /* background: white; */
-  border-radius: 8px;
-  overflow: hidden;
-  display: block;
-}
-  
-.box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: rgb(252, 253, 253);
-  font-size: 18px;
+.box h1 {
+    /* background-color: rgb(22, 41, 78); */
+    color: white;
+    font-size: 25px;
+    padding: 15px;
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+    text-align: center;
 }
 
-.to-do{
- background: #fcbf71;
- /* background: linear-gradient(to bottom , #f89512, white); */
+.space {
+    margin-block-end: 10px;
 }
 
-.doing{
-  background: #dde661;
-  /* background: linear-gradient(to bottom , #e2ee3b, white); */
+.align {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
-.done{
-  background: #42a37b;
-  /* background: linear-gradient(to bottom , #42a37b, white); */
-  
+.tarea {
+    width: 450px;
 }
 
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+mat-icon {
+    font-size: 10px;
 }
-  
-.cdk-drag-placeholder {
-  opacity: 0;
+
+
+/*CSS para campo Tareas*/
+
+.subcontainer {
+    width: 95%;
+    height: 200px;
+    background: floralwhite;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 15px;
+    text-align: center;
+    margin: 0px auto;
 }
-  
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+.subcontainer img {
+    width: 100px;
+    height: 100px;
+    border-radius: 150px;
 }
-  
-.example-box:last-child {
-  border: none;
+
+.btn-style button {
+    background: black;
+    color: white;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    font-size: 15px;
+    float: right;
+    padding: 10px;
+    margin-top: 10px;
 }
-  
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+.btn-style button:hover {
+    background: rgb(20, 109, 112);
+    color: black;
+}
+
+.btnGuardar {
+    background: black;
+    color: white;
+    width: 120px;
+    border: none;
+    border-radius: 15px;
+    font-size: 15px;
+    float: right;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.btnGuardar:hover {
+    background: rgb(20, 109, 112);
+    color: black;
+}
+
+
+/*Css para  listar tareas*/
+
+.containerTask {
+    width: 90%;
+    margin: 0px auto;
+}
+
+table {
+    width: 100%;
+    background-color: white;
+    border: 1px solid black;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    /*  border: 0.1px solid black; */
+}
+
+thead {
+    /* background-color:rgb(21, 128, 101); */
+    background: #000000;
+    color: white;
+    border-bottom: solid 3px black;
+    font-size: 18px;
+}
+
+.lengthT {
+    width: 70%;
+}
+
+.lengthD {
+    width: 25%;
+}
+
+.lengthH {
+    width: 5%;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(168, 168, 168);
+}
+
+mat-icon {
+    font-size: 20px;
+    text-align: center;
 }

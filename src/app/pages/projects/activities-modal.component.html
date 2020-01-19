@@ -1,0 +1,35 @@
+<div class="box">
+    <h1>Actividades</h1>
+        <div class="container">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" type="text" required [(ngModel)]="data.name">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Delegado</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+                        {{shoe}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <textarea rows="5" cols="25" matInput placeholder="Tareas a realizar"></textarea>
+            </mat-form-field>
+    
+           <!--  <mat-form-field>
+                <input matInput placeholder="Encargado" type="text" required [(ngModel)]="data.delegate">
+            </mat-form-field> -->
+    
+            <div class="space">
+                <button (click)="onNoClick()" >Guardar</button>
+            </div>
+    
+        </div>
+    
+</div>
+
+<!-- Copyright 2019 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->

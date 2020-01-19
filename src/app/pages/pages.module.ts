@@ -8,7 +8,7 @@ import { AngularMaterialModule } from '../design/angular-material.module';
 import { MyTeamComponent } from './my-team/my-team.component';
 import { ChatComponent } from './chat/chat.component';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { ProjectsComponent } from './projects/projects.component';
+import { ProjectsComponent, NewProjectModalComponent } from './projects/projects.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { FormsModule } from '@angular/forms';
@@ -18,16 +18,18 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import localeEsAr from '@angular/common/locales/es-AR';
-import { ActivitiesComponent } from './activities/activities.component';
+import { ActivitiesComponent, TaskComponent  } from './activities/activities.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartsModule } from 'ng2-charts';
-
+import { KanbanComponent } from './kanban/kanban.component';
+import { ProjectComponent, TaskComponent1 } from './project/project.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 
 registerLocaleData(localeEs);
 
 @NgModule({
-  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, UserProfileComponent, ActivitiesComponent],
+  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent,TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1],
   imports: [
     CommonModule,
     PAGES_ROUTES,
@@ -50,6 +52,7 @@ registerLocaleData(localeEs);
     FlatpickrModule,
     CalendarModule
   ],
-  providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' } ]
+  providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' } ],
+  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1]
 })
 export class PagesModule { }

@@ -1,0 +1,21 @@
+<div class="box">
+    <h1>Tareas</h1>
+    <div class="align">
+        <mat-form-field >
+            <textarea rows="3" cols="10" matInput placeholder="Tarea" required></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Delegado</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let person of team" [value]="person"> 
+                        {{person}}
+                    </mat-option>
+                </mat-select>
+        </mat-form-field>
+        <div>
+            <button (click)="onNoClick()" >Guardar</button>
+        </div>
+        
+    </div>
+</div>

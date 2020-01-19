@@ -23,6 +23,7 @@ export class TeamService {
   teamsObservable: Observable<any>;
 
   delegates: Observable<User[]>;
+  delegate: Observable<any>;
 
   // Variables auxiliares
   teams: Team [];
@@ -96,6 +97,41 @@ export class TeamService {
    return this.delegates;
   }
 
+  addDelegates( team: Team, users: User[] ) {
+    let userAux: User = {
+      name: '',
+      id: '',
+      email: '',
+      photo: ''
+    };
+    users.forEach(user => {
+      userAux = {
+          name: user.name,
+          id: user.id,
+          email: user.email,
+          photo: user.photo
+      };
+      this.afs.collection('teams').doc(team.id).collection('delegates').add(userAux);
+    });
+   }
+
+   getTeam( id: string ) {
+    this.teamDoc = this.afs.doc(`teams/${id}`);
+    this.teamObs = this.teamDoc.snapshotChanges().pipe(
+      map(actions => {
+        if (actions.payload.exists === false) {
+          return null;
+        } else {
+          const data = actions.payload.data() as Team;
+          data.id = actions.payload.id;
+          return data;
+        }
+        }));
+    return this.teamObs;
+
+  }
+
+
   setTeamtoUser( user: User, users: User[] ) {
 
     this.afs.collection('teams').add({
@@ -109,7 +145,9 @@ export class TeamService {
         let ref = delegatesCollection.doc(d.id);
         batch.set(ref, {
           name: d.name,
-          id: d.id
+          email: d.email,
+          id: d.id,
+          photo: d.photo
         });
       });
 

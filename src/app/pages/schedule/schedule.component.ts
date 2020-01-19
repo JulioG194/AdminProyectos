@@ -1,8 +1,14 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef} from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours} from 'date-fns';
 import { CalendarView, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Project } from '../../models/project.interface';
+import { ProjectService } from '../../services/project.service';
+import { TeamService } from '../../services/team.service';
+import { AuthService } from '../../services/auth.service';
+import { User } from 'src/app/models/user.interface';
+import { Team } from 'src/app/models/team.interface';
 
 const colors: any = {
   red: {
@@ -16,31 +22,73 @@ const colors: any = {
   yellow: {
     primary: '#e3bc08',
     secondary: '#FDF1BA'
+  },
+  green: {
+    primary: '#2261bf',
+    secondary: '#050000'
   }
 };
 
 @Component({
   selector: 'app-schedule',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css']
+  styleUrls: ['./schedule.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ScheduleComponent {
+export class ScheduleComponent implements OnInit {
+
+    projects: Project[] = [];
+    userApp: User = {
+      name: '',
+      email: '',
+      password: '',
+      id: '',
+      birthdate: new Date(),
+      career: '',
+      description: '',
+      gender: '',
+      photo: ''
+  };
+projectApp: Project = {
+      name: '',
+      client: '',
+      description: '',
+      start_date: new Date(),
+      end_date: new Date(),
+      type: '',
+      teamId: '',
+      ownerId: '',
+      status: 'To Do'
+};
+
+// idUser: String;
+teamsObservable: any;
+projectsAux: Project[];
+teamAux: Team = {
+      manager: ''
+};
+idUser: string;
+startD: Date;
+endD: Date;
+minDate = new Date();
+
 
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-  
+
     view: CalendarView = CalendarView.Month;
-  
+
     CalendarView = CalendarView;
-  
+
     viewDate: Date = new Date();
-  
+
     modalData: {
       action: string;
       event: CalendarEvent;
     };
-  
+
     actions: CalendarEventAction[] = [
-      {
+     /*  {
         label: '<i class="fa fa-fw fa-pencil"></i>',
         a11yLabel: 'Edit',
         onClick: ({ event }: { event: CalendarEvent }): void => {
@@ -54,13 +102,26 @@ export class ScheduleComponent {
           this.events = this.events.filter(iEvent => iEvent !== event);
           this.handleEvent('Deleted', event);
         }
-      }
+      } */
     ];
-  
+
     refresh: Subject<any> = new Subject();
-  
+
+    event: CalendarEvent = {
+        start: new Date(),
+        end: new Date(),
+        title: '',
+        color: colors.red,
+      //  actions: this.actions,
+        allDay: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        },
+        draggable: true
+    };
     events: CalendarEvent[] = [
-      {
+      /* {
         start: subDays(startOfDay(new Date()), 1),
         end: addDays(new Date(), 1),
         title: 'A 3 day event',
@@ -97,13 +158,16 @@ export class ScheduleComponent {
           afterEnd: true
         },
         draggable: true
-      }
+      } */
     ];
-  
-    activeDayIsOpen: boolean = true;
-  
-    constructor(private modal: NgbModal) {}
-  
+
+    activeDayIsOpen: boolean = false;
+
+    constructor( private modal: NgbModal,
+                 private _projectService: ProjectService,
+                 private _teamService: TeamService,
+                 private _authService: AuthService ) {}
+
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       if (isSameMonth(date, this.viewDate)) {
         if (
@@ -117,7 +181,7 @@ export class ScheduleComponent {
         this.viewDate = date;
       }
     }
-  
+
     eventTimesChanged({
       event,
       newStart,
@@ -135,12 +199,12 @@ export class ScheduleComponent {
       });
       this.handleEvent('Dropped or resized', event);
     }
-  
+
     handleEvent(action: string, event: CalendarEvent): void {
       this.modalData = { event, action };
       this.modal.open(this.modalContent, { size: 'lg' });
     }
-  
+
     addEvent(): void {
       this.events = [
         ...this.events,
@@ -157,18 +221,80 @@ export class ScheduleComponent {
         }
       ];
     }
-  
+
     deleteEvent(eventToDelete: CalendarEvent) {
       this.events = this.events.filter(event => event !== eventToDelete);
     }
-  
+
     setView(view: CalendarView) {
       this.view = view;
     }
-  
+
     closeOpenMonthViewDay() {
       this.activeDayIsOpen = false;
     }
+
+    newObj(object: CalendarEvent) {
+     const newObject = {
+      start: new Date(),
+      end: new Date(),
+      title: '',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true
+     };
+     for (const key in object) {
+        if (object.hasOwnProperty(key)) {
+          newObject[key] = object[key];
+        }
+      }
+     return newObject;
+    }
+
+    ngOnInit() {
+      this._projectService.getProjects().subscribe( projects => {
+        this.projects = projects;
+      });
+
+      this._authService.showUser(this._authService.userAuth)
+      .subscribe(user => {(this.userApp = user, this.idUser = user.id);
+                          this._teamService.getTeamByUser(this.userApp)
+                          .subscribe(team => {
+                                              this.teamsObservable = team;
+                                              this.teamsObservable.map((a: Team) =>
+                                              this.teamAux = a);
+                                              this.teamAux.delegates = [];
+                                              this._teamService.getDelegates(this.teamAux)
+                                              .subscribe(delegates => {
+                                                                      this.teamAux.delegates = delegates;
+                                                                                  });
+                                              this.projectApp.teamId = this.teamAux.id;
+                                              this._projectService.getProjectByOwner(this.userApp)
+                                              .subscribe(projects => {
+                                                                    this.projectsAux = projects;
+                                                                    this.projectsAux.forEach(project => {
+                                                                      this.startD = new Date(project.start_date['seconds'] * 1000);
+                                                                      this.endD = new Date(project.end_date['seconds'] * 1000);
+                                                                      this.event.start = startOfDay(this.startD);
+                                                                      this.event.end = startOfDay(this.endD);
+                                                                      this.event.title = project.name;
+                                                                      this.event.color = colors.green;
+                                                                      this.event.allDay = true;
+                                                                      this.event.resizable.beforeStart = false;
+                                                                      this.event.resizable.afterEnd = false;
+                                                                      this.event.draggable = false;
+                                                                      this.events.push(this.newObj(this.event));
+                                                                    });
+                                                                    this.refresh.next();
+                                              });
+      });
+      });
+    }
   }
-  
+
 

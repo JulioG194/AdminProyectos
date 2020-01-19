@@ -1,20 +1,76 @@
-<h2>Elige tu equipo de trabajo {{ userGugo.name }}</h2>
-<mat-divider></mat-divider>
+<div *ngIf="!teamAux.manager">
+    <h2>Elige tu equipo de trabajo</h2>
+    <mat-divider></mat-divider>
+    <ul>
+        <mat-selection-list #team [(ngModel)]="selectedUsers" (ngModelChange)="onGroupsChange($event)">
+            <li>
+                <mat-list-option class="card" *ngFor="let user of usersGugo" [value]="user">
+                    <img matListAvatar [src]="user.photo">
+                    <p mat-line> {{user.name}} </p>
+                    <p mat-line> {{user.email}} </p>
 
-<div class="box">
-    <h4>Mi equipo</h4>
-    <div class="container">
-        <mat-selection-list #usersList [(ngModel)]="selectedUsers" (ngModelChange)="onGroupsChange($event)">
-            <mat-list-option *ngFor="let user of usersGugo" [value]="user">
-                <div>
-                    Nombre: {{user.name}} Correo: {{ user.email}}
-                </div>
-            </mat-list-option>
+                </mat-list-option>
+            </li>
         </mat-selection-list>
-    </div>
+    </ul>
     <div class="end">
-        <p>Has elegido {{usersList.selectedOptions.selected.length}} personas para conformar tu equipo de trabajo</p>
+        <p>Has elegido {{team.selectedOptions.selected.length}} personas para formar tu equipo de trabajo</p>
         <button (click)="addNewTeam()">Ok</button>
     </div>
-
 </div>
+
+<div *ngIf="teamAux.manager">
+
+    <h2>Ya has seleccionado tu equipo de trabajo</h2>
+    <mat-divider></mat-divider>
+    <div class="container">
+        <table class="space">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>NOMBRE</td>
+                    <td>CORREO</td>
+                </tr>
+            </thead>
+            <tr *ngFor="let delegate of teamAux.delegates">
+                <td><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
+                <td> {{delegate.name}} </td>
+                <td> {{delegate.email}} </td>
+            </tr>
+        </table>
+        <div>
+            <button (click)="post = !post" class="style space">+ Personas al equipo</button>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="post == true; else chooseTeam ">
+    <br>
+</div>
+
+
+
+<ng-template #chooseTeam>
+    <div class="space2">
+
+        <h2>Amplia tu equipo de trabajo</h2>
+        <mat-divider></mat-divider>
+        <ul>
+            <mat-selection-list #team2 [(ngModel)]="selectedUsers2" (ngModelChange)="onGroupsChange2($event)">
+                <li>
+                    <mat-list-option class="card" *ngFor="let user of usersApp1" [value]="user">
+                        <img matListAvatar [src]="user.photo">
+                        <p mat-line> {{user.name}} </p>
+                        <p mat-line> {{user.email}} </p>
+
+                    </mat-list-option>
+                </li>
+            </mat-selection-list>
+        </ul>
+        <div class="end">
+            <p>Has elegido {{team2.selectedOptions.selected.length}} personas para formar tu equipo de trabajo</p>
+            <button (click)="updateTeam()">Ok</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,44 +1,103 @@
-<div class="box">
-    <form #f="ngForm" (ngSubmit)="onSaveProject( f )">
-        <h1>Nuevo Proyecto de {{ userApp.name }}</h1>
-        <div class="container">
-            <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" name="name" [(ngModel)]="projectApp.name" required>
-            </mat-form-field>
+<!-- <div class="m-5">
+    <div class="box">
+        <form #f="ngForm" (ngSubmit)="onSaveProject( f )">
+            <h1>Nuevo Proyecto de {{ userApp.name }}</h1>
+            <div class="container">
+                <mat-form-field>
+                    <input matInput placeholder="Nombre" type="text" name="name" [(ngModel)]="projectApp.name" required>
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Cliente" type="text" name="client" [(ngModel)]="projectApp.client" required>
-            </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Cliente" type="text" name="client" [(ngModel)]="projectApp.client" required>
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Tipo" type="text" name="type" [(ngModel)]="projectApp.type" required>
-            </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Tipo" type="text" name="type" [(ngModel)]="projectApp.type" required>
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="projectApp.start_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Fecha de inicio" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="projectApp.start_date" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="projectApp.end_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Fecha de fin" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="projectApp.end_date" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
 
-            <mat-form-field>
-                <textarea matInput placeholder="Descripción" name="description" [(ngModel)]="projectApp.description"></textarea>
-            </mat-form-field>
-            <div *ngFor="let delegate of teamAux.delegates">
-                {{ delegate.name }}
+                <mat-form-field>
+                    <textarea matInput placeholder="Descripción" name="description" [(ngModel)]="projectApp.description"></textarea>
+                </mat-form-field>
+                <div *ngFor="let delegate of teamAux.delegates">
+                    {{ delegate.name }}
+                </div>
+                <div>
+                    <button type="submit">Guardar</button>
+                </div>
             </div>
-            <div>
-                <button type="submit">Guardar</button>
-            </div>
-        </div>
-    </form>
-</div>
-
+        </form>
+    </div>
+</div> -->
 <!-- Copyright 2019 Google LLC. All Rights Reserved.
       Use of this source code is governed by an MIT-style license that
       can be found in the LICENSE file at http://angular.io/license -->
+
+<div *ngIf="projectsApp.length > 0; else NoProject">
+    <h2>Tus proyectos</h2>
+    <mat-divider></mat-divider>
+    <div class="container">
+        <table class="space">
+            <thead>
+                <tr>
+
+                    <td class="title">Nombre</td>
+                    <td class="title">Cliente</td>
+                    <td class="title">Estado</td>
+                    <td class="title">Fecha de Inicio</td>
+                    <td class="title">Fecha de Fin</td>
+                    <td class="title">Herramientas</td>
+                    <td class="title">Actividades</td>
+                </tr>
+            </thead>
+            <tr *ngFor="let project of projectsApp; let i = index;">
+                <td>{{project.name }}</td>
+                <td>{{project.client }}</td>
+                <td>{{project.status }}</td>
+                <td>{{allstartdates[i] | date : "dd/MM/y"}}</td>
+                <td>{{allenddates[i] | date : "dd/MM//y"}}</td>
+                <td class="aling">
+                    <button class="btn btn-info" [routerLink]="['/project', project.id]">
+                            <mat-icon style="width: 20px; height: 10px">edit</mat-icon> 
+                        </button> &nbsp; &nbsp; &nbsp;
+                    <button class="btn btn-danger">
+                            <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
+                        </button>
+                </td>
+                <td>
+                    <button class="btn btn-warning" [routerLink]="['/activities', project.id]">
+                            <mat-icon style="width: 20px; height: 10px">library_add</mat-icon> 
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<ng-template #NoProject>
+    <h2>Tus proyectos</h2>
+    <mat-divider></mat-divider>
+    <div class="box1">
+        <h3>No existe registro !!!</h3><br>
+        <h5>Usted no tiene proyectos creados</h5><br>
+        <img src="../../../assets/img/sin_registro.jpg" alt="">
+    </div>
+</ng-template>
+
+<div>
+    <button class="btnProject" (click)="openNewProject()">Nuevo Proyecto</button>
+</div>
+<!-- Copyrit 2019 Google LLC. All Rights Reserved.
+          Use of this source code is governed by an MIT-style license that
+          can be found in the LICENSE file at http://angular.io/license -->

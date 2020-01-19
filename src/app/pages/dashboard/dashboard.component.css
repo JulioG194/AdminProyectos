@@ -82,6 +82,21 @@ mat-card {
     /* border: solid black; */
 }
 
+
+/* 
 mat-divider {
     border-style: dotted;
+} */
+
+mat-card-content {
+    text-align: justify;
+}
+
+mat-card-title {
+    color: rgb(13, 62, 136);
+    font-weight: bold;
+}
+
+h6 {
+    color: rgb(23, 180, 180);
 }

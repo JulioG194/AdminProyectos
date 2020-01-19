@@ -2,16 +2,31 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.box {
-    border: solid 1px green;
-    background: rgb(241, 243, 242);
-    margin-top: 15px;
+
+/*CSS para selecion de equipo*/
+
+.card {
+    min-width: 170px;
+    min-height: 50px;
+    background-color: floralwhite;
+    border: solid 1px rgb(109, 12, 65);
 }
 
-.box h4 {
-    background: linear-gradient(to bottom, rgb(18, 114, 90), rgb(218, 233, 7));
+ul {
+    align-items: center;
+    /* margin: 0px auto; */
+}
+
+li {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    grid-template-rows: 50px 50px 50px;
+    grid-column-gap: 50px;
+    grid-row-gap: 50px;
+}
+
+mat-list-option {
     font-size: 25px;
-    padding: 10px;
 }
 
 .end {
@@ -29,7 +44,6 @@ button {
     background: black;
     color: white;
     width: 150px;
-    height: 40px;
     border: none;
     border-radius: 15px;
     padding: 10px;
@@ -37,6 +51,81 @@ button {
 }
 
 button:hover {
-    background: rgb(127, 185, 18);
+    background: rgb(20, 109, 112);
     color: black;
+}
+
+.post {
+    display: flex;
+    flex-direction: row;
+}
+
+.box {
+    background: rgb(241, 243, 242);
+    border: solid 1px black;
+    width: 600px;
+}
+
+.box h4 {
+    padding: 10px;
+    background: cadetblue;
+    color: white;
+}
+
+.space {
+    margin-top: 25px;
+}
+
+.space2 {
+    margin-top: 100px;
+}
+
+
+/* CSS equipo ya formado  */
+
+.container {
+    width: 900px;
+    margin: 0px auto;
+}
+
+table {
+    width: 100%;
+    background-color: white;
+    text-align: left;
+    /* border-collapse: collapse; */
+    min-width: 400px;
+    overflow-x: auto;
+    border: 1px solid black;
+}
+
+th,
+td {
+    /* border: 1px solid black; */
+    padding: 10px;
+}
+
+thead {
+    /* background-color:rgb(21, 128, 101); */
+    background: black;
+    color: white;
+    border-bottom: solid 3px black;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+
+/* tr:hover td {
+    background-color: rgb(245, 213, 125);
+    color: white;
+} */
+
+.style {
+    width: 250px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 20px;
+    float: right;
 }

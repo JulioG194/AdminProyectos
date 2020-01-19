@@ -1,0 +1,29 @@
+@import '~igniteui-angular/lib/core/styles/themes/index';
+
+$primary-color: #b3660e; // Some green shade I like
+$secondary-color: #f96a88; // Watermelon pink
+
+$my-color-palette: igx-palette(
+    $primary: $primary-color,
+    $secondary: $secondary-color
+);
+
+$primary-color1: rgb(34, 189, 163); // Some green shade I like 
+/* $primary-color1: rgb(30, 145, 126); */
+$secondary-color1: rgb(29, 23, 23); // Watermelon pink
+
+$background-palette: igx-palette(
+    $primary: $primary-color1,
+    $secondary: $secondary-color1
+);
+
+$dark-button: igx-button-theme();
+
+// IMPORTANT: Make sure you always include igx-core first!
+@include igx-core();
+// Pass the color palette we generated to the igx-theme mixin
+/* @include igx-theme($my-color-palette); */
+
+@include igx-dark-theme($background-palette);
+
+@include igx-button($dark-button); 

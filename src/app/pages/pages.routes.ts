@@ -6,7 +6,9 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ChatComponent } from './chat/chat.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { KanbanComponent } from './kanban/kanban.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { ProjectComponent } from './project/project.component';
 
 
 const pagesRoutes: Routes = [
@@ -41,10 +43,25 @@ const pagesRoutes: Routes = [
         data: { titulo: 'UserProfile'}
     },
     {
-        path: 'activities',
+        path: 'kanban',
+        component: KanbanComponent,
+        data: { titulo: 'Kanban'}
+    },
+    {
+        path: 'activities/:id',
         component: ActivitiesComponent,
         data: { titulo: 'Activities'}
+    },
+    {
+        path: 'project/:id',
+        component: ProjectComponent,
+        data: { titulo: 'Project'}
     }
+   /*  {
+        path: 'project',
+        component: ProjectComponent,
+        data: { titulo: 'Project'}
+    } */
 ];
 
 export const PAGES_ROUTES = RouterModule.forChild( pagesRoutes );

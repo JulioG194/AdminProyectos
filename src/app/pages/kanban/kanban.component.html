@@ -1,0 +1,35 @@
+<h2>Controla tus actividades</h2>
+<mat-divider></mat-divider>
+<!-- <div class="box"> -->
+<div cdkDropListGroup class="space">
+    <h5>Proyecto:</h5>
+    <div class="container to-do">
+        <h3>Por hacer</h3>
+        <div cdkDropList [cdkDropListData]="todo" class="container-list" (cdkDropListDropped)="drop($event)">
+            <div class="box " *ngFor="let item of todo" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+  
+    <div class="container doing">
+        <h3>Haciendo</h3>
+        <div cdkDropList [cdkDropListData]="doing" class="container-list" (cdkDropListDropped)="drop($event)">
+          <div class="box" *ngFor="let item of doing" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+
+    <div class="container done">
+        <h3>Hecho</h3>
+        <div cdkDropList [cdkDropListData]="done" class="container-list" (cdkDropListDropped)="drop($event)">
+          <div class="box" *ngFor="let item of done" x  cdkDrag>{{item}}</div>
+        </div>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<h5 class="space">Tu avance del proyecto:</h5>
+<mat-progress-bar class="space" style="height: 20px;border-radius: 5px" mode="determinate" value="50"></mat-progress-bar>
+
+  
+  
+  <!-- Copyright 2019 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->

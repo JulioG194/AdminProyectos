@@ -16,15 +16,15 @@ export class PagesComponent implements OnInit {
 
 
 
-    public navItems = [
-      { name: 'home', text: 'Inicio' , path: '/dashboard', submodule: false },
-      { name: 'group', text: 'Mi Equipo' , path: '/my-team', submodule: false },
-      { name: 'today', text: 'Proyectos' , path: '/projects', submodule: true },
-      { name: 'av_timer', text: 'Cronograma' , path: '/schedule', submodule: false },
-      { name: 'chat', text: 'Chat' , path: '/chat', submodule: false },
-      { name: 'home', text: 'Perfil' , path: '/user-profile', submodule: false },
-      { name: 'group', text: 'kanban' , path: '/activities', submodule: false }
-    ];
+   public navItems = [
+    { name: 'home', text: 'Inicio' , path: '/dashboard'},
+    { name: 'group', text: 'Mi Equipo' , path: '/my-team'},
+    { name: 'today', text: 'Proyectos' , path: '/projects'},
+    { name: 'av_timer', text: 'Cronograma' , path: '/schedule'},
+    { name: 'chat', text: 'Chat' , path: '/chat'},
+    { name: 'home', text: 'Perfil' , path: '/user-profile'},
+    { name: 'group', text: 'kanban' , path: '/kanban'}
+  ];
     public selected = 'Avatar';
     // tslint:disable-next-line:member-ordering
 

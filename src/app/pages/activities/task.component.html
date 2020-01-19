@@ -1,0 +1,22 @@
+<div class="box">
+    <form #f="ngForm" (ngSubmit)="onSaveTask( f )">
+        <h1>Nueva Tarea</h1>
+        <div class="align">
+            <mat-form-field>
+                <textarea rows="3" cols="10" matInput placeholder="Tarea" name="taskname" [(ngModel)]="task.name" required></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Delegado</mat-label>
+                <mat-select name="taskdelegate" [(ngModel)]="task.delegate">
+                    <mat-option *ngFor="let delegate of delegates" [value]="delegate.name">
+                        {{ delegate.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button (click)="onNoClick()" type="submit">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

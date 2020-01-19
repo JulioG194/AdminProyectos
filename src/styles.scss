@@ -2,9 +2,13 @@
 
 //@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import 'assets/scss/my-theme.scss';
-@import '~igniteui-angular/lib/core/styles/themes/index';
+@import 'assets/scss/my-theme2.scss';
+
+/* @import '~igniteui-angular/lib/core/styles/themes/index';
 @include igx-core();
 @include igx-theme($default-palette);
+ */
+
 
 /* autoprefixer grid: on */
 

@@ -4,9 +4,15 @@
 
 .box {
     width: 700px;
-    height: 500px;
+    height: 550px;
     background: rgb(241, 243, 242);
     border: solid rgb(77, 83, 71);
+}
+
+.box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
 }
 
 .container {
@@ -18,7 +24,7 @@
 .box h2 {
     font-size: 30px;
     color: white;
-    background: linear-gradient(to bottom, rgb(18, 114, 90), rgb(218, 233, 7));
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
     padding: 10px;
     font-weight: 900;
 }
@@ -29,8 +35,8 @@ textarea {
 }
 
 img {
-    width: 100px;
-    height: 100px;
+    /* width: 100px;
+    height: 100px; */
     /* margin-left: 350px; */
     /* align-items: center; */
     display: block;
@@ -46,7 +52,7 @@ button {
     background: black;
     color: white;
     width: 150px;
-    height: 40px;
+    /* height: 40px; */
     border: none;
     border-radius: 15px;
     padding: 10px;
@@ -56,6 +62,6 @@ button {
 }
 
 button:hover {
-    background: rgb(127, 185, 18);
+    background: rgb(21, 128, 101);
     color: black;
 }
