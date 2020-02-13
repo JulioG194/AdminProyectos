@@ -1,4 +1,4 @@
-<article class="sample-column">
+<!-- <article class="sample-column">
     <div class="navbar-sample">
         <igx-navbar title="Gu.Go" actionButtonIcon="menu" [isActionButtonVisible]="true">
             <igx-icon class="custom-size">notifications</igx-icon>
@@ -9,4 +9,56 @@
             </igx-action-icon>
         </igx-navbar>
     </div>
-</article>
+</article> -->
+
+<mat-toolbar class="align">
+    <div class="name">Gu.Go</div>
+    <div class="headerTools">
+        <button class="btn btn-outline-light" mat-button [matMenuTriggerFor]="notification">
+            <mat-icon>notification_important</mat-icon> 
+        </button>
+
+        <button class="boton" mat-button [matMenuTriggerFor]="profile">
+            <div mat-card-avatar >
+                <img class="image" [src]="userGugo.photo" alt="">
+            </div>
+           <!--  <mat-icon>person</mat-icon>  -->
+        </button>
+
+        <mat-menu #notification="matMenu" class="containerNotification">
+            <div class="notification">
+                <h6>Notificaciones</h6>
+                <mat-divider></mat-divider>
+                <br>
+                <div *ngFor="let notif of notifications; let indice=index" class="btnNot">
+                    <label>{{notif}}{{indice+1}}</label>
+                </div>
+                <div>
+                    <button (click)="openNotifications()">Ver todas</button>
+                </div>
+            </div>
+        </mat-menu>
+
+        <mat-menu #profile="matMenu" class="containerProfile">
+            <div class="profile">
+
+                <h6>Perfil</h6>
+                <mat-divider></mat-divider>
+                <label class="label1">Gestor</label> <br>
+                <div class="profileImg">
+                    <img [src]="userGugo.photo" alt="">
+                </div>
+                <br>
+                <label class="label2">{{ userGugo.name }}</label>
+                <label class="label3">{{ userGugo.email }}</label>
+                <br>
+                <div class="btnOptions align">
+                    <button (click)="editUser()">Editar</button>
+                    <button>Cerrar sesión</button>
+                </div>
+            </div>
+        </mat-menu>
+
+    </div>
+
+</mat-toolbar>

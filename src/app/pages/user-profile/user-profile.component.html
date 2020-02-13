@@ -25,9 +25,9 @@
                 </mat-tab>
                 <mat-tab label="Acerca de mi">
                     <div class="container">
-                        <mat-form-field>
+                        <!-- <mat-form-field>
                             <input matInput placeholder="Profesión" [value]="userApp.career" type="text" name="career" [(ngModel)]="userApp.career">
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field>
                             <input matInput [matDatepicker]="picker" placeholder="Fecha de nacimiento" [value]="birthdate" (dateInput)="inputEvent($event)" name="birthdate" [(ngModel)]="userApp.birthdate">

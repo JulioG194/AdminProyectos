@@ -5,8 +5,6 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +19,10 @@ export class AuthService {
   userDoc: AngularFirestoreDocument<User>;
   users: Observable<User[]>;
   user: Observable<User>;
+
+  userDoc1: AngularFirestoreDocument<User>;
+  users1: Observable<User[]>;
+  user1: Observable<User>;
 
   // Variables auxiliares
   usersAuth: User [];
@@ -45,7 +47,7 @@ export class AuthService {
 
   // Funcion para cargar la coleccion de usuarios de la base de Firestore
   loadUsers(afs: AngularFirestore ) {
-    this.userCollection = afs.collection<User>('users');
+    this.userCollection = afs.collection<User>('users', ref => ref.orderBy('createdAt'));
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -69,7 +71,6 @@ export class AuthService {
 
    // Guardar el token del usuario en el localstorage para tener la sesion activa
    saveTokenOnStorage( id: string, token: string ) {
-
     localStorage.setItem('idSession', id);
     localStorage.setItem('token', token);
     this.userToken = token;
@@ -89,7 +90,8 @@ export class AuthService {
       authData
     ).pipe(
       map( (resp: any) => {
-        this.saveTokenOnStorage(resp.localId, resp.idToken );
+      //  this.saveTokenOnStorage(resp.localId, resp.idToken );
+        localStorage.clear();
         return resp;
       })
     );
@@ -148,7 +150,7 @@ export class AuthService {
   } */
 
   // Funcion que retorna un observable para obtener un usuario como parametro de entrada su Id
-  showUser( user: User ) {
+  getUser( user: User ) {
     this.userDoc = this.afs.doc(`users/${user.id}`);
     this.user = this.userDoc.snapshotChanges().pipe(
       map(actions => {
@@ -164,13 +166,46 @@ export class AuthService {
 
   }
 
+ /*  getUserById( user: string ) {
+    this.userDoc1 = this.afs.doc(`users/${user}`);
+    this.user1 = this.userDoc.snapshotChanges().pipe(
+      map(actions => {
+        if (actions.payload.exists === false) {
+          return null;
+        } else {
+          const data = actions.payload.data() as User;
+          data.id = actions.payload.id;
+          return data;
+        }
+        }));
+    return this.user1;
+
+  }
+ */
+
+ getUserById( id: string ) {
+  this.userDoc1 = this.afs.collection('users').doc(id);
+  this.user1 = this.userDoc1.snapshotChanges().pipe(
+    map(actions => {
+      if (actions.payload.exists === false) {
+        return null;
+      } else {
+        const data = actions.payload.data() as User;
+        data.id = actions.payload.id;
+        return data;
+      }
+      }));
+  return this.user1;
+
+}
+
   updateUser( user: User ) {
     this.afs.collection('users').doc(user.id).update(
       {
         name: user.name,
         password: user.password,
         birthdate: user.birthdate,
-        career: user.career,
+      //  career: user.career,
         description: user.description,
         gender: user.gender,
         photo: user.photo

@@ -1,0 +1,17 @@
+<h2>Notificaciones</h2>
+<mat-divider></mat-divider>
+<br>
+
+<table>
+    <tr *ngFor="let not of notifications">
+        <td class="position1">
+            <img src="../../../assets/img/logo.jpg">
+        </td>
+        <td class="position2">{{not}}</td>
+        <td class="position1">
+            <button matTooltip="Ir a la notificación">
+                <mat-icon>pan_tool</mat-icon>
+            </button>
+        </td>
+    </tr>
+</table>

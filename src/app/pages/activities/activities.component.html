@@ -1,9 +1,8 @@
 <div class="box">
     <form #f="ngForm" (ngSubmit)="onSaveActivity( f )">
-        <h1>Nueva Actividad</h1>
-
+        <h1>{{ projectApp.name }}</h1>
         <div class="container">
-            <h2>{{ projectApp.name }}</h2>
+            <h5>Agrege las actividades del proyecto:</h5>
             <!-- <mat-form-field>
             <input matInput type="text" [(ngModel)]="projectApp.name" disabled required>
         </mat-form-field> -->
@@ -16,11 +15,8 @@
                 <input matInput placeholder="Estado de la actividad" type="text" name="status" [(ngModel)]="activityProject.status" disabled required>
             </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Tiempo que dura la actividad en dias" type="number" name="time_activity" [(ngModel)]="activityProject.activity_time" required>
-            </mat-form-field>
             <div>
-                <button class="btnGuardar" type="submit">Guardar</button>
+                <button class="btnGuardar" type="submit">Agregar</button>
                 <br>
             </div>
             <br>

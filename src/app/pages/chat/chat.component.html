@@ -1,1 +1,63 @@
-<p>chat works!</p>
+<h2>Chat</h2>
+<mat-divider></mat-divider>
+
+<div class="box align">
+    <div class="left">
+        <mat-toolbar class="header1">Tus contactos</mat-toolbar>
+        <div class="scroll-contact">
+            <div class="contacts" *ngFor="let user of delegatesAux1">
+                <button class="select align" (click)="selectUser(user.id,user.name,user.email)">
+                    <div class="image">
+                        <img [src]="user.photo" alt="">
+                    </div>
+                    <div class="info">
+                        {{user.name}} <br>
+                        {{user.phone_number}}
+                        
+                    </div>
+
+                    <div class="icon">
+                        <mat-icon matBadge="15" matBadgeColor="warn">message</mat-icon>
+                    </div>
+                   
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="rigth">
+        <mat-toolbar class="header2">{{ coworker.name }}</mat-toolbar>
+        <div class="scroll-chat" id="app-mensajes">
+            <br>
+            <div *ngFor="let chat of allChats">
+
+                <span>
+        </span>
+                <p class="msgTx" *ngIf="userGugo.email == chat.senderEmail">
+                    {{ chat.message }}
+                </p>
+
+                <p class="msgRx" *ngIf="userGugo.email != chat.senderEmail">
+                    {{ chat.message }}
+                </p>
+
+                <!--  <div class="msgTx" *ngIf="chat.senderId == userGugo.id">
+                    <label>{{ chat.message }}</label>
+                </div>
+                <br>
+                <div class="msgRx" *ngIf="chat.senderId != userGugo.id">
+                    <label> {{ chat.message }}</label>
+                </div> -->
+            </div>
+        </div>
+        <form (keyup.enter)="onSendMessage( f2 )" #f2="ngForm">
+            <div class="align send">
+                <textarea name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required></textarea>
+                <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                <mat-icon style="width: 20px; height: 10px">send</mat-icon>  
+        </button>
+            </div>
+        </form>
+    </div>
+</div>

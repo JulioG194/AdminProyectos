@@ -6,9 +6,7 @@ import { User } from 'src/app/models/user.interface';
 
 // tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2';
-import { ProjectService } from '../../services/project.service';
-import { UserService } from '../../services/users.service';
-
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-login-register',
@@ -19,69 +17,88 @@ import { UserService } from '../../services/users.service';
 
 export class LoginRegisterComponent implements OnInit {
 
-  recordarme: false;
+  userRegister: User = {
+    name: '',
+    email: '',
+    password: '',
+    employment: '',
+    description: '',
+    gender: '',
+    photo: 'https://bauerglobalbrigades.files.wordpress.com/2018/10/no-photo7.png',
+    google: false,
+    birthdate: new Date(),
+    phone_number: '',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+};
+  userLogin: User = {
+    name: '',
+    email: '',
+    password: ''
+};
 
-  user: User = {
-        name: '',
-        email: '',
-        password: '',
-        career: '',
-        description: '',
-        gender: '',
-        photo: '',
-        birthdate: new Date()
-  };
+  post1 = true;
+  password = '';
 
-
-  users: User[];
-  constructor( private _authService: AuthService,
+  // Definimos el constructor del componente y declaramos los servicios y clases externas a usar
+  constructor( private authService: AuthService,
                private router: Router
                ) { }
 
-  public ProbarlaApp() {
-    this.router.navigate(['/dashboard']);
-  }
 
-
+  // Metodo que se ejecuta al momento de iniciar el componente
   ngOnInit() {
-    if (!localStorage.getItem('foo')) {
-      localStorage.setItem('foo', 'no reload');
-      location.reload();
-    } else {
-      localStorage.removeItem('foo');
-    }
+      /* if ( localStorage.getItem('token') ) {
+          this.router.navigateByUrl('/dashboard');
+      } */
+   }
 
-  }
-
+  // Metodo par registrar nuevos usuarios
   onRegister( form: NgForm ) {
 
     if ( form.invalid ) { return; }
 
+    if ( this.userRegister.password !== this.password) {
+      Swal.fire({
+        allowOutsideClick: false,
+        type: 'error',
+        text: 'Las contraseñas no coinciden'
+      });
+      return;
+    }
+
     Swal.fire({
       allowOutsideClick: false,
-      type: 'info',
       text: 'Espere por favor...'
     });
     Swal.showLoading();
 
+    if ( form.value.manager === 'true' ) {
+       this.userRegister.manager = true;
+       this.userRegister.employment = 'Gestor de proyectos';
+    } else {
+      this.userRegister.manager = false;
+      this.userRegister.employment = 'Tecnico asistente';
+    }
 
-    this._authService.register( this.user )
+    this.authService.register( this.userRegister )
     .subscribe( resp => {
 
       Swal.close();
 
-      this._authService.addNewUser(this.user);
-      console.log(this.user);
+      this.authService.addNewUser(this.userRegister);
 
       Swal.fire({
-        allowOutsideClick: false,
-        type: 'success',
-        title: 'Registrado con exito',
-        text: 'Bienvenido a la plataforma'
-      });
+      allowOutsideClick: false,
+      type: 'success',
+      title: 'Registrado con exito',
+      text: 'Ahora puedes acceder a la aplicacion',
+      position: 'center',
+      showConfirmButton: false,
+      timer: 1500
+    });
 
-      this._authService.login(this.user).subscribe(() => {});
-      this.router.navigateByUrl('/dashboard');
+      form.reset();
+      this.post1 = true;
 
     }, (err) => {
       Swal.fire({
@@ -89,12 +106,10 @@ export class LoginRegisterComponent implements OnInit {
         title: 'Error al registrar',
         text: this.respError(err.error.error.message)
       });
-
     });
-
   }
 
-
+  // Metodo complementario cuando existe un problema en el registro
   respError( respuesta: string ) {
 
     if ( respuesta === 'EMAIL_EXISTS' ) {
@@ -103,27 +118,24 @@ export class LoginRegisterComponent implements OnInit {
     return respuesta;
   }
 
-
+  // Metodo para el ingreso de usuarios a la aplicacion
   onLogin( form: NgForm ) {
 
     if ( form.invalid ) { return; }
 
     Swal.fire({
       allowOutsideClick: false,
-      type: 'info',
       text: 'Espere por favor...'
     });
     Swal.showLoading();
 
 
-    this._authService.login( this.user )
+    this.authService.login( this.userLogin )
     .subscribe( resp => {
       setTimeout(() => {
         Swal.close();
         this.router.navigateByUrl('/dashboard');
       }, 1000);
-
-
 
     }, (err) => {
 
@@ -135,7 +147,9 @@ export class LoginRegisterComponent implements OnInit {
 
     });
     }
-    respError2( respuesta: string ) {
+
+  // Metodo complementario cuando existe un problema en el ingreso a la aplicacion
+  respError2( respuesta: string ) {
 
       if ( respuesta === 'EMAIL_NOT_FOUND' ) {
           respuesta = 'Correo electrónico no encontrado';

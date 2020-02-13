@@ -25,6 +25,7 @@ import { HomepageComponent } from './main pages/homepage/homepage.component';
 import { LoginRegisterComponent } from './main pages/login-register/login-register.component';
 import { PagesComponent } from './pages/pages.component';
 import { environment } from 'src/environments/environment';
+import { MatCarouselModule } from '@ngmodule/material-carousel';
 
 
 
@@ -46,6 +47,7 @@ import { environment } from 'src/environments/environment';
     IgniteModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatCarouselModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule

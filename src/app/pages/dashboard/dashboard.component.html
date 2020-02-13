@@ -1,112 +1,8 @@
-<!-- <h2>
-    Bienvenid@: <span class="setting-title">{{ userApp.name }}</span>
-</h2>
+<h1>Bienvenid@ {{ userGugo.name }}</h1>
+<mat-divider class="space1"></mat-divider>
+<br>
 
-<mat-form-field>
-    <input matInput placeholder="Nombre" type="text">
-</mat-form-field>
-
-<button click="testing()">probar</button> -->
-<mat-list>
-    <h1>Bienvenid@ {{ userApp.name }}</h1>
-    <!-- <mat-spinner ></mat-spinner> -->
-    <mat-divider class="space1"></mat-divider>
-    <ul>
-        <li>
-            <div class="box">
-                <div class="cart">
-                    <div class="front">
-                        <mat-card>
-                            <mat-card-title>Asignación de tareas</mat-card-title>
-                            <!-- <mat-card-subtitle>Redes</mat-card-subtitle> -->
-                            <mat-card-content>
-                                Los proyectos poseen un conjunto de tareas que deben ser cumplidas para lograr un objetivo especifico. Además, para completar las fases de un proyecto será necesario cumplir ciertos requisitos y contar con un equipo de trabajo que pueda cumplir con las
-                                tareas necesarias en un tiempo establecido.
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo1.jpg"> -->
-                            <h6>Entérate como >></h6>
-                        </mat-card>
-
-                    </div>
-                    <div class="front back">
-                        <mat-card>
-                            <mat-card-title>Gu.Go</mat-card-title>
-                            <!-- <mat-card-subtitle>Tele</mat-card-subtitle> -->
-                            <mat-card-content>
-                                » Gu.Go permite crear tu equipo de trabajo.
-                                <p></p>
-                                » Gu.Go permite crear actividades con sus respectivas tareas.
-                                <p></p>
-                                » Gu.Go permite asignar un responsable por actividad.
-                                <p></p>
-                                » Gu.Go permite establecer tiempos de entrega.
-                                <p></p>
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo2.jpg"> -->
-                        </mat-card>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="box">
-                <div class="cart">
-                    <div class="front">
-                        <mat-card>
-                            <mat-card-title>Administración de proyectos</mat-card-title>
-                            <!-- <mat-card-subtitle>Tele</mat-card-subtitle> -->
-                            <mat-card-content>
-                                Nosotros somo un equipo de redes de informacion estudiante de la escuela politecnica nacional dedicados al desarrollo de programas.
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo1.jpg"> -->
-                        </mat-card>
-                    </div>
-                    <div class="front back">
-                        <mat-card>
-                            <mat-card-title>Test 2</mat-card-title>
-                            <!-- <mat-card-subtitle>Tele</mat-card-subtitle> -->
-                            <mat-card-content>
-                                Nosotros somo un equipo de redes de telecomunicaciones estudiante de la escuela politecnica nacional dedicados a la instalacion de antenas.
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo2.jpg"> -->
-                        </mat-card>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="box">
-                <div class="cart">
-                    <div class="front">
-                        <mat-card>
-                            <mat-card-title>Control de proyectos</mat-card-title>
-                            <!--  <mat-card-subtitle>Redes</mat-card-subtitle> -->
-                            <mat-card-content>
-                                Nosotros somo un equipo de redes de informacion estudiante de la escuela politecnica nacional dedicados al desarrollo de programas.
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo1.jpg"> -->
-                        </mat-card>
-                    </div>
-                    <div class="front back">
-                        <mat-card>
-                            <mat-card-title>Test 3</mat-card-title>
-                            <!-- <mat-card-subtitle>Control</mat-card-subtitle> -->
-                            <mat-card-content>
-                                Nosotros somo un equipo de redes de telecomunicaciones estudiante de la escuela politecnica nacional dedicados a la instalacion de antenas.
-                            </mat-card-content>
-                            <!-- <img mat-card-image src="../../../assets/img/fondo2.jpg"> -->
-                        </mat-card>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    <mat-divider class="space2"></mat-divider>
-    <button>Agregar Equipo</button>
-    <mat-divider class="space2"></mat-divider>
+<div *ngIf="projects.length > 0; else userGuide">
     <div>
         <div>
             <div class="chart">
@@ -122,7 +18,169 @@
         <button mat-button mat-raised-button color="primary" (click)="removeSlice()">Remove Slice</button>
         <button mat-button mat-raised-button color="primary" (click)="changeLegendPosition()">Change Legend Position</button>
     </div>
-    <!--   <div>
+
+</div>
+
+
+<ng-template #userGuide>
+    <!-- <h1>Bienvenid@ {{ userApp.name }}</h1> -->
+
+    <h4>Guia de usuario:</h4>
+
+    <table>
+        <tr>
+            <td>
+                <div class="box color1">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Equipo de trabajo</h4>
+                            <img src="../../../assets/img/userGuide/team.png" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                Forma tu equipo de trabajo para poder crear proyectos. <br> En el menu lateral se tiene la opcion "Mi equipo", aqui podrás seleccionar las personas con las que vas trabajar dentro de tus proyectos y asignarles distintas
+                                tareas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="box color2">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Proyecto</h4>
+                            <img src="../../../assets/img/userGuide/project.jpg" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                En el menu lateral se tiene la opcion "Proyectos", aqui podrás crear tus proyectos dando click sobre "Nuevo Proyecto". Si ya existen proyectos se presentará una lista de los mismos con dististas herramientas que te permitirán; visualizar detalles, eliminar
+                                y asignar actividades a cada proyecto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="box color3">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Actividades</h4>
+                            <img src="../../../assets/img/userGuide/activities.jpg" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                Para crear actividades, podrás ir al icono "Asignar Actividades" dentro de la columna "Herramientas" ubicado en el listado de proyectos. Mediante el icono "Ver detalles" podrás visualizar los detalles de tus proyectos; informacion de cada proyecto y su
+                                respectiva lista de actividades.
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <div class="box color5">
+                    <div class="cart">
+                        <div class="front">
+                            <h1 class="gugo">GU.GO</h1>
+                        </div>
+                        <div class="front back">
+                            <h4>Creadores</h4>
+                            <h6>Julio González Pallo</h6>
+                            <p class="p1">julio.gonzalez@epn.edu.ec</p>
+                            <h6>Alexandra Gualotuña Fernández</h6>
+                            <p class="p1">alexandra.gualotuna@epn.edu.ec</p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="box color4">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Tareas</h4>
+                            <img src="../../../assets/img/userGuide/tasks.png" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                Cada actividad tendrá una lista de tareas, las cuales podrán ser creadas mediante el icono "Asignar tareas" ubicado en la tabla de actividades. A cada tarea se le va asignar una persona encargada y mediante el uso del icono "Evidencia" podrás verificar
+                                si la tarea fue o no cumplida.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="box color3">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Cronograma</h4>
+                            <img src="../../../assets/img/userGuide/schedule.png" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                En el menu lateral se tiene la opcion "Cronograma", aqui podrás observar las fechas de entrega de todos tus proyectos. Además, cada fecha indica los días restantes para la culminación del proyecto y el porcentaje de avance mediante el uso de colores.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="box color4">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Notificaciones</h4>
+                            <img src="../../../assets/img/userGuide/notification.png" alt="">
+                        </div>
+                        <div class="front back">
+                            <!-- <h5>Gu.Go</h5> -->
+                            <p class="p">
+                                En la parte superior derecha se tiene el icono "Notificaciones", aquí podrás visualizar las notificaciones generadas acerca de eventos significativos como los tiempos restantes de un proyecto, actividades asignadas y culminación de un proyecto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="box color2">
+                    <div class="cart">
+                        <div class="front">
+                            <h4>Chat</h4>
+                            <img src="../../../assets/img/userGuide/chat.jpg" alt="">
+                        </div>
+                        <div class="front back">
+                            <p class="p">
+                                En el menu lateral se tiene la opcion "Chat", aquí podrás comunicarte con las personas que estén dentro de tu equipo de trabajo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</ng-template>
+
+<div>
+
+
+</div>
+<!--   <div>
     <div>
       <div>
         <div style="display: block">
@@ -134,4 +192,3 @@
       </div>
     </div>
   </div> -->
-</mat-list>

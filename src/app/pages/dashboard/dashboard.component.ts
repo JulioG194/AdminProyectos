@@ -13,20 +13,23 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 })
 export class DashboardComponent implements OnInit {
 
-
-  userAux: User;
-  userApp: User = {
+  userGugo: User = {
     name: '',
     email: '',
     password: '',
     id: '',
     birthdate: new Date(),
-    career: '',
     description: '',
     gender: '',
-    photo: ''
+    photo: '',
+    manager: false,
+    google: false,
+    phone_number: ''
 };
-
+projects: any []=[];
+constructor( private authService: AuthService,
+             private proj: ProjectService
+  ) {}
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -53,18 +56,10 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  // tslint:disable-next-line: variable-name
-  constructor( public _authService: AuthService,
-               public proj: ProjectService
-               ) {
-
-     this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); } );
-
-  }
 
    ngOnInit() {
-
-  }
+    this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.userGugo = user); } );
+   }
 
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);

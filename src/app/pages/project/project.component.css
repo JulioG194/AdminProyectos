@@ -117,93 +117,6 @@ button:hover {
 } */
 
 
-/*CSS para listar actividades*/
-
-table {
-    width: 100%;
-    background-color: white;
-}
-
-td {
-    padding: 10px;
-    text-align: center;
-    /*  border: 0.1px solid black; */
-}
-
-.title1,
-.title2 {
-    text-align: center;
-}
-
-.title1 {
-    /* background: rgb(17, 123, 184); */
-    background: rgb(24, 127, 153);
-}
-
-.title2 {
-    background: rgb(159, 199, 78);
-}
-
-.title1 th,
-.title2 th {
-    padding: 10px;
-    color: white;
-    font-size: 22px;
-    letter-spacing: 10px;
-}
-
-thead {
-    width: calc(100% - 1em);
-}
-
-thead tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-thead,
-tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-tbody {
-    display: block;
-    overflow: auto;
-    height: 250px;
-    width: 100%;
-}
-
-.thead {
-    background: black;
-    color: white;
-    text-align: center;
-}
-
-.thead th {
-    padding: 10px;
-}
-
-tr:hover td {
-    /* background-color: rgb(245, 213, 125); */
-    background: rgb(143, 141, 141);
-    color: white;
-}
-
-mat-icon {
-    font-size: 20px;
-}
-
-
-/*CSS form de Actividades*/
-
-.space {
-    margin-top: 50px;
-}
-
-
 /*Form Tareas*/
 
 .lookFiles {
@@ -237,4 +150,177 @@ mat-form-field input {
 
 mat-form-field textarea {
     color: black;
+}
+
+
+/* Despliegue de tareas*/
+
+.addAct {
+    float: right;
+    background: black;
+}
+
+.scrollX {
+    overflow-x: scroll;
+    min-width: 500px;
+}
+
+mat-accordion {
+    width: 100%;
+    border: 1px solid black;
+}
+
+
+/* mat-expansion-panel-header {
+    background-color: rgb(233, 255, 253);
+} */
+
+.align {
+    display: flex;
+    flex-direction: row;
+}
+
+.icon button {
+    max-height: 40px;
+}
+
+.activities {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background: rgb(24, 127, 153);
+    letter-spacing: 10px;
+    font-size: 22px;
+    color: white;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    background: black;
+    padding: 10px;
+    color: white;
+    margin-top: -8px;
+}
+
+.align {
+    display: flex;
+    flex-direction: row;
+}
+
+.position {
+    width: 40%;
+    text-align: center;
+}
+
+.position1 {
+    width: 15%;
+    text-align: center;
+}
+
+.position2 {
+    width: 45%;
+    text-align: center;
+}
+
+.position3 {
+    width: 10%;
+    text-align: center;
+}
+
+
+/*tabla interna*/
+
+table {
+    width: 100%;
+    background-color: rgb(255, 245, 211);
+    border: 1px solid black;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    /*  border: 0.1px solid black; */
+}
+
+thead {
+    width: calc(100% - 1em);
+    background-color: black;
+    color: white;
+    border-right: 1px solid black;
+    margin-top: -10px;
+}
+
+thead th {
+    text-align: center;
+    padding: 5px;
+}
+
+thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 120px;
+    width: 100%;
+    border-right: 1px solid black;
+}
+
+
+/* tr:hover td {
+    
+    background: rgb(143, 141, 141);
+    color: white;
+} */
+
+.title2 h6 {
+    text-align: center;
+    /* background: rgb(37, 165, 43); */
+    background: rgb(37, 165, 95);
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    letter-spacing: 10px;
+}
+
+
+/*herramientas de la tarea*/
+
+.tasksTools {
+    background: gold;
+}
+
+.edit {
+    background: rgb(115, 252, 115);
+}
+
+.delete {
+    background: rgb(140, 201, 250);
+}
+
+.evidence {
+    background: rgb(253, 197, 113);
+}
+
+mat-icon {
+    font-size: 25px;
+}
+
+.menuTools {
+    width: 110px;
+}
+
+.menuTools button {
+    text-align: center;
 }

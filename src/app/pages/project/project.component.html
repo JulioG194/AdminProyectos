@@ -1,145 +1,30 @@
-<!-- <div class="box">
-    <h1>Proyecto</h1>
-    <div class="container">
-        <mat-form-field>
-            <input matInput placeholder="Nombre" type="text" [value]="projectApp.name" required>
-        </mat-form-field>
-        <div class="align1">
-            <mat-form-field>
-                <input matInput placeholder="Cliente" type="text" [value]="projectApp.client" required>
-            </mat-form-field>
-
-            <mat-form-field>
-                <input matInput placeholder="Tipo" type="text" [value]="projectApp.type" required>
-            </mat-form-field>
-        </div>
-        <div class="align1">
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" [(ngModel)]="projectApp.start_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" [(ngModel)]="projectApp.end_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-        </div>
-
-        <mat-form-field>
-            <textarea cols="5" rows="3" matInput placeholder="Descripción" [value]="projectApp.description"></textarea>
-        </mat-form-field>
-    </div>
-</div>
-
-<h6>Actividades:</h6>
-
-<div class="subcontainer">
-    <table>
-        <thead>
-            <tr>
-                <td>Nombre</td>
-                <td>Estado</td>
-                <td>Herramientas</td>
-            </tr>
-        </thead>
-        <tr *ngFor="let activity of activitiesProject">
-            <td>{{activity.name}}</td>
-            <td>{{activity.status}}</td>
-            <td>
-                <button class="btn btn-info" (click)="getActivity(activity.id)" [value]="activity.id">
-                                <mat-icon style="width: 20px; height: 10px">remove_red_eye</mat-icon> 
-                            </button> &nbsp; &nbsp; &nbsp;
-                <button class="btn btn-danger" (click)="imprime()">
-                                <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
-                            </button>
-            </td>
-        </tr>
-    </table>
-</div>
-
-
-<div *ngIf="post == true; else lookAct">
-    <br>
-</div>
-
-<br>
-
-<ng-template #lookAct>
-    <h3 class="space">Actividad</h3>
-    <mat-divider></mat-divider>
-    <div>
-        <mat-form-field>
-            <input matInput placeholder="Nombre" type="text" required>
-        </mat-form-field>
-        <h5>Tareas:</h5>
-        <div class="subcontainer">
-            <table>
-                <thead>
-                    <tr>
-                        <td>Nombre</td>
-                        <td>Encargado</td>
-                        <td>Estado</td>
-                        <td>Herramientas</td>
-                    </tr>
-                </thead>
-                <tr *ngFor="let task of tasksActivity">
-                    <td>{{task.name}}</td>
-                    <td>{{task.delegate}}</td>
-                    <td>{{task.status}}</td>
-                    <td>
-                        <button class="btn btn-info" (click)="getTask(task.id)">
-                                    <mat-icon style="width: 20px; height: 10px">remove_red_eye</mat-icon> 
-                                </button> &nbsp; &nbsp; &nbsp;
-                        <button class="btn btn-danger">
-                                    <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
-                                </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</ng-template>
-
-<div *ngIf="post1 == true; else lookTask">
-    <br>
-</div>
-
-<ng-template #lookTask>
-    <h3 class="space">Tarea</h3>
-    <mat-divider></mat-divider>
-    <p>{{ taskActivity.name }}</p>
-</ng-template>
- -->
-
-
 <div class="section1">
+
     <h1 class="main">{{ projectApp.name }}</h1>
     <mat-divider></mat-divider>
     <div class="align1">
         <button class="btn btn-warning" (click)="backProjects()" matTooltip="Atrás">
                 <mat-icon style="width: 20px; height: 10px">keyboard_backspace</mat-icon>  
         </button>
-        <button class="btn btn-warning" (click)="editProject()" matTooltip="Editar">
+        <button *ngIf="userApp.manager == true" class="btn btn-warning" (click)="editProject()" matTooltip="Editar">
                 <mat-icon style="width: 20px; height: 10px">edit</mat-icon>  
         </button>
     </div>
 
-
     <div class="container">
-        <mat-form-field>
-            <input matInput placeholder="Nombre" type="text" [value]="projectApp.name" [disabled]="open" required>
-        </mat-form-field>
 
         <div class="align1">
             <mat-form-field>
+                <input matInput placeholder="Nombre" type="text" [value]="projectApp.name" [disabled]="open" required>
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field>
                 <input matInput placeholder="Cliente" [value]="projectApp.client" type="text" [disabled]="open" required>
-            </mat-form-field>
+            </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
                 <input matInput placeholder="Tipo" [value]="projectApp.type" type="text" [disabled]="open" required>
-            </mat-form-field>
+            </mat-form-field>&nbsp;&nbsp;
         </div>
 
         <div class="align1">
@@ -147,18 +32,21 @@
                 <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" [(ngModel)]="projectApp.start_date" [disabled]="open" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+            </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
                 <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" [(ngModel)]="projectApp.end_date" [disabled]="open" required>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field>
+                <textarea cols="5" rows="2" matInput placeholder="Descripción" [disabled]="open" [value]="projectApp.description"></textarea>
             </mat-form-field>
+            <!--  <button (click)="openTask()">Boton temporal</button> -->
+            <!-- solo muestra borrar -->
         </div>
 
-        <mat-form-field>
-            <textarea cols="5" rows="3" matInput placeholder="Descripción" [disabled]="open" [value]="projectApp.description"></textarea>
-        </mat-form-field>
     </div>
 
     <div *ngIf="post1 == true; else lookGuardarProy">
@@ -169,38 +57,141 @@
         <button class="btnGuardar">Guardar</button>
     </ng-template>
 
-    <div *ngIf="activities.length > 0; else sinActivities">
-        <table>
-            <tr class="title1">
-                <th colspan="3" scope="rowgroup">Actividades del proyecto</th>
-            </tr>
 
-            <thead>
-                <tr class="thead">
-                    <th>Nombre</th>
-                    <th>Estado</th>
-                    <th>Herramientas</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                <tr *ngFor="let activity of activitiesProject">
-                    <td>{{activity.name}}</td>
-                    <td>{{activity.status}}</td>
-                    <td>
-                        <button class="btn btn-info" (click)="getActivity(activity.id)" matTooltip="Detalles actividad">
-                                <mat-icon style="width: 20px; height: 10px">remove_red_eye</mat-icon> 
-                            </button> &nbsp; &nbsp;
-                        <button class="btn btn-danger" matTooltip="Borrar actividad">
-                                <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
-                            </button> &nbsp; &nbsp;
-                        <button class="btn btn-success" matTooltip="Agregar tarea" (click)="openTask()">
-                                <mat-icon style="width: 20px; height: 10px">playlist_add</mat-icon>  
-                            </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+    <br>
+
+
+    <div *ngIf="activitiesProject.length > 0; else sinActivities" class="scrollX">
+        <div class="align">
+            <h5 class="activities">Actividades del proyecto</h5>
+            <div class="addAct">
+                <button class="btn btn-dark" matTooltip="Agregar Actividad">
+                <mat-icon style="width: 20px; height: 10px">add</mat-icon> 
+                </button>
+            </div>
+        </div>
+        <div class="title align">
+            <h6 class="position">Nombre</h6>
+            <h6 class="position1">Fecha inicio</h6>
+            <h6 class="position1">Fecha fin</h6>
+            <h6 class="position1">Avance</h6>
+            <h6 class="position1">...</h6>
+        </div>
+        <div *ngFor="let act of activitiesProject; let i = index" class="align">
+            <!-- <div class="align icon">
+                <button class="btn btn-info" matTooltip="Editar actividad">
+                    <mat-icon style="width: 20px; height: 10px">edit</mat-icon> 
+                </button>
+
+                <button class="btn btn-danger" matTooltip="Eliminar actividad">
+                    <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
+                </button>
+
+                <button class="btn btn-warning" (click)="openTask( act.id )" matTooltip="Agregar tarea">
+                    <mat-icon style="width: 20px; height: 10px">note_add</mat-icon>  
+                </button>
+            </div> -->
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div class="position" style="text-transform: uppercase; font-weight: bold">{{act.name}}</div>
+                            <div class="position1">{{allstartdates[i] | date : "dd/MM/y"}}</div>
+                            <div class="position1">{{allenddates[i] | date : "dd/MM//y"}}</div>
+                            <div class="position1">{{act.percentaje}}</div>
+                            <div class="position1">
+                                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                    <mat-icon>build</mat-icon>
+                                </button>
+
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span>Editar actividad</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Eliminar actividad</span>
+                                    </button>
+                                    <button mat-menu-item (click)="openTask( act.id )">
+                                    <mat-icon>folder_open</mat-icon>
+                                    <span>Agregar tarea</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+                    <table>
+                        <tr class="title2">
+                            <h6 colspan="6" scope="rowgroup">Tareas</h6>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th class="position2">Tarea</th>
+                                <th class="position1">Encargado</th>
+                                <th class="position3">Fecha de inicio</th>
+                                <th class="position3">Fecha de fin</th>
+                                <th class="position3">% Avance</th>
+                                <th class="position3">...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let task of act.tasks; let k = index">
+                                <td class="position2">{{task.name}}</td>
+                                <td class="position1">{{task.delegate}}</td>
+                                <td class="position3">{{task.start_date | date : "dd/MM/y"}}</td>
+                                <td class="position3">{{task.end_date | date : "dd/MM/y"}}</td>
+                                <td class="position3">{{task.progress}}</td>
+                                <td class="position3">
+                                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                        <mat-icon>build</mat-icon>
+                                      </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item>
+                                          <mat-icon>edit</mat-icon>
+                                          <span>Editar tarea</span>
+                                        </button>
+                                        <button mat-menu-item>
+                                          <mat-icon>delete</mat-icon>
+                                          <span>Eliminar tarea</span>
+                                        </button>
+                                        <button mat-menu-item>
+                                          <mat-icon>folder_open</mat-icon>
+                                          <span>Evidencia</span>
+                                        </button>
+                                    </mat-menu>
+                                    <!-- <button class="btn tasksTools" matTooltip="Herramientas" mat-button [matMenuTriggerFor]="tools">
+                                        <mat-icon>build</mat-icon>
+                                    </button>
+
+                                    <mat-menu #tools="matMenu">
+                                        <div class="menuTools">
+
+                                            <button mat-menu-item class="btn edit" matTooltip="Editar tarea" mat-menu-item>
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+
+                                            <button mat-menu-item class="btn delete" matTooltip="Eliminar tarea" mat-menu-item>
+                                                <mat-icon>delete</mat-icon>  
+                                            </button>
+
+                                            <button mat-menu-item class="btn evidence" matTooltip="Evidencia" mat-menu-item>
+                                                <mat-icon>folder_open</mat-icon>  
+                                            </button>
+                                        </div>
+                                    </mat-menu> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </div>
     </div>
 
     <ng-template #sinActivities>
@@ -214,197 +205,7 @@
         </div>
     </ng-template>
 
+
+
     <br>
 </div>
-
-<div *ngIf="post4 == true; else lookAct">
-    <br>
-</div>
-
-<br>
-
-<ng-template #lookAct>
-    <br>
-    <br>
-    <div class="section2">
-        <div class="align1">
-            <h3>Actividad</h3>
-            <div>
-                <button class="btn btn-warning" (click)="editActivity()" matTooltip="Editar">
-                        <mat-icon style="width: 20px; height: 10px">edit</mat-icon>  
-                    </button>
-
-                <button class="btn btn-dark" matTooltip="Cerrar" (click)="post4 = !post4">
-                        <mat-icon style="width: 20px; height: 10px">cancel</mat-icon>  
-                    </button>
-            </div>
-            <!-- <button class="btn btn-dark btnStyle" >
-                    <mat-icon style="width: 20px; height: 10px">cancel</mat-icon>  
-                </button> -->
-        </div>
-        <mat-divider></mat-divider>
-
-        <div class="container">
-            <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" [value]="activityProject.name" [disabled]="open1" required>
-            </mat-form-field>
-
-            <div class="align1">
-                <mat-form-field>
-                    <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" [disabled]="open1" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" [disabled]="open1" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-            </div>
-
-            <div class="align1">
-                <mat-form-field>
-                    <input matInput placeholder="Dias de duración" type="number" [value]="activityProject.activity_time" [disabled]="open1" required>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Dias restantes" type="number" [disabled]="open1" required>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Dias de atraso" type="number" [disabled]="open1" required>
-                </mat-form-field>
-            </div>
-
-            <mat-form-field>
-                <input matInput placeholder="Estado" type="text" [value]="activityProject.status" [disabled]="open1" required>
-            </mat-form-field>
-
-            <!-- <mat-form-field>
-                    <textarea cols="5" rows="3" matInput placeholder="Descripción"></textarea>
-                </mat-form-field> -->
-        </div>
-
-        <div *ngIf="post2 == true; else lookGuardarAct">
-            <br>
-        </div>
-
-        <ng-template #lookGuardarAct>
-            <button class="btnGuardar">Guardar</button>
-        </ng-template>
-
-        <div class="space" *ngIf="tasks.length > 0; else sinTasks">
-            <table>
-                <tr class="title2">
-                    <th colspan="4" scope="rowgroup">Tareas de la actividad </th>
-                </tr>
-                <thead>
-                    <tr class="thead">
-                        <th>Nombre</th>
-                        <th>Encargado</th>
-                        <th>Estado</th>
-                        <th>Herramientas</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr *ngFor="let task of tasksActivity">
-                        <td>{{task.name}}</td>
-                        <td>{{task.delegate}}</td>
-                        <td>{{task.status}}</td>
-                        <td>
-                            <button class="btn btn-info" (click)="getTask(task.id)" matTooltip="Detalles tarea">
-                                    <mat-icon style="width: 20px; height: 10px">remove_red_eye</mat-icon> 
-                                </button> &nbsp; &nbsp; &nbsp;
-                            <button class="btn btn-danger" matTooltip="Borrar tarea">
-                                    <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
-                                </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <ng-template #sinTasks>
-            <br>
-            <br>
-            <br>
-            <div class="empty">
-                <h4>No existe registro !!!</h4><br>
-                <h5>Esta actividad no cuenta con tareas asignadas</h5><br>
-                <p>Usted puede agregar las tareas de cada actividad en la columna herramientas de la tabla "Actividades del proyecto"</p>
-            </div>
-        </ng-template>
-
-    </div>
-</ng-template>
-
-
-<div *ngIf="post5 == true; else lookTask">
-    <br>
-</div>
-
-<ng-template #lookTask>
-    <br>
-    <div class="section3">
-        <div class="align1">
-            <h3>Tarea</h3>
-            <div>
-                <button class="btn btn-warning" (click)="editTask()" matTooltip="Editar">
-                        <mat-icon style="width: 20px; height: 10px">edit</mat-icon>  
-                    </button>
-
-                <button class="btn btn-dark" matTooltip="Cerrar">
-                        <mat-icon style="width: 20px; height: 10px">cancel</mat-icon>  
-                    </button>
-            </div>
-        </div>
-        <mat-divider></mat-divider>
-
-        <div class="container">
-            <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" [value]="taskActivity.name" [disabled]="open2" required>
-            </mat-form-field>
-
-            <div class="align1">
-                <mat-form-field>
-                    <mat-label>Delegado</mat-label>
-                    <mat-select name="taskdelegate" [(ngModel)]="taskActivity.delegate" [disabled]="open2">
-                        <mat-option *ngFor="let delegate of delegates" [value]="taskActivity.delegate">
-                            {{ delegate.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Estado" type="text" [value]="taskActivity.status" [disabled]="open2" required>
-                </mat-form-field>
-            </div>
-
-            <div *ngIf="post3 == true; else lookGuardarTasks">
-                <br>
-            </div>
-
-            <ng-template #lookGuardarTasks>
-                <div>
-                    <button class="btnGuardar">Guardar</button>
-                </div>
-            </ng-template>
-
-
-            <mat-label>Evidencia</mat-label>
-            <input type="file" accept=".pdf,.jpg,.png,.docx" aria-multiselectable="true" required>
-            <div class="lookFiles">
-                <h5>Visualizacion</h5>
-            </div>
-            <!-- <div>
-                    <mat-form-field>
-                        <input matInput placeholder="Evidencia" type="file" accept=".pdf,.jpg,.png" multiple>
-                    </mat-form-field>
-                </div>
-                 -->
-
-        </div>
-    </div>
-</ng-template>

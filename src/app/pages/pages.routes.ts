@@ -9,6 +9,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { KanbanComponent } from './kanban/kanban.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { ProjectComponent } from './project/project.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 const pagesRoutes: Routes = [
@@ -56,12 +57,12 @@ const pagesRoutes: Routes = [
         path: 'project/:id',
         component: ProjectComponent,
         data: { titulo: 'Project'}
+    },
+    {
+        path: 'notifications',
+        component: NotificationsComponent,
+        data: { titulo: 'Notifications'}
     }
-   /*  {
-        path: 'project',
-        component: ProjectComponent,
-        data: { titulo: 'Project'}
-    } */
 ];
 
 export const PAGES_ROUTES = RouterModule.forChild( pagesRoutes );

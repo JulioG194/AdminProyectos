@@ -88,9 +88,9 @@ export class ActivitiesComponent implements OnInit {
     data: { activity: this.activityProject, project: this.projectApp }
   });
 
-    dialogRef.afterClosed().subscribe(result => {
+   /*  dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed')
-  });
+  }); */
     // console.log(this.activityProject);
   }
 
@@ -106,7 +106,7 @@ export class ActivitiesComponent implements OnInit {
     Swal.showLoading();
 
 
-    this._projectService.setActivitiestoProject(this.projectApp, this.activityProject);
+    this._projectService.setActivitiestoProject(this.projectApp.id, this.activityProject);
    // this.activityProject.id = this._projectService.idActivity;
     this.post = false;
     this.activities = [];
@@ -186,7 +186,7 @@ export class TaskComponent implements OnInit {
       });
       Swal.showLoading();
 
-      this._projectService.setTaskstoActivity(this.data.project, this.data.activity, this.task);
+      this._projectService.setTaskstoActivity(this.data.project, this.data.activity.id, this.task);
 
       Swal.close();
 

@@ -4,13 +4,13 @@ export interface User {
         password?: string;
         id?: string;
         birthdate?: Date;
-        career?: string;
+        employment?: string;
         description?: string;
         gender?: string;
         photo?: string;
-        // public img?: string,
-        // public role?: string,
-        // public google?: boolean
-
+        manager?: boolean;
+        google?: boolean;
+        phone_number?: string;
+        createdAt?: any;
 }
 

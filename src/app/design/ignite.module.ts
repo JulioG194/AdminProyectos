@@ -8,6 +8,7 @@ import {IgxButtonModule,
         IgxNavigationDrawerModule,
         IgxRadioModule, IgxRippleModule,
         IgxSwitchModule, IgxToggleModule,
+        IgxTooltipModule,
         IgxDropDownModule,
         IgxNavbarModule } from 'igniteui-angular';
 
@@ -25,6 +26,7 @@ import {IgxButtonModule,
     IgxRippleModule,
     IgxSwitchModule,
     IgxToggleModule,
+    IgxTooltipModule,
     IgxDropDownModule,
     IgxNavbarModule
   ],
@@ -40,6 +42,7 @@ import {IgxButtonModule,
     IgxRippleModule,
     IgxSwitchModule,
     IgxToggleModule,
+    IgxTooltipModule,
     IgxDropDownModule,
     IgxNavbarModule
   ]

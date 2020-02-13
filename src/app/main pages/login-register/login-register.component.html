@@ -1,46 +1,96 @@
-<section class="login-register side" style="background-image:url(assets/img/fondo1.jpg);">
-    <div id="box">
-        <div id="main"></div>
+<mat-toolbar class="align1 header">
+    <div class="logo">Gu.Go</div>
+    <div class="btn-header">
+        <button (click)="post1 = true">Ingresar</button>&nbsp;
+        <button (click)="post1 = false">Registrarse</button>
+    </div>
+</mat-toolbar>
 
-        <form (ngSubmit)="onLogin( f2 )" #f2="ngForm">
-            <div id="loginform">
-                <img src="../../assets/img/logo.jpg">
-                <h1>Ingresar</h1>
-                <span *ngIf="f2.submitted && f2.controls['password'].errors" style="color:red;">* Contraseña obligatoria</span><br>
-                <span *ngIf="f2.submitted && f2.controls['email'].errors" style="color:red;">* Correo electronico obligatorio</span>
-                <div>
-                    <input type="text" name="email" [(ngModel)]="user.email" required email placeholder="Usuario" /><br>
-                </div>
-                <input type="password" name="password" [(ngModel)]="user.password" required placeholder="Contraseña" /><br>
-                <button type="submit" id="login">INGRESAR</button>
-            </div>
-        </form>
+<div class="align2">
+    <div class="container1">
 
-        <form (ngSubmit)="onRegister( f )" #f="ngForm">
-            <div id="signupform">
-                <img src="../../assets/img/logo.jpg">
-                <h1>Registro</h1>
-                <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red;">* Nombre obligatorio</span><br>
-                <span *ngIf="f.submitted && f.controls['password'].errors" style="color:red;">* Contraseña de al menos 6 caracteres</span><br>
-                <span *ngIf="f.submitted && f.controls['email'].errors" style="color:red;">* Correo electronico obligatorio</span>
-                <div>
-                    <input type="text" name="name" [(ngModel)]="user.name" minlength="2" required placeholder="Nombre Completo" /><br>
-                </div>
-                <input type="email" name="email" [(ngModel)]="user.email" required email placeholder="Correo Electrónico" /><br>
-                <input type="password" name="password" [(ngModel)]="user.password" minlength="6" required placeholder="Contraseña" /><br>
-                <!-- <input type="password" name="nombre" [(ngModel)]="user.nombre" placeholder="Confirmar Contraseña"/><br> -->
-                <button type="submit" id="signup">REGISTRAR</button>
-            </div>
-        </form>
-
-
-        <div id="login_msg">Tienes Cuenta?</div>
-        <button id="login_btn">INGRESAR</button>
-
-
-
-        <div id="signup_msg">No tienes cuenta?</div>
-        <button id="signup_btn">REGISTRARSE</button>
+        <!-- <igx-carousel #carousel [loop]="true">
+            <igx-slide *ngFor="let slide of slides;">
+                <h3>{{slide.heading}}</h3>
+                <p>{{slide.description}}</p>
+                <img [src]="slide.image">
+            </igx-slide>
+        </igx-carousel> -->
 
     </div>
-</section>
+    <div class="container2">
+        <div class="box">
+            <form (ngSubmit)="onLogin( f2 )" #f2="ngForm">
+                <div *ngIf="post1 == true; else register">
+                    <div class="logo">
+                        <img src="../../../assets/img/gg.jpg" alt=""><br><br>
+                    </div>
+                    <h3>Ingreso</h3>
+                    <br>
+                    <div class="container align">
+
+                        <span *ngIf="f2.submitted && f2.controls['email'].errors" style="color:red;">* Correo electrónico obligatorio</span>
+                        <mat-form-field>
+                            <input matInput type="email" name="email" [(ngModel)]="userLogin.email" placeholder="Correo electrónico" required>
+                        </mat-form-field>
+
+                        <span *ngIf="f2.submitted && f2.controls['password'].errors" style="color:red;">* Contraseña obligatoria</span>
+                        <mat-form-field>
+                            <input matInput type="password" name="password" [(ngModel)]="userLogin.password" placeholder="Contraseña" required>
+                        </mat-form-field>
+
+                        <div>
+                            <button class="btn-sign" type="submit">INGRESAR</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+
+            <ng-template #register>
+                <form (ngSubmit)="onRegister( f )" #f="ngForm">
+                    <h3>Registrarse</h3>
+                    <div class="container align">
+                        <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red;">* Nombre obligatorio</span>
+                        <mat-form-field>
+                            <input matInput type="text" name="name" [(ngModel)]="userRegister.name" minlength="2" placeholder="Nombre Completo" required>
+                        </mat-form-field>
+
+                        <span *ngIf="f.submitted && f.controls['email'].errors" style="color:red;">* Correo electronico obligatorio</span>
+                        <mat-form-field>
+                            <input matInput type="email" name="email" [(ngModel)]="userRegister.email" placeholder="Correo electrónico" required email>
+                        </mat-form-field>
+
+                        <span *ngIf="f.submitted && f.controls['password'].errors" style="color:red;">* Contraseña de al menos 6 caracteres</span>
+                        <mat-form-field>
+                            <input matInput type="password" name="password" [(ngModel)]="userRegister.password" minlength="6" placeholder="Contraseña" type="password" required>
+                        </mat-form-field>
+
+                        <span *ngIf="f.submitted && f.controls['re-password'].errors" style="color:red;">* Contraseña de al menos 6 caracteres</span>
+                        <mat-form-field>
+                            <input matInput type="password" name="re-password" [(ngModel)]="password" minlength="6" placeholder="Confirmar contraseña" type="password" required>
+                        </mat-form-field>
+
+                        <span *ngIf="f.submitted && f.controls['phone'].errors" style="color:red;">* Numero Celular obligatorio</span>
+                        <mat-form-field>
+                            <input matInput type="text" name="phone" [(ngModel)]="userRegister.phone_number" placeholder="Número celular" required>
+                        </mat-form-field>
+
+                        <div>
+                            <span *ngIf="f.submitted && f.controls['manager'].errors && !userRegister.manager" style="color:red;">* Funcion que desempeña obligatoria</span><br>
+                            <mat-radio-group [(ngModel)]="userRegister.manager" name="manager" required>
+                                <mat-label>Que funcion desempeña?</mat-label><br><br>
+                                <mat-radio-button value=true>Gestor de proyectos</mat-radio-button>&nbsp;
+                                <mat-radio-button value=false>Delegado</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div>
+                            <button class="btn-sign" type="submit">Registrar</button>
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+        </div>
+    </div>
+</div>

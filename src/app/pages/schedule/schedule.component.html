@@ -1,5 +1,36 @@
 <h2>Revisa tus proximas entregas</h2>
 <mat-divider></mat-divider>
+<br>
+<table>
+    <thead>
+        <tr>
+            <th>Proyecto</th>
+            <th>Fecha de entrega</th>
+            <th>Dias restantes</th>
+            <th>Porcentaje de avance</th>
+            <th>Vistas</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let item of projects1">
+            <td>{{item.name}}</td>
+            <td>{{item.fecha}}</td>
+            <td>{{item.dias}}</td>
+            <td>
+                {{item.porcentaje}}
+                <progress max="100" value="{{item.porcentaje}}"></progress>
+                <!-- <mat-progress-bar style="height: 20px;border-radius: 5px;" mode="determinate" value="{{item.porcentaje}}"></mat-progress-bar> -->
+            </td>
+            <td>
+                <button>
+          <mat-icon>notes</mat-icon>
+        </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<mat-divider></mat-divider>
 <div class="row text-center space">
     <div class="col-md-4">
         <div class="btn-group">
@@ -156,6 +187,7 @@
             <pre>{{ modalData?.event | json }}</pre>
         </div>
     </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" (click)="close()">
         OK

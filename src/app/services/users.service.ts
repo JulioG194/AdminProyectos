@@ -58,7 +58,7 @@ export class UserService {
         name: user.name,
         password: user.password,
         birthdate: user.birthdate,
-        career: user.career,
+      //  career: user.career,
         description: user.description,
         gender: user.gender,
         photo: user.photo

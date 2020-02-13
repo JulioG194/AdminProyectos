@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="main" igxLayout>
-    <igx-nav-drawer id="navigation" [isOpen]="drawerState.open" [(pin)]="drawerState.pin" [class.mini-topping]>
+    <igx-nav-drawer [width]="'228px'" id="navigation" [isOpen]="drawerState.open" [(pin)]="drawerState.pin" [class.mini-topping]>
         <ng-template igxDrawer>
             <nav>
                 <!-- <span igxDrawerItem [isHeader]="true">Components</span> -->
@@ -8,9 +8,9 @@
                 <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
                 <igx-icon fontSet="material">{{ item.name }}</igx-icon>
                 <span>{{ item.text }}</span>
-                <i *ngIf="item.submodule === true" class="material-icons">
+                <!-- <i *ngIf="item.submodule === true" class="material-icons">
                         keyboard_arrow_right
-                        </i>
+                        </i> -->
                 </span>
 
             </nav>
@@ -18,15 +18,18 @@
 
         <ng-template igxDrawerMini *ngIf="drawerState.miniTemplate">
             <nav>
-                <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
+                <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" #target="tooltipTarget" [igxTooltipTarget]="tooltipRef" igxRipple (click)="navigate(item)">
                   <igx-icon fontSet="material">{{ item.name }}</igx-icon>
+                  <div #tooltipRef="tooltip" igxTooltip>
+                    {{ item.text }}
+                   </div>
                 </span>
             </nav>
         </ng-template>
     </igx-nav-drawer>
 
     <main class="aux" igxFlex [class.mini-padding]="!drawerState.pin && drawerState.miniTemplate">
-        <span igxButton="icon" igxToggleAction="navigation">
+        <span igxButton="icon" igxToggleAction="navigation" matTooltip="Mostrar/Ocultar Menu">
             <igx-icon fontSet="material">menu</igx-icon>
           </span>
 

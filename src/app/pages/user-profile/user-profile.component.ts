@@ -21,7 +21,6 @@ export class UserProfileComponent implements OnInit {
         password: '',
         id: '',
         birthdate: new Date(),
-        career: '',
         description: '',
         gender: '',
         photo: ''
@@ -33,8 +32,8 @@ export class UserProfileComponent implements OnInit {
   constructor( public _authService: AuthService
                ) {
     // this.userAux =  JSON.parse( localStorage.getItem('usuario'));
-    this._authService.showUser(this._authService.userAuth).subscribe(user => {(this.userApp = user, this.selected = user.gender, this.userApp.birthdate = new Date(user.birthdate['seconds'] * 1000));
-                                                                              console.log(this.userApp.birthdate['seconds'] ); console.log(this.birthdate ); } );
+    this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user, this.selected = user.gender, this.userApp.birthdate = new Date(user.birthdate['seconds'] * 1000));
+                                                                             console.log(this.userApp.birthdate['seconds'] ); console.log(this.birthdate ); } );
 
     }
 

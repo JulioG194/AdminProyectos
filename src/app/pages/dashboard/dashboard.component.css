@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Channel;
+    src: url(../../../assets/fuente/Channel.ttf);
+}
+
 * {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -7,12 +12,12 @@
 }
 
 .box {
-    margin-top: 30px;
-    /* margin: 5px; */
-    width: 250px;
-    height: 350px;
-    /* position: relative; */
+    /* margin-top: 30px; */
+    width: 100%;
+    height: 200px;
     perspective: 1000px;
+    /* background: hotpink; */
+    padding: 10px;
 }
 
 .box:hover .cart {
@@ -27,10 +32,46 @@
 .front {
     position: absolute;
     backface-visibility: hidden;
+    text-align: center;
+}
+
+img {
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+}
+
+.front h4 {
+    color: rgb(23, 14, 105);
+    font-size: 150%;
 }
 
 .front.back {
     transform: rotateY(180deg);
+}
+
+.front.back h5 {
+    color: white;
+}
+
+.front.back h4 {
+    color: white;
+    font-size: 40px;
+}
+
+.front.back h6 {
+    color: rgb(116, 177, 92);
+    font-size: 20px;
+}
+
+.p {
+    color: black;
+    text-align: justify;
+    font-size: 18px;
+}
+
+.p1 {
+    color: rgb(92, 146, 177);
 }
 
 .space1 {
@@ -41,14 +82,17 @@
     margin-top: 60px;
 }
 
-mat-list h1 {
+
+/* mat-list h1 {
     margin-top: -15px;
     font-size: 50px;
     text-align: center;
-}
+    font-family: Channel; 
+} */
 
 button {
-    background: rgb(74, 177, 33);
+    background: black;
+    color: white;
     padding: 15px;
     font-size: 20px;
     margin-top: 20px;
@@ -61,12 +105,13 @@ button {
 }
 
 button:hover {
-    background: rgb(213, 216, 20);
-    color: white;
+    background: rgb(127, 185, 18);
+    color: black;
     cursor: pointer;
 }
 
-ul {
+
+/* ul {
     text-align: center;
 }
 
@@ -75,21 +120,60 @@ li {
     padding-left: 50px;
     padding-right: 50px;
 }
+ */
 
 mat-card {
-    width: 250px;
-    height: 350px;
+    width: 100%;
+    height: 200px;
+    background-color: floralwhite;
     /* border: solid black; */
 }
 
+.color1 {
+    background: rgb(247, 160, 120);
+}
 
-/* 
-mat-divider {
-    border-style: dotted;
+.color2 {
+    background: rgb(243, 212, 109);
+}
+
+.color3 {
+    background: rgb(221, 247, 183);
+}
+
+.color4 {
+    background: rgb(241, 227, 236);
+}
+
+.color5 {
+    background: rgb(17, 28, 65);
+}
+
+.gugo {
+    font-size: 50px;
+    padding: 20px;
+    font-weight: bold;
+    font-family: Channel;
+    color: white;
+    float: center;
+}
+
+
+/* .all mat-card-title {
+    font-size: 30px;
+    text-align: center;
+    padding: 20px;
 } */
+
+
+/* mat-divider {
+    border-style: dotted;
+}
+ */
 
 mat-card-content {
     text-align: justify;
+    width: 100%;
 }
 
 mat-card-title {
@@ -100,3 +184,25 @@ mat-card-title {
 h6 {
     color: rgb(23, 180, 180);
 }
+
+
+/*CSS para tabla de presentacion */
+
+table {
+    background-color: white;
+    width: 100%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+
+tr,
+td {
+    width: 33.3%;
+    height: 200px;
+}
+
+td {}

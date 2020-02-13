@@ -2,153 +2,125 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-#box {
-    height: 500px;
-    width: 850px;
-    background-color: #19352e;
-    border-radius: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+@font-face {
+    font-family: Channel;
+    src: url(../../../assets/fuente/Channel.ttf);
 }
 
-#main {
-    height: 500px;
-    width: 400px;
-    background-color: rgb(250, 250, 250);
-    border-radius: 5px;
-    position: absolute;
-    top: 50%;
-    left: 70%;
-    transform: translate(-50%, -50%);
-    z-index: 99;
+
+/*header*/
+
+.align1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-#loginform,
-#signupform {
-    position: absolute;
-    top: 50%;
-    left: 70%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-}
-
-#loginform img {
-    position: relative;
-    width: 125px;
-    border: none;
-    float: right;
-}
-
-#signupform img {
-    position: relative;
-    width: 125px;
-    border: none;
-    float: right;
-}
-
-#signupform {
-    top: 45%;
-    left: 75%;
-    visibility: hidden;
-}
-
-#loginform h1,
-#signupform h1 {
-    /*font-family: arial;*/
-    font-size: 25px;
-    color: rgb(7, 6, 6);
-}
-
-#loginform input,
-#signupform input {
-    height: 40px;
-    width: 300px;
-    border: 0px;
-    outline: none;
-    border-bottom: 1px solid black;
-    margin: 5px;
-}
-
-#loginform button,
-#signupform button {
-    height: 35px;
-    width: 130px;
-    background-color: #19352e;
-    /*font-family: monospace;*/
-    font-size: 16px;
-    color: white;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    margin-top: 30px;
-    margin-left: 175px;
-}
-
-#login_btn,
-#signup_btn {
-    height: 35px;
-    width: 120px;
-    background-color: transparent;
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    outline: none;
-    position: absolute;
-    left: 75%;
-    top: 65%;
-    transform: translate(-50%, -50%);
-    transition: all .5s;
-}
-
-#signup_btn {
-    left: 25%;
-}
-
-#login_btn:hover,
-#signup_btn:hover {
-    background-color: white;
-    color: #0f0e04;
-    cursor: pointer;
-}
-
-#loginform button:hover,
-#signupform button:hover {
-    background-color: rgb(68, 107, 104);
-}
-
-#login_msg,
-#signup_msg {
-    /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
-    font-size: 25px;
-    color: white;
-    position: absolute;
-    top: 35%;
-    left: 75%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-}
-
-#signup_msg {
-    left: 25%;
-}
-
-input {
-    background-color: rgb(250, 250, 250);
-}
-
-.login-register {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+.align2 {
+    display: flex;
+    flex-direction: row;
     height: 100%;
-    width: 100%;
-    padding: 10% 0;
-    position: fixed;
 }
 
-.side {
-    padding: 0px;
-    margin-top: 0px;
+.align {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background: black;
+    color: white;
+}
+
+.btn-header {
+    margin-right: 2%;
+}
+
+.btn-header button {
+    padding: 3px;
+    font-size: 18px;
+    width: 110px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: black;
+}
+
+.logo {
+    font-family: Channel;
+    font-size: 28px;
+}
+
+
+/*Carousel*/
+
+.container1 {
+    width: 66.6%;
+    background: white;
+}
+
+.igx-carousel__inner {
+    width: 100%;
+    text-align: center;
+}
+
+igx-carousel igx-icon.igx-icon {
+    color: #e41c77;
+}
+
+div.igx-slide img {
+    width: 80%
+}
+
+
+/*Login-registro*/
+
+.container2 {
+    width: 33.4%;
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+    /* background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(192, 45, 8)); */
+    padding-top: 2.5%;
+}
+
+.box {
+    width: 80%;
+    height: 100%;
+    background: rgb(231, 231, 231);
+    border: 1px solid black;
+    padding: 15px;
+    margin: 0px auto;
+}
+
+.box h3 {
+    text-align: center;
+    color: rgb(28, 65, 90);
+    margin-top: -5px;
+    font-size: 35px;
+}
+
+.box img {
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+
+.btn-sign {
+    width: 100%;
+    background: burlywood;
+    color: black;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 10px;
+    margin-inline-end: 10px;
+}
+
+span {
+    font-size: 10px;
+}
+
+
+/*logo*/
+
+.logo {
+    text-align: center;
 }

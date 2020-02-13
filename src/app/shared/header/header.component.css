@@ -1,0 +1,120 @@
+@font-face {
+    font-family: Channel;
+    src: url(../../../assets/fuente/Channel.ttf);
+}
+
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+mat-toolbar {
+    background: linear-gradient(to bottom, rgb(34, 189, 163), black);
+}
+
+.align {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 4%;
+    padding-left: 9%;
+}
+
+.name {
+    font-size: 25px;
+    font-family: Channel;
+    color: white;
+}
+
+mat-icon {
+    font-size: 30px;
+    text-align: center;
+    color: white;
+}
+
+.headerTools button {
+    width: 50px;
+    height: 50px;
+    border-radius: 125px;
+}
+
+.headerTools button:hover {
+    background: black;
+}
+
+.notification {
+    padding: 5px;
+    width: 272px;
+    height: 500px;
+}
+
+.btnNot button {
+    width: 100%;
+    padding: 10px;
+}
+
+.profile {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 272px;
+    background: rgb(17, 28, 65);
+}
+
+.profileImg img {
+    width: 150px;
+    height: 150px;
+    border-radius: 150px;
+}
+
+.profileImg {
+    text-align: center;
+}
+
+.part {
+    background: black;
+    height: 40%;
+}
+
+.profile label {
+    text-align: center;
+}
+
+.label1 {
+    color: white;
+    font-size: 25px;
+    letter-spacing: 5px;
+}
+
+.label2 {
+    color: rgb(23, 180, 180);
+    font-size: 20px;
+}
+
+.label3 {
+    color: rgb(92, 146, 177);
+    font-size: 15px;
+}
+
+.btnOptions {
+    background: black;
+    padding: 10px;
+}
+
+.btnOptions button {
+    background: black;
+    color: white;
+    float: right;
+    border: none;
+}
+
+.image {
+    width: 150%;
+    background-size: cover;
+    border-radius: 150px;
+}
+
+.boton {
+    width: 150%;
+    background-size: cover;
+    border-radius: 150px;
+}

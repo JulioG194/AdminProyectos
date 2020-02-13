@@ -1,0 +1,120 @@
+.box {
+    width: 100%;
+    height: 80%;
+    margin-top: 25px;
+    border: 1px solid black;
+}
+
+.left {
+    width: 30%;
+}
+
+.rigth {
+    width: 70%;
+    background: rgb(241, 243, 242);
+}
+
+.align {
+    display: flex;
+    flex-direction: row;
+}
+
+mat-toolbar {
+    height: 15%;
+}
+
+.header1 {
+    /* background: #a34252; */
+    background: #327762;
+    color: white;
+}
+
+.header2 {
+    background: rgb(250, 214, 184);
+    /* background: white; */
+}
+
+.contacts {
+    width: 100%;
+}
+
+.center {
+    align-items: center;
+}
+
+.contacts button {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border: 0.1px solid black;
+    background: white;
+}
+
+.scroll-contact {
+    overflow-y: scroll;
+    height: 85%;
+}
+
+.scroll-chat {
+    overflow-y: scroll;
+    height: 70%;
+}
+
+.contacts button:hover {
+    background: #d1ffa6;
+}
+
+.send {
+    height: 15%;
+    padding: 10px;
+    background: rgb(255, 255, 255);
+}
+
+.send textarea {
+    width: 90%;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.send button {
+    width: 10%;
+}
+
+.select img {
+    width: 50%;
+    height: 50%;
+    border-radius: 150px;
+}
+
+mat-icon {
+    font-size: 25px;
+}
+
+.image {
+    width: 25%;
+}
+
+.info {
+    width: 70%;
+}
+
+.icon {
+    width: 5%;
+}
+
+.msgTx {
+    width: 80%;
+    border-radius: 15px;
+    margin-left: 20%;
+    border: 1px solid black;
+    padding: 5px;
+    background: rgb(237, 242, 252);
+}
+
+.msgRx {
+    width: 80%;
+    border-radius: 15px;
+    border: 1px solid black;
+    padding: 5px;
+    background: rgb(255, 253, 232);
+}

@@ -29,12 +29,14 @@ const colors: any = {
   }
 };
 
+
+
 @Component({
   selector: 'app-schedule',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+ // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./schedule.component.css']/* ,
+  encapsulation: ViewEncapsulation.None */
 })
 export class ScheduleComponent implements OnInit {
 
@@ -45,7 +47,6 @@ export class ScheduleComponent implements OnInit {
       password: '',
       id: '',
       birthdate: new Date(),
-      career: '',
       description: '',
       gender: '',
       photo: ''
@@ -61,7 +62,31 @@ projectApp: Project = {
       ownerId: '',
       status: 'To Do'
 };
-
+projects1: any[] = [{ 
+  name:'Proyecto1',
+  fecha:'10/02/2020',
+  dias:'2',
+  porcentaje:'80'
+},
+{
+  name:'Proyecto2',
+  fecha:'11/02/2020',
+  dias:'4',
+  porcentaje:'50'
+},
+{
+  name:'Proyecto3',
+  fecha:'15/02/2020',
+  dias:'5',
+  porcentaje:'75'
+},
+{
+  name:'Proyecto3',
+  fecha:'15/02/2020',
+  dias:'15',
+  porcentaje:'100'
+}
+];
 // idUser: String;
 teamsObservable: any;
 projectsAux: Project[];
@@ -261,7 +286,7 @@ minDate = new Date();
         this.projects = projects;
       });
 
-      this._authService.showUser(this._authService.userAuth)
+      this._authService.getUser(this._authService.userAuth)
       .subscribe(user => {(this.userApp = user, this.idUser = user.id);
                           this._teamService.getTeamByUser(this.userApp)
                           .subscribe(team => {

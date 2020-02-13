@@ -130,7 +130,7 @@ export class ProjectService {
  }
 
  getProjectByOwner( user: User) {
-  this.projectListObservable = this.afs.collection('projects', ref => ref.where('ownerId', '==', user.id)).snapshotChanges().pipe(
+  this.projectListObservable = this.afs.collection('projects', ref => ref.where('ownerId', '==', user.id).orderBy('createdAt')).snapshotChanges().pipe(
     map( changes => {
       return changes.map(action => {
         const data = action.payload.doc.data() as Project;
@@ -156,7 +156,7 @@ getActivitybyName( activity: Activity, project: Project) {
 }
 
 getActivities( project: Project ) {
-  this.activities = this.afs.collection('projects').doc(project.id).collection('activities').snapshotChanges().pipe(
+  this.activities = this.afs.collection('projects').doc(project.id).collection('activities', ref => ref.orderBy('createdAt')).snapshotChanges().pipe(
        map(changes => {
          return changes.map(action => {
            const data = action.payload.doc.data() as Activity;
@@ -168,7 +168,7 @@ getActivities( project: Project ) {
  }
 
  getTasks( projectId: string, activityId: string ) {
-  this.tasks = this.afs.collection('projects').doc(projectId).collection('activities').doc(activityId).collection('tasks').snapshotChanges().pipe(
+  this.tasks = this.afs.collection('projects').doc(projectId).collection('activities').doc(activityId).collection('tasks', ref => ref.orderBy('createdAt')).snapshotChanges().pipe(
        map(changes => {
          return changes.map(action => {
            const data = action.payload.doc.data() as Task;
@@ -195,18 +195,15 @@ getActivities( project: Project ) {
 
 }
 
- setActivitiestoProject( project: Project, activity: Activity ) {
-
-  this.afs.collection('projects').doc(project.id).collection('activities').add(activity)
+ setActivitiestoProject( projectId: string, activity: Activity ) {
+  this.afs.collection('projects').doc(projectId).collection('activities').add(activity)
   .then(ref => {
-    console.log('id', ref.id);
     this.idActivity = ref.id;
   });
 }
 
-setTaskstoActivity( project: Project, activity: Activity, task: Task ) {
-
-  this.afs.collection('projects').doc(project.id).collection('activities').doc(activity.id).collection('tasks').add(task);
+setTaskstoActivity( project: Project, activityId: string, task: Task ) {
+  this.afs.collection('projects').doc(project.id).collection('activities').doc(activityId).collection('tasks').add(task);
 
 }
 

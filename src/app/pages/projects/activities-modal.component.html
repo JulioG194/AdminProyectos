@@ -1,35 +1,36 @@
 <div class="box">
-    <h1>Actividades</h1>
+    <form #f="ngForm" (ngSubmit)="onSaveActivity( f )">
+        <h1>Nueva Actividad</h1>
+
         <div class="container">
+
             <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" required [(ngModel)]="data.name">
+                <input matInput placeholder="Nombre de la actividad" name="name" [(ngModel)]="activityProject.name" type="text" required>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Delegado</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
-                        {{shoe}}
-                    </mat-option>
-                </mat-select>
+                <input matInput [matDatepicker]="picker" [min]="minD" [max]="maxD" name="start_date" (dateInput)="inputEvent($event)" placeholder="Fecha de inicio" [(ngModel)]="activityProject.start_date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field>
-                <textarea rows="5" cols="25" matInput placeholder="Tareas a realizar"></textarea>
+                <input matInput [matDatepicker]="picker1" [min]="minD" [max]="maxD" name="end_date" (dateInput)="inputEvent2($event)" placeholder="Fecha de fin" [(ngModel)]="activityProject.end_date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
-    
-           <!--  <mat-form-field>
-                <input matInput placeholder="Encargado" type="text" required [(ngModel)]="data.delegate">
-            </mat-form-field> -->
-    
-            <div class="space">
-                <button (click)="onNoClick()" >Guardar</button>
+
+            <mat-form-field>
+                <input matInput placeholder="Estado de la actividad" name="status" [(ngModel)]="activityProject.status" type="text" disabled required>
+            </mat-form-field>
+
+            <div>
+                <button class="btnGuardar" type="submit">Guardar</button>
+                <br>
             </div>
-    
-        </div>
-    
-</div>
 
-<!-- Copyright 2019 Google LLC. All Rights Reserved.
-      Use of this source code is governed by an MIT-style license that
-      can be found in the LICENSE file at http://angular.io/license -->
+            <br>
+        </div>
+    </form>
+
+</div>
