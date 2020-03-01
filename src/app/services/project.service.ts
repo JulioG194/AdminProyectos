@@ -70,6 +70,31 @@ export class ProjectService {
     this.projectCollection.add(project);
   }
 
+  deleteProject( projectId: string ) {
+
+    this.projectCollection.doc(projectId).collection('activities').snapshotChanges().pipe(
+      map(changes => {
+          changes.map(action => {
+          const data = action.payload.doc.data() as Activity;
+          data.id = action.payload.doc.id;
+          this.deleteActivity(projectId, data.id);
+        });
+      }));
+    this.projectCollection.doc(projectId).delete();
+  }
+
+  deleteActivity( projectId: string, activityId: string ) {
+
+    this.projectCollection.doc(projectId).collection('activities').doc(activityId).delete();
+  }
+
+  deleteTask( projectId: string, activityId: string, taskId: string ) {
+
+    this.projectCollection.doc(projectId).collection('activities').doc(activityId).collection('tasks').doc(taskId).delete();
+  }
+
+
+
   getProjects(): Observable<Project[]> {
     this.projectsObs = this.projectCollection.snapshotChanges().pipe(
       map(changes => {
@@ -196,14 +221,28 @@ getActivities( project: Project ) {
 }
 
  setActivitiestoProject( projectId: string, activity: Activity ) {
-  this.afs.collection('projects').doc(projectId).collection('activities').add(activity)
-  .then(ref => {
-    this.idActivity = ref.id;
+  this.afs.collection('projects').doc(projectId).collection('activities').add({
+      name: activity.name,
+      percentaje: activity.percentaje,
+      status: activity.status,
+      start_date: activity.start_date,
+      end_date: activity.end_date,
+      createdAt: activity.createdAt,
+      idProject: projectId
   });
 }
 
 setTaskstoActivity( project: Project, activityId: string, task: Task ) {
-  this.afs.collection('projects').doc(project.id).collection('activities').doc(activityId).collection('tasks').add(task);
+  this.afs.collection('projects').doc(project.id).collection('activities').doc(activityId).collection('tasks').add({
+    name: task.name,
+    progress: task.progress,
+    status: task.status,
+    start_date: task.start_date,
+    end_date: task.end_date,
+    createdAt: task.createdAt,
+    delegate: task.delegate,
+    idActivity: activityId
+});
 
 }
 
@@ -223,5 +262,36 @@ getProject( id: string ) {
 
 }
 
+updateActivity() {
+
+}
+
+updateTask() {
+
+}
+
+setTaskProgress( idProject: string, idActivity: string, idTask: string, prog: number ) {
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).collection('tasks').doc(idTask).update(
+    {
+       progress: prog
+    }
+  );
+}
+
+setActivityProgress( idProject: string, idActivity: string, percent: number) {
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).update(
+    {
+       percentaje: percent
+    }
+  );
+}
+
+setProjectProgress( idProject: string, percent: number) {
+  this.afs.collection('projects').doc(idProject).update(
+    {
+       progress: percent
+    }
+  );
+}
 
 }

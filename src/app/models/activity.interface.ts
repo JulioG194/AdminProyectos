@@ -10,4 +10,5 @@ export interface Activity {
     id?: string;
     createdAt?: any;
     tasks?: Task[];
+    idProject?: string;
 }

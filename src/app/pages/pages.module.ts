@@ -8,7 +8,7 @@ import { AngularMaterialModule } from '../design/angular-material.module';
 import { MyTeamComponent } from './my-team/my-team.component';
 import { ChatComponent } from './chat/chat.component';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { ProjectsComponent, NewProjectModalComponent, ActivitiesModalComponent } from './projects/projects.component';
+import { ProjectsComponent, NewProjectModalComponent, ActivitiesModalComponent, EvidenceModalComponent } from './projects/projects.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 import { FormsModule } from '@angular/forms';
@@ -22,16 +22,20 @@ import { ActivitiesComponent, TaskComponent  } from './activities/activities.com
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartsModule } from 'ng2-charts';
 import { KanbanComponent } from './kanban/kanban.component';
-import { ProjectComponent, TaskComponent1 } from './project/project.component';
+import { ProjectComponent, TaskComponent1, ActivitiesModalComponent1 } from './project/project.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { GraficoBarraHorizontalComponent } from '../components/grafico-barra-horizontal/grafico-barra-horizontal.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
+
 
 registerLocaleData(localeEs);
 
 @NgModule({
-  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent],
+  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent, ActivitiesModalComponent1, GraficoBarraHorizontalComponent, EvidenceModalComponent],
   imports: [
     CommonModule,
     PAGES_ROUTES,
@@ -39,6 +43,7 @@ registerLocaleData(localeEs);
     AngularMaterialModule,
     FormsModule,
     NgbModalModule,
+    NgxChartsModule,
     FlatpickrModule.forRoot(),
     MatCarouselModule.forRoot(),
     CalendarModule.forRoot({
@@ -53,9 +58,10 @@ registerLocaleData(localeEs);
     FormsModule,
     NgbModalModule,
     FlatpickrModule,
-    CalendarModule
+    CalendarModule,
+    NgxChartsModule
   ],
   providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' }, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB'} ],
-  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, ActivitiesModalComponent]
+  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent]
 })
 export class PagesModule { }

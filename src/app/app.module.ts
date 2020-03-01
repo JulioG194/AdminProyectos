@@ -30,12 +30,13 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     LoginRegisterComponent,
-    PagesComponent,
+    PagesComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +45,7 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     ReactiveFormsModule,
     SharedModule,
     AngularMaterialModule,
+
     IgniteModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -53,6 +55,7 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
     AngularFireAuthModule
   ],
   exports: [
+
   ],
   providers: [],
   bootstrap: [AppComponent]

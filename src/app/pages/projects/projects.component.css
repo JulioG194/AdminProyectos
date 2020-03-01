@@ -35,16 +35,11 @@
 
 .btnProject:hover {
     background: rgb(20, 109, 112);
-    color: black;
+    color: white;
 }
 
 
 /*CSS PARA LISTAR LOS PROYECTOS*/
-
-.container {
-    width: 100%;
-    margin: 0px auto;
-}
 
 .space {
     margin-top: 25px;
@@ -54,6 +49,7 @@ table {
     width: 100%;
     background-color: white;
     border: 1px solid black;
+    margin: 0px auto;
 }
 
 thead {
@@ -80,11 +76,7 @@ td {
     padding: 10px;
     font-size: 15px;
     text-align: center;
-}
-
-.aling {
-    display: flex;
-    flex-direction: row;
+    align-items: center;
 }
 
 mat-icon {
@@ -94,4 +86,36 @@ mat-icon {
 
 td button {
     text-align: center;
+}
+
+.progress {
+    width: 100%;
+    height: 40%;
+}
+
+.align {
+    display: flex;
+    flex-direction: column;
+    /*  align-items: center; */
+    /* justify-content: space-between; */
+}
+
+.position1 {
+    width: 25%;
+}
+
+.position2 {
+    width: 10%;
+}
+
+.position3 {
+    width: 20%;
+}
+
+.position4 {
+    width: 15%;
+}
+
+.position5 {
+    width: 5%;
 }

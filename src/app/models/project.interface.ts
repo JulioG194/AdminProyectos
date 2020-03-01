@@ -10,4 +10,5 @@ export interface Project {
     teamId?: string;
     id?: string;
     createdAt?: any;
+    progress?: number;
 }

@@ -2,17 +2,43 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.box {
-    width: 700px;
-    height: 550px;
-    background: rgb(241, 243, 242);
-    border: solid rgb(77, 83, 71);
+h5 {
+    text-align: center;
 }
 
-.box img {
+.aboutMe {
+    align-items: center;
+    background: rgb(240, 240, 240);
+    width: 70%;
+    margin: 0 auto;
+}
+
+.aboutMe mat-form-field {
+    width: 95%;
+    align-items: center;
+}
+
+.box label {
+    font-size: 15px;
+}
+
+.box textarea {
+    width: 100%;
+}
+
+img {
     width: 150px;
     height: 150px;
     border-radius: 100px;
+}
+
+.addPhoto {
+    text-align: center;
+}
+
+.align {
+    display: flex;
+    flex-direction: row;
 }
 
 .container {
@@ -48,7 +74,7 @@ mat-form-field {
     margin-left: 10px;
 }
 
-button {
+.btnGuardar {
     background: black;
     color: white;
     width: 150px;
@@ -61,7 +87,7 @@ button {
     margin-right: 10px;
 }
 
-button:hover {
+.btnGuardar:hover {
     background: rgb(21, 128, 101);
     color: black;
 }

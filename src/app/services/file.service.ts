@@ -1,0 +1,109 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Team } from '../models/team.interface';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.interface';
+// tslint:disable-next-line:import-spacing
+import  Swal  from 'sweetalert2';
+import * as firebase from 'firebase/app';
+import { FileItem } from '../models/file.interface';
+import 'firebase/storage';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FileService {
+
+  fileCollection: AngularFirestoreCollection<FileItem>;
+  fileDoc: AngularFirestoreDocument<FileItem>;
+  filesObs: Observable<FileItem[]>;
+  fileObs: Observable<FileItem>;
+
+  files: FileItem [];
+
+  private PHOTOS_FOLDER = 'photos';
+  private FILES_FOLDER = 'files';
+
+  constructor(  private http: HttpClient,
+                private afs: AngularFirestore ) {
+
+          this.loadFiles(afs);
+          this.filesObs.subscribe(files => {
+          this.files = files;
+                  });
+
+  }
+
+  loadFiles(afs: AngularFirestore ) {
+    this.fileCollection = afs.collection<FileItem>('evidences');
+    this.filesObs = this.fileCollection.snapshotChanges().pipe(
+    map(actions => {
+        return actions.map(a => {
+        const data = a.payload.doc.data() as FileItem;
+        data.id = a.payload.doc.id;
+        return data;
+        });
+}));
+}
+
+uploadFilesFirebase( files: FileItem[], uid: string, tid: string  ) {
+
+    const storageRef = firebase.storage().ref();
+    let url: string;
+
+    for ( const item of files ) {
+
+      item.isUploading = true;
+      if ( item.progress >= 100 ) {
+        continue;
+      }
+
+      const uploadTask: firebase.storage.UploadTask =
+                  storageRef.child(`${ uid }/${ this.FILES_FOLDER }/${ tid }/ ${ item.fileName}`)
+                            .put( item.file );
+
+      uploadTask.on( firebase.storage.TaskEvent.STATE_CHANGED,
+              ( snapshot: firebase.storage.UploadTaskSnapshot ) =>
+                          item.progress = ( snapshot.bytesTransferred / snapshot.totalBytes ) * 100,
+              ( error ) => console.error('Error al subir', error ),
+              () => {
+
+                console.log('Imagen cargada correctamente');
+                // tslint:disable-next-line: deprecation
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                  console.log('File available at', downloadURL);
+                  // url = downloadURL;
+                  item.url = this.getString(downloadURL);
+                }).then(() => {
+                  item.isUploading = false;
+                  item.tid = tid;
+                  // console.log(url);
+                  this.onSavePhoto(item, uid);
+                });
+              });
+    }
+
+  }
+
+  getString( str: string): string {
+    let a: string;
+    a = str;
+    return a;
+  }
+
+  private onSavePhoto( photo: FileItem, uid: string ) {
+
+    let id = this.afs.createId();
+    this.afs.collection('evidences').doc(uid).collection('files').doc(id).set({
+          name: photo.fileName,
+          url: photo.url,
+          tid: photo.tid
+    });
+
+  }
+
+}

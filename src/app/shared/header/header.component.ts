@@ -62,4 +62,12 @@ export class HeaderComponent implements OnInit {
   public editUser() {
     this.router.navigate(['/user-profile']);
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['']). then(() => {
+      // do whatever you need after navigation succeeds
+      location.reload();
+    });
+  }
 }

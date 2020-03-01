@@ -1,0 +1,95 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.box {
+    width: 100%;
+    background: rgb(241, 243, 242);
+    border: 1px solid rgb(77, 83, 71);
+    margin: 0px auto;
+}
+
+.align {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    
+}
+
+.box h1 {
+    color: white;
+    font-size: 25px;
+    padding: 15px;
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+    text-align: center;
+}
+
+.box h4 {
+    text-align: center;
+}
+
+.left {
+    
+    background: white;
+    padding: 10px;
+}
+
+.rigth {
+    
+    background-color: white;
+    padding: 10px;
+}
+
+
+
+table {
+    width: 95%;
+    background-color: white;
+    border: 1px solid black;
+    margin: 0px auto;
+}
+th {
+    text-align: center;
+}
+thead {
+    /* background-color:rgb(21, 128, 101); */
+    width: calc(100% - 1em);
+    background: black;
+    color: white;
+    border-bottom: solid 3px black;
+}
+
+thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 120px;
+    width: 100%;
+
+}
+
+td {
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.position1 {
+    width: 50%;
+}
+
+.position2 {
+    width: 25%;
+}

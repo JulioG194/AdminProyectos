@@ -3,42 +3,38 @@
         <div *ngIf="projectsApp.length > 0; else NoProject">
             <h2>Tus proyectos</h2>
             <mat-divider></mat-divider>
-            <div class="container">
-                <table class="space">
-                    <thead>
-                        <tr>
+            <!-- <div class="container"> -->
+            <table class="space">
+                <thead>
+                    <tr>
 
-                            <td class="title">Nombre</td>
-                            <td class="title">Cliente</td>
-                            <td class="title">Estado</td>
-                            <td class="title">Fecha de Inicio</td>
-                            <td class="title">Fecha de Fin</td>
-                            <td class="title">Herramientas</td>
-                            <td class="title">Actividades</td>
-                        </tr>
-                    </thead>
-                    <tr *ngFor="let project of projectsApp; let i = index;">
-                        <td>{{project.name }}</td>
-                        <td>{{project.client }}</td>
-                        <td>{{project.status }}</td>
-                        <td>{{allstartdates[i] | date : "dd/MM/y"}}</td>
-                        <td>{{allenddates[i] | date : "dd/MM//y"}}</td>
-                        <td class="aling">
-                            <button class="btn btn-info" [routerLink]="['/project', project.id]">
+                        <td class="title">Nombre</td>
+                        <td class="title">Cliente</td>
+                        <td class="title">Estado</td>
+                        <td class="title">Fecha de Inicio</td>
+                        <td class="title">Fecha de Fin</td>
+                        <td class="title">Progreso</td>
+                        <td class="title">Herramientas</td>
+                    </tr>
+                </thead>
+                <tr *ngFor="let project of projectsApp; let i = index;">
+                    <td>{{project.name }}</td>
+                    <td>{{project.client }}</td>
+                    <td class="badge-danger">{{project.status }}</td>
+                    <td>{{allstartdates[i] | date : "dd/MM/y"}}</td>
+                    <td>{{allenddates[i] | date : "dd/MM/y"}}</td>
+                    <td> {{ project.progress }} </td>
+                    <td class="aling">
+                        <button class="btn btn-info" [routerLink]="['/project', project.id]" matTooltip="Detalles">
                             <mat-icon style="width: 20px; height: 10px">remove_red_eye</mat-icon> 
-                        </button> &nbsp; &nbsp; &nbsp;
-                            <button class="btn btn-danger">
+                        </button> &nbsp;
+                        <button class="btn btn-danger" (click)="onDeleteProject(project.id)" matTooltip="Eliminar">
                             <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
                         </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-warning" (click)="openActivities(project.id, allstartdates[i], allenddates[i])">
-                            <mat-icon style="width: 20px; height: 10px">library_add</mat-icon> 
-                    </button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                    </td>
+                </tr>
+            </table>
+            <!-- </div> -->
         </div>
 
         <ng-template #NoProject>
@@ -67,39 +63,41 @@
 </ng-template>
 
 <ng-template #projectsDelegate>
-    <h2>Proyectos a los que ha sido asignado</h2>
+    <h2>Tareas asignadas</h2>
     <mat-divider></mat-divider>
-    <div class="container">
-        <table class="space">
-            <thead>
-                <tr>
-
-                    <td class="title">Nombre</td>
-                    <td class="title">Cliente</td>
-                    <td class="title">Estado</td>
-                    <td class="title">Fecha de Inicio</td>
-                    <td class="title">Fecha de Fin</td>
-                    <td class="title">Herramientas</td>
-                    <td class="title">Actividades</td>
-                </tr>
-            </thead>
-            <tr *ngFor="let project of projectsApp; let i = index;">
-                <td>{{project.name }}</td>
-                <td>{{project.client }}</td>
-                <td>{{project.status }}</td>
-                <td>{{allstartdates[i] | date : "dd/MM/y"}}</td>
-                <td>{{allenddates[i] | date : "dd/MM//y"}}</td>
-                <td class="aling">
-                    <button class="btn btn-info" matTooltip="Detalles" [routerLink]="['/project', project.id]">
-                        <mat-icon style="width: 20px; height: 10px" >remove_red_eye</mat-icon> 
-                    </button> &nbsp; &nbsp; &nbsp;
-                </td>
-                <td>
-                    <button class="btn btn-warning" (click)="openActivities(project.id, allstartdates[i], allenddates[i])">
-                        <mat-icon style="width: 20px; height: 10px">library_add</mat-icon> 
-                </button>
-                </td>
+    <!--  <div class="container"> -->
+    <table class="space">
+        <thead>
+            <tr>
+                <td class="title position1">Tarea</td>
+                <td class="title position2">Fecha Inicio</td>
+                <td class="title position2">Fecha Fin</td>
+                <td class="title position5">Gestor</td>
+                <td class="title position3">Actividad</td>
+                <td class="title position4">Proyecto</td>
+                <td class="title position2">% Avance</td>
+                <td class="title position5"></td>
             </tr>
-        </table>
-    </div>
+        </thead>
+        <tr *ngFor="let pat of pats1; let i = index;">
+            <td class="position1">{{ pat.task.name }}</td>
+            <td class="position2">{{ pat.start_date | date : "dd/MM/y"}}</td>
+            <td class="position2">{{ pat.end_date | date : "dd/MM/y"}}</td>
+            <td class="position5"><img matListAvatar [src]="pat.photo" style="width: 50px; height: 50px;border-radius: 150px" [matTooltip]="pat.manager_name"></td>
+            <td class="position3"> {{ pat.activity.name }}</td>
+            <td class="position4">{{ pat.project.name }}</td>
+            <td class="position2">
+                <div class="align">
+                    <input class="progress" type="number" placeholder="Ingrese % avance" #box (keyup.enter)="onEnter(pat.project.id, pat.activity.id, pat.task.id, box.value)">
+                    <div> {{ pat.task.progress }}% </div>
+                </div>
+            </td>
+            <td class="position5">
+                <button matTooltip="Subir evidencia" (click)="openEvidence(pat.task.id)">
+                    <mat-icon>folder</mat-icon> 
+                </button>
+            </td>
+        </tr>
+    </table>
+    <!-- </div> -->
 </ng-template>

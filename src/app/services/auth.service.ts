@@ -30,6 +30,7 @@ export class AuthService {
   userGuGo: User;
   userToken: string;
   idUser: string;
+  photoUrl: string;
 
   constructor( private http: HttpClient,
                private afs: AngularFirestore
@@ -121,7 +122,7 @@ export class AuthService {
 
   // Funcion para el cierre de la sesion
   logout() {
-    localStorage.removeItem('token');
+    localStorage.clear();
   }
 
 
@@ -198,6 +199,23 @@ export class AuthService {
   return this.user1;
 
 }
+
+getPhotoById( id: string ): string {
+  this.userDoc1 = this.afs.collection('users').doc(id);
+  this.user1 = this.userDoc1.snapshotChanges().pipe(
+    map(actions => {
+      if (actions.payload.exists === false) {
+        return null;
+      } else {
+        const data = actions.payload.data() as User;
+        data.id = actions.payload.id;
+        return data;
+      }
+      }));
+  return this.photoUrl;
+
+}
+
 
   updateUser( user: User ) {
     this.afs.collection('users').doc(user.id).update(

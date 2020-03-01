@@ -6,7 +6,7 @@
         <mat-toolbar class="header1">Tus contactos</mat-toolbar>
         <div class="scroll-contact">
             <div class="contacts" *ngFor="let user of delegatesAux1">
-                <button class="select align" (click)="selectUser(user.id,user.name,user.email)">
+                <button class="select align" (click)="selectUser(user.id,user.name,user.email,user.photo)">
                     <div class="image">
                         <img [src]="user.photo" alt="">
                     </div>
@@ -34,14 +34,27 @@
 
                 <span>
         </span>
-                <p class="msgTx" *ngIf="userGugo.email == chat.senderEmail">
-                    {{ chat.message }}
-                </p>
+                <div class="align photo">
+                    <!-- <div class="align" *ngIf="chat.coworkerEmail == coworker.email"> -->
 
-                <p class="msgRx" *ngIf="userGugo.email != chat.senderEmail">
-                    {{ chat.message }}
-                </p>
+                    <p class="msgTx" *ngIf="chat.coworkerEmail == coworker.email">
+                        <img [src]="userGugo.photo" alt=""> {{ chat.message }}
+                    </p>
 
+                    <!--  </div> -->
+                    <!--   <img src="../../../assets/img/gg.jpg" alt=""> -->
+
+                </div>
+
+                <div class="align photo">
+
+                    <p class="msgRx" *ngIf="chat.coworkerEmail == userGugo.email && chat.senderEmail == coworker.email">
+                        <img [src]="coworker.photo" alt=""> {{ chat.message }}
+                    </p>
+
+                    <!--  <p class="msgRx">recibido</p> -->
+
+                </div>
                 <!--  <div class="msgTx" *ngIf="chat.senderId == userGugo.id">
                     <label>{{ chat.message }}</label>
                 </div>
@@ -51,9 +64,9 @@
                 </div> -->
             </div>
         </div>
-        <form (keyup.enter)="onSendMessage( f2 )" #f2="ngForm">
-            <div class="align send">
-                <textarea name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required></textarea>
+        <form (keyup.enter)="onSendMessage( f2 )" (click)="onSendMessage( f2 )" #f2="ngForm">
+            <div class="align send" *ngIf="coworker.email">
+                <input name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required>
                 <button class="btn btn-light" matTooltip="Enviar" type="submit">
                 <mat-icon style="width: 20px; height: 10px">send</mat-icon>  
         </button>

@@ -1,0 +1,59 @@
+<div class="box">
+    <form>
+        <h1>Evidencia</h1>
+        <h4>Tarea</h4>
+        <div class="align">
+            <div>
+                <h5>Evidencia</h5>
+                <br>
+                <input type="file" name="archivosubido" id="file" (change)="handleFileInput($event.target.files)" multiple>
+            </div>
+
+            <div>
+                <br>
+                <h5>Carga de archivos</h5>
+                <button (click)="onUpdateFiles()">Guardar</button> &nbsp;
+                <button>Borrar</button>
+                <br>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="position1">Evidencia</th>
+                            <th class="position2">Tamaño</th>
+                            <th class="position2">Progreso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="position1">archivos1</td>
+                            <td class="position2">archivos2</td>
+                            <td class="position2">archivos3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="position1">archivos1</td>
+                            <td class="position2">archivos2</td>
+                            <td class="position2">archivos3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="position1">archivos1</td>
+                            <td class="position2">archivos2</td>
+                            <td class="position2">archivos3</td>
+                        </tr>
+
+                        <tr>
+                            <td class="position1">archivos1</td>
+                            <td class="position2">archivos2</td>
+                            <td class="position2">archivos3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+        </div>
+    </form>
+
+</div>

@@ -78,7 +78,8 @@ export class ChatComponent implements OnInit {
                 senderEmail: '',
                 coworkerName: '',
                 coworkerEmail: '',
-                userName: '',
+                senderName: '',
+                coworkerId: '',
                 message: '',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -204,26 +205,25 @@ export class ChatComponent implements OnInit {
 
   }
 
-  selectUser( id: string, name: string, email: string ) {
+  selectUser( id: string, name: string, email: string, photo: string ) {
     this.coworker.id = id;
+    console.log(this.coworker.id);
     this.coworker.name = name;
     this.coworker.email = email;
+    this.coworker.photo = photo;
 
-    this.chatService.getChats(this.userGugo.email, this.coworker.email).subscribe(chats => {
-        this.chatsSend = chats;
-        this.chatService.getChats(this.coworker.email, this.userGugo.email).subscribe(chats1 => {
-      this.chatsRecieve = chats1;
-      this.allChats = this.chatsSend.concat(this.chatsRecieve);
+    this.chatService.getChats(this.userGugo.id).subscribe(chats => {
+      this.allChats = chats;
+      console.log(this.allChats);
       try {
         this.allChats.sort((a, b) => a.createdAt['seconds'] - b.createdAt['seconds']);
         this.allChats.forEach(chat => {
           console.log(chat.createdAt);
-        })
+        });
       } catch {}
       setTimeout(() => {
         this.elemento.scrollTop = this.elemento.scrollHeight;
       }, 20);
-  });
   });
 
 
@@ -235,12 +235,17 @@ export class ChatComponent implements OnInit {
     this.chatUser.coworkerEmail = this.coworker.email;
     this.chatUser.coworkerName = this.coworker.name;
     this.chatUser.senderEmail = this.userGugo.email;
-    this.chatUser.userName = this.userGugo.name;
+    this.chatUser.senderName = this.userGugo.name;
+    this.chatUser.coworkerPhoto = this.coworker.photo;
     this.chatUser.userId = this.userGugo.id;
+    this.chatUser.coworkerId = this.coworker.id;
 
     console.log(this.chatUser);
 
-    this.chatService.addNewChat(this.chatUser);
+    if ( this.chatUser.message !== null ) {
+      this.chatService.addNewChat(this.chatUser);
+    }
+
 
     console.log(this.chatUser.createdAt);
 

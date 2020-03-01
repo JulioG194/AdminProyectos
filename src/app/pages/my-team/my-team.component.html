@@ -28,32 +28,32 @@
 
         <h2>Tu equipo de trabajo</h2>
         <mat-divider></mat-divider>
-        <div class="container">
-            <table class="space">
-                <thead>
-                    <tr>
-                        <td></td>
-                        <td>Nombre</td>
-                        <td>Correo</td>
-                        <td>Celular</td>
-                        <td>Cargo</td>
-                    </tr>
-                </thead>
-                <tr *ngFor="let delegate of teamGugo.delegates">
-                    <td><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
-                    <td> {{delegate.name}} </td>
-                    <td> {{delegate.email}} </td>
-                    <td> {{delegate.phone_number}} </td>
-                    <!-- celular -->
-                    <td> {{delegate.employment}} </td>
-                    <!-- cargo -->
+        <!-- <div class="container"> -->
+        <table class="space">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>Nombre</td>
+                    <td>Correo</td>
+                    <td>Celular</td>
+                    <td>Cargo</td>
                 </tr>
-            </table>
-            <div>
-                <button (click)="post = !post" class="style space">+ Personas al equipo</button>
-            </div>
-
+            </thead>
+            <tr *ngFor="let delegate of teamGugo.delegates">
+                <td><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
+                <td> {{delegate.name}} </td>
+                <td> {{delegate.email}} </td>
+                <td> {{delegate.phone_number}} </td>
+                <!-- celular -->
+                <td> {{delegate.employment}} </td>
+                <!-- cargo -->
+            </tr>
+        </table>
+        <div>
+            <button (click)="post = !post" class="style space">+ Personas al equipo</button>
         </div>
+
+        <!--  </div> -->
     </div>
 
     <div *ngIf="post == true; else chooseTeam ">
@@ -64,7 +64,7 @@
 
     <ng-template #chooseTeam>
         <div class="space2">
-
+            <br>
             <h3>Amplia tu equipo de trabajo</h3>
             <mat-divider></mat-divider>
             <ul>
@@ -91,28 +91,52 @@
 
 <ng-template #delegate>
 
-    <h2>Tu compañeros de equipo</h2>
+    <h2>Tu Equipo</h2>
     <mat-divider></mat-divider>
-    <div class="container">
-        <table class="space">
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>NOMBRE</td>
-                    <td>CORREO</td>
-                    <td>CARGO</td>
-                    <td>CELULAR</td>
-                </tr>
-            </thead>
-            <tr *ngFor="let delegate of delegatesAux1">
-                <!-- compañeros del delegado -->
-                <td><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
-                <td> {{delegate.name}} </td>
-                <td> {{delegate.email}} </td>
-                <td> {{delegate.employment}} </td>
-                <td> {{delegate.phone_number}} </td>
+    <br>
+    <h5>Tus gestores de proyectos:</h5>
+    <!-- <div class="container"> -->
+    <table class="space">
+        <thead>
+            <tr>
+                <td></td>
+                <td>NOMBRE</td>
+                <td>CORREO</td>
+                <td>CARGO</td>
+                <td>CELULAR</td>
             </tr>
-        </table>
-    </div>
-
+        </thead>
+        <tr *ngFor="let delegate of delegatesAux1">
+            <!-- compañeros del delegado -->
+            <td *ngIf="delegate.manager == true"><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
+            <td *ngIf="delegate.manager == true"> {{delegate.name}} </td>
+            <td *ngIf="delegate.manager == true"> {{delegate.email}} </td>
+            <td *ngIf="delegate.manager == true"> {{delegate.employment}} </td>
+            <td *ngIf="delegate.manager == true"> {{delegate.phone_number}} </td>
+        </tr>
+    </table>
+    <!-- </div> -->
+    <br>
+    <h5>Tus compañeros de proyectos:</h5>
+    <!-- <div class="container"> -->
+    <table class="space">
+        <thead>
+            <tr>
+                <td></td>
+                <td>NOMBRE</td>
+                <td>CORREO</td>
+                <td>CARGO</td>
+                <td>CELULAR</td>
+            </tr>
+        </thead>
+        <tr *ngFor="let delegate of delegatesAux1">
+            <!-- compañeros del delegado -->
+            <td *ngIf="delegate.manager != true"><img matListAvatar [src]="delegate.photo" style="width: 50px; height: 50px;border-radius: 150px"></td>
+            <td *ngIf="delegate.manager != true"> {{delegate.name}} </td>
+            <td *ngIf="delegate.manager != true"> {{delegate.email}} </td>
+            <td *ngIf="delegate.manager != true"> {{delegate.employment}} </td>
+            <td *ngIf="delegate.manager != true"> {{delegate.phone_number}} </td>
+        </tr>
+    </table>
+    <!-- </div> -->
 </ng-template>

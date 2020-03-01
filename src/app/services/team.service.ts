@@ -146,7 +146,15 @@ export class TeamService {
           createdAt: user.createdAt,
           phone_number: user.phone_number
       };
-      this.afs.collection('teams').doc(team.id).collection('delegates').add(userAux);
+      this.afs.collection('teams').doc(team.id).collection('delegates').doc(userAux.id).set({
+        name: userAux.name,
+        id: userAux.id,
+        email: userAux.email,
+        photo: userAux.photo,
+        employment: userAux.employment,
+        createdAt: userAux.createdAt,
+        phone_number: userAux.phone_number
+      });
     });
    }
 

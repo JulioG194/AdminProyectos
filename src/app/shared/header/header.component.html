@@ -44,7 +44,7 @@
 
                 <h6>Perfil</h6>
                 <mat-divider></mat-divider>
-                <label class="label1">Gestor</label> <br>
+                <label class="label1">{{ userGugo.employment }}</label> <br>
                 <div class="profileImg">
                     <img [src]="userGugo.photo" alt="">
                 </div>
@@ -53,8 +53,8 @@
                 <label class="label3">{{ userGugo.email }}</label>
                 <br>
                 <div class="btnOptions align">
-                    <button (click)="editUser()">Editar</button>
-                    <button>Cerrar sesión</button>
+                    <button (click)="editUser()">Ver Perfil</button>
+                    <button (click)="logout()">Cerrar sesión</button>
                 </div>
             </div>
         </mat-menu>

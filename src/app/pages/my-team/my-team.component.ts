@@ -153,7 +153,7 @@ updateTeam() {
                                     this.usersGugo = [];          // Lista de los usuarios excepto el usuario autenticado
                                     // Obtener lista de usuarios excepto el usuario autenticado
                                     this.usersApp.map( item => {
-                                    if ( item.id !== this.userGugo.id ) {
+                                    if ( item.id !== this.userGugo.id && item.manager === false ) {
                                     this.usersGugo.push(item);
                                     }
                                     });
@@ -188,6 +188,13 @@ updateTeam() {
                                                    team.delegates.forEach(delegate => {
                                                        if ( delegate.email === this.userGugo.email ) {
                                                            this.teamsAux1.push(team);
+                                                           this.teamsAux1.forEach(teamA => {
+                                                            this.authService.getUserById(teamA.manager).subscribe(manager => {
+                                                              if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.id === manager.id)) {
+                                                                this.delegatesAux1.push(manager);
+                                                              }
+                                                           });
+                                                });
                                                            team.delegates.forEach(delegate => {
                                                             if (!this.delegatesAux1.some(obj => obj.email === delegate.email && obj.id === delegate.id)) {
                                                               this.delegatesAux1.push(delegate);

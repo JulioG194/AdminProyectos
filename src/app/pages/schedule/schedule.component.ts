@@ -282,10 +282,6 @@ minDate = new Date();
     }
 
     ngOnInit() {
-      this._projectService.getProjects().subscribe( projects => {
-        this.projects = projects;
-      });
-
       this._authService.getUser(this._authService.userAuth)
       .subscribe(user => {(this.userApp = user, this.idUser = user.id);
                           this._teamService.getTeamByUser(this.userApp)

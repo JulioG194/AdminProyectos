@@ -15,10 +15,18 @@ import * as firebase from 'firebase/app';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
 
-export interface DialogData {
+export interface DialogData1 {
   project: Project;
   actId: string;
   delegatesG: User[];
+}
+
+
+export interface DialogData {
+  projectAppId: string;
+  minDate: Date;
+  maxDate: Date;
+  userApp: User;
 }
 
 
@@ -45,11 +53,6 @@ export class ProjectComponent implements OnInit {
 
   panelOpenState = false;
 
-  activities: string[]=['Boots', 'Yeye','Pedro', 'Juli','Alexa','Clogs', 'Loafers', 'Moccasins', 'Sneakers','Alexa','Julio','Yeye','Anto',
-                        'Sarita','Santo','Dani','Tere'];
-
-  tasks: string[]=['Boots', 'Yeye','Pedro', 'Juli','Alexa'];
-  tasks1: string[]=[];
 
  // delegates: string[]=['Boots', 'Yeye','Pedro', 'Juli','Alexa'];
 
@@ -112,6 +115,9 @@ activityAux: Activity = {
   activity_time: 0
 };
 
+aux7: number;
+
+
   constructor( private route: ActivatedRoute,
                private _projectService: ProjectService,
                private authService: AuthService,
@@ -133,27 +139,18 @@ activityAux: Activity = {
                                                                                                 console.log(this.differenceDays);
                                                                                                 this._teamService.getTeam(this.projectApp.teamId).subscribe(team => {
                                                                                                 this.team = team;
-                                                                                                console.log(this.team);
                                                                                                 this._teamService.getDelegates(this.team).subscribe(delegates => {
                                                                                                   this.delegates = delegates;
                                                                                                             });
       });
                                                                                                 this._projectService.getActivities(this.projectApp).subscribe( activities => {
                                                                                                       this.activitiesProject = activities;
-                                                                                                      console.log(this.activitiesProject);
                                                                                                       this.allstartdates = [];
                                                                                                       this.allenddates = [];
                                                                                                       this.activitiesProject.forEach(activity => {
                                                                                                         this.allstartdates.push(new Date(activity.start_date['seconds'] * 1000));
                                                                                                         this.allenddates.push(new Date(activity.end_date['seconds'] * 1000));
-                                                                                                        // console.log(this.allstartdates);
-                                                                                                        // console.log(this.allenddates);
-                                                                                                        // this.activitiesProject = [];
-                                                                                                        // tslint:disable-next-line:prefer-for-of
                                                                                                       });
-                                                                                                      console.log(this.activitiesProject);
-                                                                                                      // this.allstartdatesT = [];
-                                                                                                      // this.allenddatesT = [];
                                                                                                       // tslint:disable-next-line:prefer-for-of
                                                                                                       for (let i = 0; i < this.activitiesProject.length; i++) {
                                                                                                               this._projectService.getTasks(this.projectApp.id, this.activitiesProject[i].id).subscribe(tasks => {
@@ -162,14 +159,7 @@ activityAux: Activity = {
                                                                                                                  for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
                                                                                                                      this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
                                                                                                                      this.activitiesProject[i].tasks[j].end_date = new Date(this.activitiesProject[i].tasks[j].end_date['seconds'] * 1000);
-                                                                                                                 }
-                                                                                                                 /* this.activitiesProject[i].tasks.forEach(task => {
-                                                                                                                   console.log(task);
-                                                                                                                   this.allstartdatesT.push(new Date(task.start_date['seconds'] * 1000));
-                                                                                                                   this.allenddatesT.push(new Date(task.end_date['seconds'] * 1000));
-                                                                                                                   console.log(this.allenddatesT);
-                                                                                                                 }); */
-                                                                                                                 console.log(tasks);
+                                                                                                                    }
                                                                                                         });
                                                                                                         }
       });
@@ -201,8 +191,16 @@ activityAux: Activity = {
     this.router1.navigateByUrl('/activities');
   }
 
-  imprime(){
+  imprime() {
     console.log(this.idActivity);
+  }
+
+  deleteActivity( id: string ) {
+    this._projectService.deleteActivity(this.projectApp.id, id);
+  }
+
+  deleteTask( activityId: string, taskId: string ) {
+    this._projectService.deleteTask(this.projectApp.id, activityId, taskId );
   }
 
   getActivities() {
@@ -246,6 +244,18 @@ activityAux: Activity = {
   });
 
   }
+
+  openActivities( id: string, minDateF: Date, maxDateF: Date ): void {
+    // tslint:disable-next-line: no-use-before-declare
+    const dialogRef = this.dialog.open( ActivitiesModalComponent1, {
+      width: '600px',
+      data: {  projectAppId: id, minDate: minDateF, maxDate: maxDateF  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed')
+    });
+  }
 }
 
 @Component({
@@ -282,7 +292,7 @@ task: Task = {
 
   constructor(
     public dialogRef: MatDialogRef<TaskComponent1>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData1,
     private projectService: ProjectService) {
       this.projectService.getActivity(this.data.project.id, this.data.actId).subscribe(act => {
         this.activityAux = act;
@@ -337,5 +347,88 @@ task: Task = {
       this.endD = new Date($event.value);
     }
 
+}
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'activities-modal',
+  templateUrl: './activities-modal.component.html',
+  styleUrls: ['./activities-modal.component.css']
+})
+
+export class ActivitiesModalComponent1 implements OnInit {
+
+  task: Task = {
+    name: '',
+    status: 'Por realizar',
+    delegate: 'Delegado'
+    };
+
+
+  id: string;
+  maxD: Date;
+  minD: Date;
+  startD: Date;
+  endD: Date;
+
+  activityProject: Activity = {
+    name: '',
+    status: 'Por Realizar',
+    start_date: null,
+    end_date: null,
+    percentaje: 0,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  constructor(
+    public dialogRef: MatDialogRef<ActivitiesModalComponent1>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private projectService: ProjectService) { }
+
+  ngOnInit() {
+      this.id = this.data.projectAppId;
+      this.maxD = this.data.maxDate;
+      this.minD = this.data.minDate;
+
+    }
+
+  inputEvent($event) {
+      this.startD = new Date($event.value);
+    }
+
+  inputEvent2($event) {
+      this.endD = new Date($event.value);
+    }
+
+  onSaveActivity( form: NgForm ) {
+    if ( form.invalid ) { return; }
+
+    if ( this.endD <= this.startD ) {
+
+        Swal.fire({
+          type: 'error',
+          title: 'Fechas fuera de rango',
+        });
+        return;
+    }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor...'
+    });
+    Swal.showLoading();
+
+    this.projectService.setActivitiestoProject( this.id, this.activityProject );
+
+    Swal.close();
+    Swal.fire({
+        allowOutsideClick: false,
+        type: 'success',
+        title: 'Actividad agregada con exito'
+      });
+
+    this.dialogRef.close();
+  }
 }
 

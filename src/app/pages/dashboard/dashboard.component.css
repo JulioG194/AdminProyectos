@@ -43,7 +43,7 @@ img {
 
 .front h4 {
     color: rgb(23, 14, 105);
-    font-size: 150%;
+    /* font-size: 150%; */
 }
 
 .front.back {
@@ -104,23 +104,12 @@ button {
     width: 200px;
 }
 
-button:hover {
+
+/* button:hover {
     background: rgb(127, 185, 18);
     color: black;
     cursor: pointer;
-}
-
-
-/* ul {
-    text-align: center;
-}
-
-li {
-    display: inline-block;
-    padding-left: 50px;
-    padding-right: 50px;
-}
- */
+} */
 
 mat-card {
     width: 100%;
@@ -158,19 +147,6 @@ mat-card {
     float: center;
 }
 
-
-/* .all mat-card-title {
-    font-size: 30px;
-    text-align: center;
-    padding: 20px;
-} */
-
-
-/* mat-divider {
-    border-style: dotted;
-}
- */
-
 mat-card-content {
     text-align: justify;
     width: 100%;
@@ -205,4 +181,14 @@ td {
     height: 200px;
 }
 
-td {}
+.btn-GuiaUser button {
+    float: right;
+    width: 250px;
+    padding: 5px;
+    font-size: 20px;
+}
+
+.btn-GuiaUser button:hover {
+    background: rgb(61, 116, 61);
+    color: white;
+}

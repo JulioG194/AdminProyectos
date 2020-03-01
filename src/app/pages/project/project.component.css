@@ -12,22 +12,6 @@
     padding: 15px;
 }
 
-.section2 {
-    background: #FFFAF0;
-    /* background: rgb(237, 248, 240);
-    border: 1px solid rgb(159, 199, 78); */
-    padding: 15px;
-    /* margin-left: 40px; */
-}
-
-.section3 {
-    background: #FFFAF0;
-    /* background: rgb(248, 241, 241);
-    border: 1px solid rgb(146, 144, 144); */
-    padding: 15px;
-    /* margin-left: 100px; */
-}
-
 
 /*CSS form proyecto*/
 
@@ -157,17 +141,16 @@ mat-form-field textarea {
 
 .addAct {
     float: right;
-    background: black;
+    /* background: black; */
 }
 
-.scrollX {
-    overflow-x: scroll;
-    min-width: 500px;
+.contAct {
+    border: 1px solid black;
 }
 
 mat-accordion {
     width: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 
@@ -188,7 +171,7 @@ mat-accordion {
     width: 100%;
     padding: 10px;
     text-align: center;
-    background: rgb(24, 127, 153);
+    background: #008080;
     letter-spacing: 10px;
     font-size: 22px;
     color: white;
@@ -208,7 +191,8 @@ mat-accordion {
     flex-direction: row;
 }
 
-.position {
+
+/* .position {
     width: 40%;
     text-align: center;
 }
@@ -216,14 +200,34 @@ mat-accordion {
 .position1 {
     width: 15%;
     text-align: center;
-}
+} */
 
-.position2 {
-    width: 45%;
+.position11 {
+    width: 30%;
     text-align: center;
 }
 
-.position3 {
+.position12 {
+    width: 27.5%;
+    text-align: center;
+}
+
+.position13 {
+    width: 15%;
+    text-align: center;
+}
+
+.position21 {
+    width: 35%;
+    text-align: center;
+}
+
+.position22 {
+    width: 15%;
+    text-align: center;
+}
+
+.position23 {
     width: 10%;
     text-align: center;
 }
@@ -233,7 +237,7 @@ mat-accordion {
 
 table {
     width: 100%;
-    background-color: rgb(255, 245, 211);
+    background-color: rgb(250, 246, 246);
     border: 1px solid black;
 }
 
@@ -287,9 +291,10 @@ tbody {
 .title2 h6 {
     text-align: center;
     /* background: rgb(37, 165, 43); */
-    background: rgb(37, 165, 95);
-    padding: 10px;
-    color: white;
+    /* background: palegoldenrod; */
+    background: wheat;
+    padding: 5px;
+    color: black;
     font-size: 20px;
     letter-spacing: 10px;
 }
@@ -323,4 +328,16 @@ mat-icon {
 
 .menuTools button {
     text-align: center;
+}
+
+.btnTools1 {
+    background: black;
+    border-radius: 150px;
+    color: white;
+}
+
+.btnTools2 {
+    background: rgb(197, 212, 108);
+    border-radius: 150px;
+    color: black;
 }

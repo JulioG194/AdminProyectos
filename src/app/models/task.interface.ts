@@ -7,4 +7,5 @@ export interface Task {
     progress?: number;
     id?: string;
     createdAt?: any;
+    idActivity?: string;
     }

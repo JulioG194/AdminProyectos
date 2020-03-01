@@ -96,6 +96,7 @@ table {
     min-width: 400px;
     overflow-x: auto;
     border: 1px solid black;
+    margin: 0px auto;
 }
 
 th,

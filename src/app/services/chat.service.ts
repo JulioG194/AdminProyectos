@@ -48,11 +48,19 @@ export class ChatService {
 }
 
 addNewChat( chat: Chat ) {
-  this.chatCollection.add(chat);
+  this.chatCollection.doc(chat.userId).set({
+      idUser: chat.userId
+  });
+  this.chatCollection.doc(chat.userId).collection('messages').add(chat);
+
+  this.chatCollection.doc(chat.coworkerId).set({
+    idUser: chat.coworkerId
+});
+  this.chatCollection.doc(chat.coworkerId).collection('messages').add(chat);
 }
 
-getChats( senderEmail: string, coworkerEmail: string) {
-  this.chatsUsers = this.afs.collection('chats', ref => ref.where('senderEmail', '==', senderEmail).where('coworkerEmail', '==', coworkerEmail).orderBy('createdAt')).snapshotChanges().pipe(
+getChats( userId: string) {
+  this.chatsUsers = this.afs.collection('chats').doc(userId).collection('messages', ref => ref.orderBy('createdAt')).snapshotChanges().pipe(
     map(changes => {
       return changes.map(action => {
         const data = action.payload.doc.data() as Chat;

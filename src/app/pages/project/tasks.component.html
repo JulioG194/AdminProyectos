@@ -22,7 +22,7 @@
             <mat-form-field>
                 <mat-label>Delegado</mat-label>
                 <mat-select name="delegate" [(ngModel)]="task.delegate" required>
-                    <mat-option *ngFor="let delegate of data.delegatesG" [value]="delegate.name">
+                    <mat-option *ngFor="let delegate of data.delegatesG" [value]="delegate.email">
                         {{ delegate.name }}
                     </mat-option>
                 </mat-select>
@@ -31,7 +31,7 @@
             <!--  <mat-form-field>
             <input matInput placeholder="Porcentaje de avance" type="number" required>
         </mat-form-field> -->
-
+            <span *ngIf="f.submitted && (f.controls['name'].errors || f.controls['start_date'].errors || f.controls['end_date'].errors || f.controls['delegate'].errors)" style="color:red;">* Todos los campos deben ser llenados</span>
             <div>
                 <button type="submit">Guardar</button>
             </div>

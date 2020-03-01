@@ -1,6 +1,6 @@
 <div class="section1">
 
-    <h1 class="main">{{ projectApp.name }}</h1>
+    <h1 class="main" style="text-transform: uppercase; font-weight: bold">{{ projectApp.name }}</h1>
     <mat-divider></mat-divider>
     <div class="align1">
         <button class="btn btn-warning" (click)="backProjects()" matTooltip="Atrás">
@@ -55,6 +55,8 @@
 
     <ng-template #lookGuardarProy>
         <button class="btnGuardar">Guardar</button>
+        <br>
+        <br>
     </ng-template>
 
 
@@ -67,126 +69,135 @@
         <div class="align">
             <h5 class="activities">Actividades del proyecto</h5>
             <div class="addAct">
-                <button class="btn btn-dark" matTooltip="Agregar Actividad">
+                <button class="btn btn-dark" matTooltip="Agregar Actividad" (click)="openActivities(projectApp.id, projectApp.start_date, projectApp.end_date)">
                 <mat-icon style="width: 20px; height: 10px">add</mat-icon> 
                 </button>
             </div>
         </div>
-        <div class="title align">
+        <!-- <div class="title align">
+            <h6 class="position1"></h6>
             <h6 class="position">Nombre</h6>
             <h6 class="position1">Fecha inicio</h6>
             <h6 class="position1">Fecha fin</h6>
             <h6 class="position1">Avance</h6>
-            <h6 class="position1">...</h6>
-        </div>
+            
+        </div> -->
         <div *ngFor="let act of activitiesProject; let i = index" class="align">
-            <!-- <div class="align icon">
-                <button class="btn btn-info" matTooltip="Editar actividad">
-                    <mat-icon style="width: 20px; height: 10px">edit</mat-icon> 
+            <div>
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="btnTools1">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
 
-                <button class="btn btn-danger" matTooltip="Eliminar actividad">
-                    <mat-icon style="width: 20px; height: 10px">delete</mat-icon>  
-                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="openActivities(projectApp.id, projectApp.start_date, projectApp.end_date)">
+                        <mat-icon>edit</mat-icon>
+                            <span>Editar actividad</span>
+                    </button>
+                    <button mat-menu-item (click)="deleteActivity(act.id)">
+                        <mat-icon>delete</mat-icon>
+                            <span>Eliminar actividad</span>
+                    </button>
+                    <button mat-menu-item (click)="openTask( act.id )">
+                        <mat-icon>folder_open</mat-icon>
+                            <span>Agregar tarea</span>
+                    </button>
+                </mat-menu>
+            </div>
 
-                <button class="btn btn-warning" (click)="openTask( act.id )" matTooltip="Agregar tarea">
-                    <mat-icon style="width: 20px; height: 10px">note_add</mat-icon>  
-                </button>
-            </div> -->
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <div class="position" style="text-transform: uppercase; font-weight: bold">{{act.name}}</div>
+
+                            <!-- <div class="position" style="text-transform: uppercase; font-weight: bold; color: rgb(68, 145, 84);">{{act.name}}</div>
                             <div class="position1">{{allstartdates[i] | date : "dd/MM/y"}}</div>
                             <div class="position1">{{allenddates[i] | date : "dd/MM//y"}}</div>
-                            <div class="position1">{{act.percentaje}}</div>
-                            <div class="position1">
-                                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                                    <mat-icon>build</mat-icon>
-                                </button>
+                            <div class="position1">{{act.percentaje}}</div> -->
 
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item>
-                                    <mat-icon>edit</mat-icon>
-                                    <span>Editar actividad</span>
-                                    </button>
-                                    <button mat-menu-item>
-                                    <mat-icon>delete</mat-icon>
-                                    <span>Eliminar actividad</span>
-                                    </button>
-                                    <button mat-menu-item (click)="openTask( act.id )">
-                                    <mat-icon>folder_open</mat-icon>
-                                    <span>Agregar tarea</span>
-                                    </button>
-                                </mat-menu>
-                            </div>
+                            <div class="position11" style="text-transform: uppercase; font-weight: bold; color: rgb(68, 145, 84);">{{act.name}}</div>
+                            <div class="position12">Fecha de inicio: {{allstartdates[i] | date : "dd/MM/y"}}</div>
+                            <div class="position12">Fecha de fin: {{allenddates[i] | date : "dd/MM/y"}}</div>
+                            <div class="position13">% Avance: {{act.percentaje}}</div>
                         </mat-panel-title>
 
                     </mat-expansion-panel-header>
-                    <table>
-                        <tr class="title2">
-                            <h6 colspan="6" scope="rowgroup">Tareas</h6>
-                        </tr>
-                        <thead>
-                            <tr>
-                                <th class="position2">Tarea</th>
-                                <th class="position1">Encargado</th>
-                                <th class="position3">Fecha de inicio</th>
-                                <th class="position3">Fecha de fin</th>
-                                <th class="position3">% Avance</th>
-                                <th class="position3">...</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let task of act.tasks; let k = index">
-                                <td class="position2">{{task.name}}</td>
-                                <td class="position1">{{task.delegate}}</td>
-                                <td class="position3">{{task.start_date | date : "dd/MM/y"}}</td>
-                                <td class="position3">{{task.end_date | date : "dd/MM/y"}}</td>
-                                <td class="position3">{{task.progress}}</td>
-                                <td class="position3">
-                                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                                        <mat-icon>build</mat-icon>
-                                      </button>
-                                    <mat-menu #menu="matMenu">
-                                        <button mat-menu-item>
-                                          <mat-icon>edit</mat-icon>
-                                          <span>Editar tarea</span>
-                                        </button>
-                                        <button mat-menu-item>
-                                          <mat-icon>delete</mat-icon>
-                                          <span>Eliminar tarea</span>
-                                        </button>
-                                        <button mat-menu-item>
-                                          <mat-icon>folder_open</mat-icon>
-                                          <span>Evidencia</span>
-                                        </button>
-                                    </mat-menu>
-                                    <!-- <button class="btn tasksTools" matTooltip="Herramientas" mat-button [matMenuTriggerFor]="tools">
-                                        <mat-icon>build</mat-icon>
-                                    </button>
 
-                                    <mat-menu #tools="matMenu">
-                                        <div class="menuTools">
+                    <div *ngIf="act.tasks?.length > 0; else sinTasks">
 
-                                            <button mat-menu-item class="btn edit" matTooltip="Editar tarea" mat-menu-item>
-                                                <mat-icon>edit</mat-icon>
+                        <h6>Tareas:</h6>
+                        <br>
+                        <table>
+                            <!-- <tr class="title2">
+                                <h6 colspan="6" scope="rowgroup">Tareas</h6>
+                            </tr> -->
+                            <thead>
+                                <tr>
+                                    <th class="position21">Tarea</th>
+                                    <th class="position22">Encargado</th>
+                                    <th class="position22">Fecha de inicio</th>
+                                    <th class="position22">Fecha de fin</th>
+                                    <th class="position23">% Avance</th>
+                                    <th class="position23"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let task of act.tasks; let k = index">
+                                    <td class="position21">{{task.name}}</td>
+                                    <td class="position22">{{task.delegate}}</td>
+                                    <td class="position22">{{task.start_date | date : "dd/MM/y"}}</td>
+                                    <td class="position22">&nbsp; {{task.end_date | date : "dd/MM/y"}}</td>
+                                    <td class="position23">{{task.progress}}</td>
+                                    <td class="position23">
+                                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="btnTools2">
+                                            <mat-icon>build</mat-icon>
+                                          </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item (click)="openTask()">
+                                              <mat-icon>edit</mat-icon>
+                                              <span>Editar tarea</span>
                                             </button>
-
-                                            <button mat-menu-item class="btn delete" matTooltip="Eliminar tarea" mat-menu-item>
-                                                <mat-icon>delete</mat-icon>  
+                                            <button mat-menu-item (click)="deleteTask(act.id, task.id)">
+                                              <mat-icon>delete</mat-icon>
+                                              <span>Eliminar tarea</span>
                                             </button>
-
-                                            <button mat-menu-item class="btn evidence" matTooltip="Evidencia" mat-menu-item>
-                                                <mat-icon>folder_open</mat-icon>  
+                                            <button mat-menu-item>
+                                              <mat-icon>folder_open</mat-icon>
+                                              <span>Evidencia</span>
                                             </button>
-                                        </div>
-                                    </mat-menu> -->
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        </mat-menu>
+                                        <!-- <button class="btn tasksTools" matTooltip="Herramientas" mat-button [matMenuTriggerFor]="tools">
+                                            <mat-icon>build</mat-icon>
+                                        </button>
+    
+                                        <mat-menu #tools="matMenu">
+                                            <div class="menuTools">
+    
+                                                <button mat-menu-item class="btn edit" matTooltip="Editar tarea" mat-menu-item>
+                                                    <mat-icon>edit</mat-icon>
+                                                </button>
+    
+                                                <button mat-menu-item class="btn delete" matTooltip="Eliminar tarea" mat-menu-item>
+                                                    <mat-icon>delete</mat-icon>  
+                                                </button>
+    
+                                                <button mat-menu-item class="btn evidence" matTooltip="Evidencia" mat-menu-item>
+                                                    <mat-icon>folder_open</mat-icon>  
+                                                </button>
+                                            </div>
+                                        </mat-menu> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+
+                    <ng-template #sinTasks>
+                        <p>Usted no tiene tareas dentro de esta actividad</p>
+                        <p>Puede agregar tareas dando el click sobre el icono ubicado al inicio de cada actividad </p>
+                        <p></p>
+                    </ng-template>
+
 
                 </mat-expansion-panel>
             </mat-accordion>
@@ -201,7 +212,7 @@
         <div class="empty">
             <h5>No existe registro !!!</h5><br>
             <h6>Este proyecto no cuenta con actividades asignadas</h6>
-            <button class="btnGuardar btnAct" (click)="openActivity()">Agregar Actividad</button>
+            <button class="btnGuardar btnAct" (click)="openActivities(projectApp.id, projectApp.start_date, projectApp.end_date)">Agregar Actividad</button>
         </div>
     </ng-template>
 

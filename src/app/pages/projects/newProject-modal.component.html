@@ -2,6 +2,7 @@
     <form #f="ngForm" (ngSubmit)="onSaveProject( f )">
         <h1>Nuevo Proyecto</h1>
         <div class="container">
+
             <mat-form-field>
                 <input matInput placeholder="Nombre" type="text" name="name" [(ngModel)]="projectApp.name" required>
             </mat-form-field>
@@ -29,6 +30,7 @@
             <mat-form-field>
                 <textarea cols="5" rows="5" matInput placeholder="Descripción" name="description" [(ngModel)]="projectApp.description"></textarea>
             </mat-form-field>
+            <span *ngIf="f.submitted && (f.controls['name'].errors || f.controls['client'].errors || f.controls['type'].errors || f.controls['start_date'].errors || f.controls['end_date'].errors || f.controls['description'].errors)" style="color:red;">* Todos los campos deben ser llenados</span>
 
             <div>
                 <button type="submit">Guardar</button>
