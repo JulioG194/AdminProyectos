@@ -1,4 +1,4 @@
-export interface FileItem {
+export interface Evidence {
     file?: File;
     fileName?: string;
     url?: string;
@@ -8,4 +8,8 @@ export interface FileItem {
     size?: number;
     id?: string;
     tid?: string;
+    userPhoto?: string;
+    userId?: string;
+    userName?: string;
+    createdAt?: any;
 }

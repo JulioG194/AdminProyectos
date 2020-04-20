@@ -261,7 +261,11 @@ getProject( id: string ) {
   return this.projectObs;
 
 }
+updateProject( project: Project ) {
+  this.afs.collection('projects').doc(project.id).update({
 
+  });
+}
 updateActivity() {
 
 }

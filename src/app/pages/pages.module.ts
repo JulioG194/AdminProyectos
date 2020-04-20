@@ -21,21 +21,24 @@ import localeEsAr from '@angular/common/locales/es-AR';
 import { ActivitiesComponent, TaskComponent  } from './activities/activities.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartsModule } from 'ng2-charts';
+import { ChartModule } from 'angular2-chartjs';
 import { KanbanComponent } from './kanban/kanban.component';
-import { ProjectComponent, TaskComponent1, ActivitiesModalComponent1 } from './project/project.component';
+import { ProjectComponent, TaskComponent1, ActivitiesModalComponent1, EvidenceModalComponent1 } from './project/project.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { GraficoBarraHorizontalComponent } from '../components/grafico-barra-horizontal/grafico-barra-horizontal.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { GanttComponent } from './gantt/gantt.component';
+
 
 
 
 registerLocaleData(localeEs);
 
 @NgModule({
-  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent, ActivitiesModalComponent1, GraficoBarraHorizontalComponent, EvidenceModalComponent],
+  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent, ActivitiesModalComponent1, GraficoBarraHorizontalComponent, EvidenceModalComponent, EvidenceModalComponent1, GanttComponent],
   imports: [
     CommonModule,
     PAGES_ROUTES,
@@ -51,7 +54,8 @@ registerLocaleData(localeEs);
       useFactory: adapterFactory
     }),
     DragDropModule,
-    ChartsModule
+    ChartsModule,
+    ChartModule
   ],
   exports: [
     DashboardComponent,
@@ -62,6 +66,6 @@ registerLocaleData(localeEs);
     NgxChartsModule
   ],
   providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' }, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB'} ],
-  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent]
+  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, EvidenceModalComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent]
 })
 export class PagesModule { }

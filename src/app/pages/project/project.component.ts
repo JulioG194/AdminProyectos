@@ -14,6 +14,8 @@ import { AuthService } from '../../services/auth.service';
 import * as firebase from 'firebase/app';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Evidence } from '../../models/evidence.interface';
+import { EvidenceService } from '../../services/evidence.service';
 
 export interface DialogData1 {
   project: Project;
@@ -28,6 +30,12 @@ export interface DialogData {
   maxDate: Date;
   userApp: User;
 }
+
+export interface DialogData2 {
+  taskId: string;
+}
+
+
 
 
 @Component({
@@ -83,7 +91,7 @@ activityProject: Activity = {
 taskActivity: Task = {
     name: '',
     status: '',
-    delegate: ''
+    delegate: null
 };
 
 team: Team;
@@ -155,6 +163,7 @@ aux7: number;
                                                                                                       for (let i = 0; i < this.activitiesProject.length; i++) {
                                                                                                               this._projectService.getTasks(this.projectApp.id, this.activitiesProject[i].id).subscribe(tasks => {
                                                                                                                  this.activitiesProject[i].tasks = tasks;
+                                                                                                                 console.log(this.activitiesProject[i]);
                                                                                                                  // tslint:disable-next-line:prefer-for-of
                                                                                                                  for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
                                                                                                                      this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
@@ -196,11 +205,45 @@ aux7: number;
   }
 
   deleteActivity( id: string ) {
-    this._projectService.deleteActivity(this.projectApp.id, id);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar la actividad!'
+    }).then((result) => {
+      if (result.value) {
+        this._projectService.deleteActivity(this.projectApp.id, id);
+        Swal.fire(
+          'Listo!',
+          'Tu actividad ha sido eliminada.',
+          'success'
+        );
+      }
+    });
   }
 
   deleteTask( activityId: string, taskId: string ) {
-    this._projectService.deleteTask(this.projectApp.id, activityId, taskId );
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar la actividad!'
+    }).then((result) => {
+      if (result.value) {
+        this._projectService.deleteTask(this.projectApp.id, activityId, taskId );
+        Swal.fire(
+          'Listo!',
+          'Tu actividad ha sido eliminada.',
+          'success'
+        );
+      }
+    });
   }
 
   getActivities() {
@@ -256,6 +299,18 @@ aux7: number;
       console.log('The dialog was closed')
     });
   }
+
+  openEvidence( tId: string ): void {
+    // tslint:disable-next-line: no-use-before-declare
+    const dialogRef = this.dialog.open( EvidenceModalComponent1, {
+      width: '800px',
+      data: { taskId: tId  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed')
+    });
+  }
 }
 
 @Component({
@@ -270,7 +325,7 @@ export class TaskComponent1 {
 task: Task = {
   name: '',
   status: 'Por realizar',
-  delegate: '',
+  delegate: null,
   progress: 0,
   createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
@@ -361,7 +416,7 @@ export class ActivitiesModalComponent1 implements OnInit {
   task: Task = {
     name: '',
     status: 'Por realizar',
-    delegate: 'Delegado'
+    delegate: null
     };
 
 
@@ -432,3 +487,42 @@ export class ActivitiesModalComponent1 implements OnInit {
   }
 }
 
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'evidence-modal',
+  templateUrl: './evidence-modal.component.html',
+  styleUrls: ['./evidence-modal.component.css']
+})
+
+// tslint:disable-next-line:component-class-suffix
+export class EvidenceModalComponent1 implements OnInit {
+
+  /* evidences: string[]=['Boots', 'Yeye','Pedro', 'Juli','Alexa','Clogs', 'Loafers', 'Moccasins', 'Sneakers','Alexa','Julio','Yeye','Anto',
+                        'Sarita','Santo','Dani','Tere','Boots', 'Yeye','Pedro', 'Juli','Alexa','fin']; */
+
+  evidences: Evidence[];
+  constructor(
+    public dialogRef: MatDialogRef<EvidenceModalComponent1>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData2,
+    private evidenceService: EvidenceService) { }
+
+  ngOnInit() {
+      console.log(this.data.taskId);
+      this.evidenceService.getEvidences(this.data.taskId).subscribe(evids => {
+        this.evidences = evids;
+        console.log(this.evidences);
+      });
+      // this.getEvidences();
+  }
+
+  getEvidences() {
+      this.evidenceService.getEvidences(this.data.taskId).subscribe(evids => {
+        this.evidences = evids;
+      });
+  }
+
+  downloadFile(url: string) {
+      window.open(url, '_blank');
+  }
+
+}

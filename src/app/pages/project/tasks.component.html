@@ -22,7 +22,7 @@
             <mat-form-field>
                 <mat-label>Delegado</mat-label>
                 <mat-select name="delegate" [(ngModel)]="task.delegate" required>
-                    <mat-option *ngFor="let delegate of data.delegatesG" [value]="delegate.email">
+                    <mat-option *ngFor="let delegate of data.delegatesG" [value]="delegate">
                         {{ delegate.name }}
                     </mat-option>
                 </mat-select>

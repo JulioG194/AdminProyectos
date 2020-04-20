@@ -1,0 +1,51 @@
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.main {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  bottom: 0;
+  left: 20px;
+  /*  overflow: hidden; */
+}
+
+main {
+  padding: 1rem 2rem;
+  height: 100%;
+  overflow: scroll;
+  /*  overflow-x:hidden; */
+}
+
+main.mini-padding {
+  padding: 1rem calc(1rem + 40px);
+}
+
+igx-nav-drawer.mini-topping {
+  top: 40px;
+}
+
+/* Sample styling */
+.setting-title {
+  margin-bottom: 0;
+  color: rgba(228, 28, 119, 0.8);
+  /*#e41c77cc*/
+}
+
+.setting-note {
+  font-size: 14px;
+  color: #484848;
+  margin: 4px 0;
+}
+
+.igx-nav-drawer__aside::-webkit-scrollbar {
+  width: 2px;
+  background: #e4e4e4;
+}
+
+.igx-nav-drawer__aside::-webkit-scrollbar-thumb {
+  background: #0375be;
+  border-radius: 0;
+}
+/*# sourceMappingURL=pages.component.css.map */

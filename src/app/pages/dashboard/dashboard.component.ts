@@ -49,7 +49,7 @@ results: any[] = [];
 
 
 dataProjects: number[] = [];
-
+public tareas: Task[] = [];
 
 view: any[] = [700, 400];
 
@@ -59,9 +59,9 @@ showYAxis = true;
 gradient = false;
 showLegend = true;
 showXAxisLabel = true;
-xAxisLabel = 'Proyectos';
+xAxisLabel = 'Porcentaje %';
 showYAxisLabel = true;
-yAxisLabel = 'Porcentaje';
+yAxisLabel = 'Proyectos';
 
 colorScheme = {
   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
@@ -161,6 +161,11 @@ constructor( private authService: AuthService,
                   this.projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
                        let aux2 = 0;
                        this.tasksActivitiesApp = tasks;
+                       if ( this.tasksActivitiesApp.length === 0 ) {
+                        try {
+                          this.projectService.setActivityProgress(this.projectsApp[index].id, this.activitiesProjectsApp[j].id, 0 );
+                         } catch {}
+                       } else {
                        numeroTasks = this.tasksActivitiesApp.length;
                        porcentajeTask = 100 / numeroTasks;
                        // tslint:disable-next-line:prefer-for-of
@@ -172,8 +177,9 @@ constructor( private authService: AuthService,
                          id = this.tasksActivitiesApp[k].idActivity;
                        }
                        try {
-                            this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
-                           } catch {}
+                          this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
+                         } catch {}
+                       }
                    });
                 }
                 aux9 = +((aux8 / 100).toFixed(2));

@@ -92,7 +92,16 @@ export class AuthService {
     ).pipe(
       map( (resp: any) => {
       //  this.saveTokenOnStorage(resp.localId, resp.idToken );
+        console.log(resp);
         localStorage.clear();
+        const userAu: User = {
+          id : resp.localId,
+          name : user.name,
+          email : resp.email
+        };
+        localStorage.setItem('usuario', JSON.stringify(userAu));
+        this.saveTokenOnStorage(resp.localId, resp.idToken );
+        this.userAuth = JSON.parse( localStorage.getItem('usuario'));
         return resp;
       })
     );
@@ -120,6 +129,27 @@ export class AuthService {
 
 }
 
+ // Funcion para que el usuario pueda iniciar sesion
+ changePassword( pass: string, idT: string ) {
+  const authData = {
+    idToken: idT,
+    password: pass,
+    returnSecureToken: true
+  };
+
+  console.log(authData);
+
+  return this.http.post(
+    `${ this.url }/accounts:update?key=${ this.apikey }`,
+    authData
+  ).pipe(
+    map( (resp: any) => {
+    return resp;
+    })
+  );
+
+}
+
   // Funcion para el cierre de la sesion
   logout() {
     localStorage.clear();
@@ -128,8 +158,21 @@ export class AuthService {
 
 
   // Funcion para guardar un nuevo usuario en la base Firestore
-  addNewUser( user: User ) {
-    this.userCollection.add(user);
+  addNewUser( user: User, idUser: string ) {
+    // this.userCollection.add(user);
+    this.userCollection.doc(idUser).set({
+        birthdate: user.birthdate,
+        createdAt: user.createdAt,
+        description: user.description,
+        email: user.email,
+        employment: user.employment,
+        gender: user.gender,
+        google: user.google,
+        manager: user.manager,
+        name: user.name,
+        phone_number: user.phone_number,
+        photo: user.photo
+  });
   }
 
   // *Opcional* Funcion para ver si el usuario esta autenticado
@@ -221,7 +264,7 @@ getPhotoById( id: string ): string {
     this.afs.collection('users').doc(user.id).update(
       {
         name: user.name,
-        password: user.password,
+       // password: user.password,
         birthdate: user.birthdate,
       //  career: user.career,
         description: user.description,

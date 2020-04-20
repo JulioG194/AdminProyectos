@@ -34,15 +34,6 @@
                 <input matInput [value]="userApp.email" type="email" name="email" [(ngModel)]="userApp.email" required>
             </mat-form-field>
 
-            <mat-form-field>
-                <label for="">Nueva contraseña</label>
-                <input class="aux" matInput [value]="userApp.password" type="password" name="password" [(ngModel)]="userApp.password" required>
-            </mat-form-field>
-
-            <mat-form-field>
-                <label for="">Confirmar nueva contraseña</label>
-                <input matInput [value]="userApp.password" type="password" name="password2" required>
-            </mat-form-field>
         </div>
         <!-- </mat-tab>
             <mat-tab label="Acerca de mi"> -->
@@ -50,7 +41,7 @@
 
             <mat-form-field>
                 <label for="">Número celular</label>
-                <input matInput [value]="userApp.cell" type="text" name="career" [(ngModel)]="userApp.career">
+                <input matInput [value]="userApp.phone_number" type="text" name="career" [(ngModel)]="userApp.phone_number">
             </mat-form-field>
 
             <mat-form-field>
@@ -77,6 +68,22 @@
         <button class="btnGuardar" type="submit">Guardar</button>
     </div>
 </form>
+<div>
+    <span *ngIf="password1?.length == 0" style="color:red;">* Contraseña de al menos 6 caracteres</span>
+    <mat-form-field>
+        <label for="">Nueva contraseña</label>
+        <input class="aux" matInput [value]="password1" type="password" name="password1" minlength="6" [(ngModel)]="password1" required>
+    </mat-form-field>
+
+    <span *ngIf="password2?.length == 0" style="color:red;">* Contraseña de al menos 6 caracteres</span>
+    <mat-form-field>
+        <label for="">Confirmar nueva contraseña</label>
+        <input matInput [value]="password2" type="password" name="password2" minlength="6" [(ngModel)]="password2" required>
+    </mat-form-field>
+    <div>
+        <button class="btnGuardar" (click)=changePass()>Guardar Contraseña</button>
+    </div>
+</div>
 
 <!-- Copyright 2019 Google LLC. All Rights Reserved.
       Use of this source code is governed by an MIT-style license that

@@ -17,8 +17,9 @@ import { Activity } from '../../models/activity.interface';
 import { Task } from '../../models/task.interface';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
-import { FileItem } from '../../models/file.interface';
-import { FileService } from '../../services/file.service';
+
+import { EvidenceService } from '../../services/evidence.service';
+import { Evidence } from '../../models/evidence.interface';
 
 export interface DialogData {
   projectAppId: string;
@@ -29,7 +30,7 @@ export interface DialogData {
 
 export interface EvidenceData {
   tid: string;
-  uid: string;
+  user: User;
 }
 
 export interface PAT {
@@ -225,7 +226,7 @@ export class ProjectsComponent implements OnInit {
                                                                                                                console.log(tasks);
                                                                                                                tasks.forEach(task => {
 
-                                                                                                                 if ( task.delegate === this.userApp.email ) {
+                                                                                                                 if ( task.delegate.email === this.userApp.email ) {
                                                                                                                   if ( task.idActivity === activity.id) {
                                                                                                                     if ( activity.idProject === project.id ) {
 
@@ -299,7 +300,7 @@ export class ProjectsComponent implements OnInit {
 
   onEnter(idP: string, idA: string, idT: string, value: string) {
     this.value = value;
-    if ( +this.value > 0 && +this.value < 100) {
+    if ( +this.value > 0 && +this.value <= 100) {
       this.projectService.setTaskProgress(idP, idA, idT, +(this.value));
     } else {
       console.log('numero ingresado incorrecto');
@@ -328,7 +329,7 @@ export class ProjectsComponent implements OnInit {
     // tslint:disable-next-line: no-use-before-declare
     const dialogRef = this.dialog.open( EvidenceModalComponent, {
       width: '800px',
-      data: { tid: taskid, uid: this.userApp.id }
+      data: { tid: taskid, user: this.userApp }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -355,12 +356,25 @@ export class ProjectsComponent implements OnInit {
   }
 
   onDeleteProject( idProject: string ) {
-      this.projectService.deleteProject(idProject);
-      Swal.fire({
-        allowOutsideClick: false,
-        type: 'success',
-        title: 'Proyecto eliminado con exito'
-      });
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar el proyecto!'
+    }).then((result) => {
+      if (result.value) {
+        this.projectService.deleteProject(idProject);
+        Swal.fire(
+          'Listo!',
+          'Tu proyecto ha sido eliminado.',
+          'success'
+        );
+      }
+    });
+
   }
   }
 
@@ -476,7 +490,7 @@ export class ProjectsComponent implements OnInit {
     task: Task = {
       name: '',
       status: 'Por realizar',
-      delegate: 'Delegado'
+      delegate: null
       };
 
 
@@ -557,10 +571,10 @@ export class ProjectsComponent implements OnInit {
   export class EvidenceModalComponent implements OnInit {
 
     tid: string;
-    uid: string;
+    uid: User;
     fileToUpload: File = null;
     filesToUpload: File [] = [];
-    fileToUploadFirebase: FileItem = {
+    fileToUploadFirebase: Evidence = {
         file: null,
         fileName: '',
         url: '',
@@ -569,39 +583,43 @@ export class ProjectsComponent implements OnInit {
         type: '',
         size: 0
     };
-    filesToUploadFirebase: FileItem [] = [];
+    filesToUploadFirebase: Evidence [] = [];
     // archivo: FileItem = null;
     constructor(
       public dialogRef: MatDialogRef<EvidenceModalComponent>,
       @Inject(MAT_DIALOG_DATA) public data: EvidenceData,
-      private fileService: FileService) { }
+      private evidenceService: EvidenceService) { }
 
     ngOnInit() {
       this.tid = this.data.tid;
-      this.uid = this.data.uid;
+      this.uid = this.data.user;
       console.log(this.uid);
     }
 
     handleFileInput(files: FileList) {
 
         for (let index = 0; index < files.length; index++) {
-          let photo: FileItem = {
+          let evidence: Evidence = {
               file: files.item(index),
               fileName: files.item(index).name,
               size: files.item(index).size,
               type: files.item(index).type,
               tid: this.tid
           };
-          this.filesToUploadFirebase.push(photo);
-          this.filesToUpload.push(files.item(index));
+          this.filesToUploadFirebase.push(evidence);
+          // this.filesToUpload.push(files.item(index));
         }
-        console.log(this.filesToUpload);
+        // console.log(this.filesToUpload);
         console.log(this.filesToUploadFirebase);
        /*   */
   }
 
   onUpdateFiles() {
-    this.fileService.uploadFilesFirebase(this.filesToUploadFirebase, this.uid, this.tid);
+    this.evidenceService.uploadFilesFirebase(this.filesToUploadFirebase, this.uid, this.tid);
+  }
+
+  onClearFiles() {
+    this.filesToUploadFirebase = [];
   }
 
 

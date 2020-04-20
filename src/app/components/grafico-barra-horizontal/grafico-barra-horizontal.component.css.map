@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "grafico-barra-horizontal.component.scss"
+    ],
+    "names": [],
+    "file": "grafico-barra-horizontal.component.css"
+}

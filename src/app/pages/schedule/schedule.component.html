@@ -13,23 +13,27 @@
     </thead>
 
     <tbody>
-        <tr *ngFor="let item of projectsAux">
+        <tr *ngFor="let item of projectsAux; let i = index">
             <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.status}}</td>
+            <td>{{allenddates[i] | date : "dd/MM/y"}}</td>
+            <td>{{difDyas[i]}}</td>
             <td>
-                {{item.progress}}
+                {{item.progress}}%
                 <progress max="100" value="{{item.progress}}"></progress>
                 <!-- <mat-progress-bar style="height: 20px;border-radius: 5px;" mode="determinate" value="{{item.porcentaje}}"></mat-progress-bar> -->
             </td>
             <td>
-                <button>
+                <button (click)="mostrar(item.id)">
           <mat-icon>notes</mat-icon>
         </button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<div *ngIf="post == true">
+    <chart class="chart" type="horizontalBar" [data]="chartData" [options]="options"></chart>
+</div>
 
 <div *ngIf="userApp.employment == 'user'">
     <mat-divider></mat-divider>

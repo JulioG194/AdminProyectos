@@ -1,0 +1,43 @@
+.box {
+    width: 100%;
+    background: rgb(241, 243, 242);
+    border: 1px solid rgb(77, 83, 71);
+    margin: 0px auto;
+    
+}
+
+.scroll {
+    max-height: 500px;
+    overflow-y: scroll; 
+}
+
+
+.box h1 {
+    color: white;
+    font-size: 25px;
+    padding: 15px;
+    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+    text-align: center;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows: 150px 150px 150px 150px 150px 150px 150px 150px 150px 150px;
+    grid-column-gap: 3%;
+    grid-row-gap: 40px;
+    text-align: center;
+    padding: 2%;
+    
+}
+
+.card {
+    border: 1px solid black;
+    
+}
+
+.align {
+    display: flex;
+    flex-direction: column;
+}

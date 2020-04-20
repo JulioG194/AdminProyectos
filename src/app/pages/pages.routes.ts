@@ -10,6 +10,7 @@ import { KanbanComponent } from './kanban/kanban.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { ProjectComponent } from './project/project.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { GanttComponent } from './gantt/gantt.component';
 
 
 const pagesRoutes: Routes = [
@@ -57,6 +58,11 @@ const pagesRoutes: Routes = [
         path: 'project/:id',
         component: ProjectComponent,
         data: { titulo: 'Project'}
+    },
+    {
+        path: 'gantt/:id',
+        component: GanttComponent,
+        data: { titulo: 'Gantt'}
     },
     {
         path: 'notifications',

@@ -13,7 +13,6 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    
 }
 
 .box h1 {
@@ -29,18 +28,14 @@
 }
 
 .left {
-    
     background: white;
     padding: 10px;
 }
 
 .rigth {
-    
     background-color: white;
     padding: 10px;
 }
-
-
 
 table {
     width: 95%;
@@ -48,9 +43,11 @@ table {
     border: 1px solid black;
     margin: 0px auto;
 }
+
 th {
     text-align: center;
 }
+
 thead {
     /* background-color:rgb(21, 128, 101); */
     width: calc(100% - 1em);
@@ -77,7 +74,6 @@ tbody {
     overflow: auto;
     height: 120px;
     width: 100%;
-
 }
 
 td {
@@ -92,4 +88,8 @@ td {
 
 .position2 {
     width: 25%;
+}
+
+.text-green {
+    color: green
 }

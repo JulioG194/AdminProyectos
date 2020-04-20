@@ -84,9 +84,9 @@ export class LoginRegisterComponent implements OnInit {
     .subscribe( resp => {
 
       Swal.close();
-
-      this.authService.addNewUser(this.userRegister);
-
+      // console.log(resp);
+      this.authService.addNewUser(this.userRegister, resp.localId);
+      this.router.navigateByUrl('/dashboard');
       Swal.fire({
       allowOutsideClick: false,
       type: 'success',
@@ -99,6 +99,7 @@ export class LoginRegisterComponent implements OnInit {
 
       form.reset();
       this.post1 = true;
+
 
     }, (err) => {
       Swal.fire({

@@ -190,15 +190,19 @@ updateTeam() {
                                                            this.teamsAux1.push(team);
                                                            this.teamsAux1.forEach(teamA => {
                                                             this.authService.getUserById(teamA.manager).subscribe(manager => {
-                                                              if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.id === manager.id)) {
-                                                                this.delegatesAux1.push(manager);
+                                                              if (manager != null) {
+                                                                if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.id === manager.id)) {
+                                                                  this.delegatesAux1.push(manager);
+                                                                }
                                                               }
                                                            });
                                                 });
                                                            team.delegates.forEach(delegate => {
+                                                            if (delegate != null) {
                                                             if (!this.delegatesAux1.some(obj => obj.email === delegate.email && obj.id === delegate.id)) {
                                                               this.delegatesAux1.push(delegate);
                                                             }
+                                                          }
                                                            });
                                                        }
                                                        this.removeDelegate(this.userGugo);

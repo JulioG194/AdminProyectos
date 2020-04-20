@@ -13,7 +13,7 @@
                 <br>
                 <h5>Carga de archivos</h5>
                 <button (click)="onUpdateFiles()">Guardar</button> &nbsp;
-                <button>Borrar</button>
+                <button>Limpiar</button>
                 <br>
                 <br>
                 <table>
@@ -25,28 +25,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="position1">archivos1</td>
-                            <td class="position2">archivos2</td>
-                            <td class="position2">archivos3</td>
-                        </tr>
-
-                        <tr>
-                            <td class="position1">archivos1</td>
-                            <td class="position2">archivos2</td>
-                            <td class="position2">archivos3</td>
-                        </tr>
-
-                        <tr>
-                            <td class="position1">archivos1</td>
-                            <td class="position2">archivos2</td>
-                            <td class="position2">archivos3</td>
-                        </tr>
-
-                        <tr>
-                            <td class="position1">archivos1</td>
-                            <td class="position2">archivos2</td>
-                            <td class="position2">archivos3</td>
+                        <tr *ngFor="let file of filesToUploadFirebase">
+                            <td [ngClass]="{ 'text-green': file.progress >= 100 }">
+                                {{ file.fileName }}
+                            </td>
+                            <td>
+                                {{ file.file.size / 1024 /1024 | number: '.2-2' }} MB
+                            </td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': file.progress + '%' }"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

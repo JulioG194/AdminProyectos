@@ -143,7 +143,7 @@
                             <tbody>
                                 <tr *ngFor="let task of act.tasks; let k = index">
                                     <td class="position21">{{task.name}}</td>
-                                    <td class="position22">{{task.delegate}}</td>
+                                    <td class="position22"><img matListAvatar [src]="task.delegate.photo" style="width: 50px; height: 50px;border-radius: 150px" [matTooltip]="task.delegate.name"></td>
                                     <td class="position22">{{task.start_date | date : "dd/MM/y"}}</td>
                                     <td class="position22">&nbsp; {{task.end_date | date : "dd/MM/y"}}</td>
                                     <td class="position23">{{task.progress}}</td>
@@ -160,7 +160,7 @@
                                               <mat-icon>delete</mat-icon>
                                               <span>Eliminar tarea</span>
                                             </button>
-                                            <button mat-menu-item>
+                                            <button mat-menu-item (click)="openEvidence(task.id)">
                                               <mat-icon>folder_open</mat-icon>
                                               <span>Evidencia</span>
                                             </button>

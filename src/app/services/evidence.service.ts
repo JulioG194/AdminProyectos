@@ -9,21 +9,23 @@ import { User } from '../models/user.interface';
 // tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2';
 import * as firebase from 'firebase/app';
-import { FileItem } from '../models/file.interface';
+
 import 'firebase/storage';
+import { Evidence } from '../models/evidence.interface';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class FileService {
+export class EvidenceService {
 
-  fileCollection: AngularFirestoreCollection<FileItem>;
-  fileDoc: AngularFirestoreDocument<FileItem>;
-  filesObs: Observable<FileItem[]>;
-  fileObs: Observable<FileItem>;
+  evidenceCollection: AngularFirestoreCollection<Evidence>;
+  evidenceDoc: AngularFirestoreDocument<Evidence>;
+  evidencesObs: Observable<Evidence[]>;
+  evidenceObs: Observable<Evidence>;
 
-  files: FileItem [];
+  files: Evidence [];
+  evidences: Observable<Evidence[]>;
 
   private PHOTOS_FOLDER = 'photos';
   private FILES_FOLDER = 'files';
@@ -32,25 +34,25 @@ export class FileService {
                 private afs: AngularFirestore ) {
 
           this.loadFiles(afs);
-          this.filesObs.subscribe(files => {
+          this.evidencesObs.subscribe(files => {
           this.files = files;
                   });
 
   }
 
   loadFiles(afs: AngularFirestore ) {
-    this.fileCollection = afs.collection<FileItem>('evidences');
-    this.filesObs = this.fileCollection.snapshotChanges().pipe(
+    this.evidenceCollection = afs.collection<Evidence>('evidences');
+    this.evidencesObs = this.evidenceCollection.snapshotChanges().pipe(
     map(actions => {
         return actions.map(a => {
-        const data = a.payload.doc.data() as FileItem;
+        const data = a.payload.doc.data() as Evidence;
         data.id = a.payload.doc.id;
         return data;
         });
 }));
 }
 
-uploadFilesFirebase( files: FileItem[], uid: string, tid: string  ) {
+uploadFilesFirebase( files: Evidence[], uid: User, tid: string  ) {
 
     const storageRef = firebase.storage().ref();
     let url: string;
@@ -63,7 +65,7 @@ uploadFilesFirebase( files: FileItem[], uid: string, tid: string  ) {
       }
 
       const uploadTask: firebase.storage.UploadTask =
-                  storageRef.child(`${ uid }/${ this.FILES_FOLDER }/${ tid }/ ${ item.fileName}`)
+                  storageRef.child(`${ uid.id }/${ this.FILES_FOLDER }/${ tid }/ ${ item.fileName}`)
                             .put( item.file );
 
       uploadTask.on( firebase.storage.TaskEvent.STATE_CHANGED,
@@ -95,15 +97,35 @@ uploadFilesFirebase( files: FileItem[], uid: string, tid: string  ) {
     return a;
   }
 
-  private onSavePhoto( photo: FileItem, uid: string ) {
+  private onSavePhoto( photo: Evidence, uid: User ) {
 
     let id = this.afs.createId();
-    this.afs.collection('evidences').doc(uid).collection('files').doc(id).set({
-          name: photo.fileName,
+    this.afs.collection('evidences').doc(photo.tid).set({
+        tid: photo.tid
+
+    });
+    this.afs.collection('evidences').doc(photo.tid).collection('files').doc(id).set({
+          fileName: photo.fileName,
           url: photo.url,
-          tid: photo.tid
+          userPhoto: uid.photo,
+          userId: uid.id,
+          userName: uid.name,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
   }
+
+  getEvidences( taskId: string ) {
+    this.evidences = this.afs.collection('evidences').doc(taskId).collection('files', ref => ref.orderBy('createdAt')).snapshotChanges().pipe(
+         map(changes => {
+           return changes.map(action => {
+             const data = action.payload.doc.data() as Evidence;
+             data.id = action.payload.doc.id;
+             return data;
+           });
+         }));
+    return this.evidences;
+   }
+
 
 }

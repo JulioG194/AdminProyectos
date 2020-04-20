@@ -145,7 +145,7 @@ export class TaskComponent implements OnInit {
   task: Task = {
     name: '',
     status: 'Por realizar',
-    delegate: 'Delegado'
+    delegate: null
     };
 
     team: Team;

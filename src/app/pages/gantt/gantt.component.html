@@ -1,0 +1,25 @@
+<h2>Gantt de Tareas de {{ projectApp.name }}</h2>
+<mat-divider></mat-divider>
+<br>
+<!-- <table>
+    <thead>
+        <tr>
+            <th>Actividad</th>
+            <th>Vistas</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let item of activitiesProject">
+            <td>{{item.name}}</td>
+            <td>
+                <button (click)="mostrar(item)">
+          <mat-icon>notes</mat-icon>
+        </button>
+            </td>
+        </tr>
+    </tbody>
+</table> -->
+<div *ngIf="post == true">
+    <chart class="chart" type="horizontalBar" [data]="chartData" [options]="options"></chart>
+</div>

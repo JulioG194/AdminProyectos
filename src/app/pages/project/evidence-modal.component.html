@@ -1,0 +1,20 @@
+<div class="box">
+    <form>
+        <h1>Evidencia</h1>
+        <h4>Tarea</h4>
+        <p>Estas son las evidencias que ha subido --Usuario--</p>
+        <div class="scroll">
+            <div class="grid">
+                <div *ngFor="let item of evidences" class="card">
+                    <div>Nombre:{{item.fileName}}</div>
+                    <div>Fecha de entrega:{{item.userName}}</div>
+                    <img [src]="item.url" alt="">
+                    <button (click)="downloadFile(item.url)">
+                     <mat-icon>arrow_downward</mat-icon>
+                 </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
