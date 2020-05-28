@@ -2,14 +2,25 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+h2,
+h3,
+h4,
+h5 {
+    color: white;
+}
+
+mat-divider {
+    border-top-color: white;
+}
+
 
 /*CSS para selecion de equipo*/
 
 .card {
     min-width: 200px;
     min-height: 50px;
-    background-color: floralwhite;
-    border: solid 1px rgb(109, 12, 65);
+    background-color: rgb(255, 252, 214);
+    border: solid 1px rgb(65, 37, 42);
 }
 
 ul {
@@ -32,28 +43,30 @@ mat-list-option {
 .end {
     display: flex;
     justify-content: space-between;
-    background: white;
+    /* background: white; */
     padding: 10px;
 }
 
 .end p {
-    color: rgb(7, 6, 73);
+    color: white
 }
 
 button {
-    background: black;
-    color: white;
-    width: 150px;
+    background: rgb(208, 211, 212);
+    color: black;
+    width: 100px;
     border: none;
-    border-radius: 15px;
-    padding: 10px;
-    font-size: 20px;
+    border-radius: 10px;
+    padding: 7px;
+    font-size: 18px;
 }
 
-button:hover {
-    background: rgb(20, 109, 112);
-    color: black;
+
+/* button:hover {
+    background: rgb(78, 122, 115);
+    color: white;
 }
+ */
 
 .post {
     display: flex;
@@ -90,13 +103,14 @@ button:hover {
 
 table {
     width: 100%;
-    background-color: white;
+    background: rgb(12, 27, 34);
     text-align: left;
     /* border-collapse: collapse; */
     min-width: 400px;
     overflow-x: auto;
-    border: 1px solid black;
+    border: 3px solid black;
     margin: 0px auto;
+    color: rgb(212, 212, 212);
 }
 
 th,
@@ -106,15 +120,20 @@ td {
     text-align: center;
 }
 
+td {
+    font-size: 18px;
+}
+
 thead {
     /* background-color:rgb(21, 128, 101); */
-    background: black;
-    color: white;
+    background: rgb(212, 212, 212);
+    color: black;
     border-bottom: solid 3px black;
 }
 
 tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: rgb(42, 49, 61);
+    color: rgb(212, 212, 212);
 }
 
 
@@ -124,10 +143,10 @@ tr:nth-child(even) {
 } */
 
 .style {
-    width: 250px;
+    width: 200px;
     border: none;
-    border-radius: 15px;
-    padding: 10px;
-    font-size: 20px;
+    border-radius: 10px;
+    padding: 7px;
+    font-size: 18px;
     float: right;
 }

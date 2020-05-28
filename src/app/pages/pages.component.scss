@@ -1,9 +1,12 @@
 * {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background: rgb(8, 35, 48);
 }
 
 .main {
     position: absolute;
+    margin-top: -17px;
+    margin-left: -20px;
     top: 80px;
     right: 0;
     bottom: 0;
@@ -14,8 +17,9 @@
 main {
     padding: 1rem 2rem;
     height: 100%;
-    overflow: scroll;
-    /*  overflow-x:hidden; */
+    overflow-y: scroll;
+    /*  overflow: scroll; */
+    background: rgb(8, 35, 48);
 }
 
 main.mini-padding {
@@ -49,4 +53,15 @@ igx-nav-drawer.mini-topping {
 .igx-nav-drawer__aside::-webkit-scrollbar-thumb {
     background: #0375be;
     border-radius: 0;
+}
+
+igx-icon {
+    color: white;
+}
+
+nav {
+    background: rgb(12, 27, 34);
+    height: 98%;
+    overflow: none;
+    margin-top: -8px;
 }

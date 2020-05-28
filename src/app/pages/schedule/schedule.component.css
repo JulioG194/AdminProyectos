@@ -1,3 +1,15 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h2 {
+    color: white;
+}
+
+mat-divider {
+    border-top-color: white;
+}
+
 h3 {
     margin: 0 0 10px;
 }
@@ -11,37 +23,48 @@ pre {
     margin-top: 20px;
 }
 
-.btn-primary {
+
+/* .btn-primary {
     background: rgb(18, 114, 55);
     border-color: rgb(18, 114, 55);
 }
+ */
 
 table {
     width: 100%;
-    margin: 0 auto;
-    border: 1px solid black;
+    background: rgb(12, 27, 34);
+    border: 3px solid black;
+    margin: 0px auto;
+    color: rgb(212, 212, 212);
 }
 
 th,
 td {
     text-align: center;
-}
-
-thead {
-    background: black;
-    color: white;
-}
-
-th,
-td {
     padding: 10px;
 }
 
-tr:nth-child(even) {
-    background: #ddd;
+td {
+    font-size: 15px;
 }
 
-tr:hover td {
+th {
+    font-size: 18px;
+}
+
+thead {
+    background: rgb(212, 212, 212);
+    color: black;
+    border-bottom: 3px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(42, 49, 61);
+    color: rgb(212, 212, 212);
+}
+
+
+/* tr:hover td {
     background-color: rgb(36, 170, 31);
     color: white;
-}
+} */

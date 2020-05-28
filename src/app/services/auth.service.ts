@@ -30,7 +30,7 @@ export class AuthService {
   userGuGo: User;
   userToken: string;
   idUser: string;
-  photoUrl: string;
+  photoURL: string;
 
   constructor( private http: HttpClient,
                private afs: AngularFirestore
@@ -53,7 +53,7 @@ export class AuthService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as User;
-          data.id = a.payload.doc.id;
+          data.uid = a.payload.doc.id;
           return data;
         });
       }));
@@ -95,8 +95,8 @@ export class AuthService {
         console.log(resp);
         localStorage.clear();
         const userAu: User = {
-          id : resp.localId,
-          name : user.name,
+          uid : resp.localId,
+          displayName : user.displayName,
           email : resp.email
         };
         localStorage.setItem('usuario', JSON.stringify(userAu));
@@ -150,6 +150,25 @@ export class AuthService {
 
 }
 
+
+  verifyEmail(idT: string) {
+    const authData = {
+      idToken: idT,
+      requestType: 'VERIFY_EMAIL'
+    };
+
+    console.log(authData);
+
+    return this.http.post(
+    `${ this.url }/accounts:sendOobCode?key=${ this.apikey }`,
+    authData
+  ).pipe(
+    map( (resp: any) => {
+    return resp;
+    })
+  );
+  }
+
   // Funcion para el cierre de la sesion
   logout() {
     localStorage.clear();
@@ -161,31 +180,28 @@ export class AuthService {
   addNewUser( user: User, idUser: string ) {
     // this.userCollection.add(user);
     this.userCollection.doc(idUser).set({
+        uid: idUser,
         birthdate: user.birthdate,
         createdAt: user.createdAt,
         description: user.description,
         email: user.email,
         employment: user.employment,
         gender: user.gender,
-        google: user.google,
         manager: user.manager,
-        name: user.name,
-        phone_number: user.phone_number,
-        photo: user.photo
+        displayName: user.displayName,
+        phoneNumber: user.phoneNumber,
+        photoURL: user.photoURL
   });
   }
 
   // *Opcional* Funcion para ver si el usuario esta autenticado
   /* isAuthenticated(): boolean {
-
     if ( this.userToken.length < 2 ) {
       return false;
     }
-
     const expira = Number(localStorage.getItem('expira'));
     const expiraDate = new Date();
     expiraDate.setTime(expira);
-
     if ( expiraDate > new Date() ) {
       return true;
     } else {
@@ -195,14 +211,14 @@ export class AuthService {
 
   // Funcion que retorna un observable para obtener un usuario como parametro de entrada su Id
   getUser( user: User ) {
-    this.userDoc = this.afs.doc(`users/${user.id}`);
+    this.userDoc = this.afs.doc(`users/${user.uid}`);
     this.user = this.userDoc.snapshotChanges().pipe(
       map(actions => {
         if (actions.payload.exists === false) {
           return null;
         } else {
           const data = actions.payload.data() as User;
-          data.id = actions.payload.id;
+          data.uid = actions.payload.id;
           return data;
         }
         }));
@@ -223,7 +239,6 @@ export class AuthService {
         }
         }));
     return this.user1;
-
   }
  */
 
@@ -235,7 +250,7 @@ export class AuthService {
         return null;
       } else {
         const data = actions.payload.data() as User;
-        data.id = actions.payload.id;
+        data.uid = actions.payload.id;
         return data;
       }
       }));
@@ -251,25 +266,23 @@ getPhotoById( id: string ): string {
         return null;
       } else {
         const data = actions.payload.data() as User;
-        data.id = actions.payload.id;
+        data.uid = actions.payload.id;
         return data;
       }
       }));
-  return this.photoUrl;
+  return this.photoURL;
 
 }
 
 
   updateUser( user: User ) {
-    this.afs.collection('users').doc(user.id).update(
+    this.afs.collection('users').doc(user.uid).update(
       {
-        name: user.name,
-       // password: user.password,
+        displayName: user.displayName,
         birthdate: user.birthdate,
-      //  career: user.career,
         description: user.description,
         gender: user.gender,
-        photo: user.photo
+        photoURL: user.photoURL
       }
     );
   }
@@ -285,7 +298,7 @@ getPhotoById( id: string ): string {
       map(changes => {
         return changes.map(action => {
           const data = action.payload.doc.data() as User;
-          data.id = action.payload.doc.id;
+          data.uid = action.payload.doc.id;
           return data;
         });
       }));
@@ -296,14 +309,14 @@ getPhotoById( id: string ): string {
   // Funcion para guardar un usuario en el localstorage
   saveUserOnStorage( user: User) {
      const userAu: User = {
-      id : '',
-      name : '',
+      uid : '',
+      displayName : '',
       email : ''
     };
      this.usersAuth.forEach(userAux => {
       if (userAux.email === user.email) {
-        userAu.id = userAux.id;
-        userAu.name = userAux.name;
+        userAu.uid = userAux.uid;
+        userAu.displayName = userAux.displayName;
         userAu.email = userAux.email;
 
         localStorage.setItem('usuario', JSON.stringify(userAu));

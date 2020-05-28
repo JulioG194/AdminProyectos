@@ -1,9 +1,9 @@
 <h2>Mi perfil</h2>
 <mat-divider></mat-divider>
 <br>
-<h5>{{userApp.name}}</h5>
+<h5>{{userApp.displayName}}</h5>
 <br>
-<img [src]="userApp.photo" alt="">
+<img [src]="userApp.photoURL" alt="">
 <div class="addPhoto">
     <button>
         <mat-icon>add_a_photo</mat-icon>
@@ -24,14 +24,15 @@
         <mat-tab label="Informacion básica"> -->
     <div class="align">
         <div class="container">
+            <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red;">* Nombre obligatorio</span>
             <mat-form-field>
                 <label for="">Nombre</label>
-                <input matInput type="text" [value]="userApp.name" name="name" [(ngModel)]="userApp.name" required>
+                <input matInput type="text" [value]="userApp.displayName" name="name" [(ngModel)]="userApp.displayName" required>
             </mat-form-field>
 
             <mat-form-field>
                 <label for="">Correo electrónico</label>
-                <input matInput [value]="userApp.email" type="email" name="email" [(ngModel)]="userApp.email" required>
+                <input matInput [value]="userApp.email" type="email" name="email" [(ngModel)]="userApp.email" disabled required>
             </mat-form-field>
 
         </div>
@@ -39,9 +40,10 @@
             <mat-tab label="Acerca de mi"> -->
         <div class="container">
 
+            <span *ngIf="f.submitted && f.controls['phone'].errors" style="color:red;">* Numero Celular obligatorio</span>
             <mat-form-field>
                 <label for="">Número celular</label>
-                <input matInput [value]="userApp.phone_number" type="text" name="career" [(ngModel)]="userApp.phone_number">
+                <input matInput [value]="userApp.phoneNumber" type="text" minlength="10" name="phone" [(ngModel)]="userApp.phoneNumber" required>
             </mat-form-field>
 
             <mat-form-field>

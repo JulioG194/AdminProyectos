@@ -12,6 +12,8 @@ import { Team } from 'src/app/models/team.interface';
 import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import format from 'date-fns/format';
+// import { GoogleChartInterface } from 'ng2-google-charts';
+
 
 const colors: any = {
   red: {
@@ -69,14 +71,14 @@ allstartdatesT: Date[] = [];
 allenddatesT: Date[] = [];
     projects: Project[] = [];
     userApp: User = {
-      name: '',
+      displayName: '',
       email: '',
       password: '',
-      id: '',
+      uid: '',
       birthdate: new Date(),
       description: '',
       gender: '',
-      photo: ''
+      photoURL: ''
   };
 projectApp: Project = {
       name: '',
@@ -89,31 +91,7 @@ projectApp: Project = {
       ownerId: '',
       status: 'To Do'
 };
-projects1: any[] = [{ 
-  name:'Proyecto1',
-  fecha:'10/02/2020',
-  dias:'2',
-  porcentaje:'80'
-},
-{
-  name:'Proyecto2',
-  fecha:'11/02/2020',
-  dias:'4',
-  porcentaje:'50'
-},
-{
-  name:'Proyecto3',
-  fecha:'15/02/2020',
-  dias:'5',
-  porcentaje:'75'
-},
-{
-  name:'Proyecto3',
-  fecha:'15/02/2020',
-  dias:'15',
-  porcentaje:'100'
-}
-];
+
 // idUser: String;
 teamsObservable: any;
 projectsAux: Project[];
@@ -125,6 +103,32 @@ startD: Date;
 endD: Date;
 minDate = new Date();
 
+information: any[];
+dataC: any[] = [];
+dataT: any[] = [];
+
+public timelineChartData: any =  {
+  chartType: 'Timeline',
+  dataTable: this.dataC,
+  options: {
+            'title': 'Tasks',
+            // width: 700,
+            // height: 500,
+            orientation: 'vertical',
+            // chartArea: {width: '100%'},
+            explorer: {axis: 'horizontal', keepInBounds: true},
+            yAxis : {
+              textStyle : {
+                  fontSize: 7 // or the number you want
+              }
+          }
+        }
+   };
+
+chartType: any;
+dataTable: any = [];
+optionsC: any;
+automaticClose = false;
 
 chartData;
 options;
@@ -230,6 +234,7 @@ lables = [];
                  private _teamService: TeamService,
                  private _authService: AuthService ) {}
 
+
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       if (isSameMonth(date, this.viewDate)) {
         if (
@@ -320,19 +325,8 @@ lables = [];
 
     ngOnInit() {
       this._authService.getUser(this._authService.userAuth)
-      .subscribe(user => {(this.userApp = user, this.idUser = user.id);
-                          this._teamService.getTeamByUser(this.userApp)
-                          .subscribe(team => {
-                                              this.teamsObservable = team;
-                                              this.teamsObservable.map((a: Team) =>
-                                              this.teamAux = a);
-                                              this.teamAux.delegates = [];
-                                              this._teamService.getDelegates(this.teamAux)
-                                              .subscribe(delegates => {
-                                                                      this.teamAux.delegates = delegates;
-                                                                                  });
-                                              this.projectApp.teamId = this.teamAux.id;
-                                              this._projectService.getProjectByOwner(this.userApp)
+      .subscribe(user => {(this.userApp = user, this.idUser = user.uid);
+                          this._projectService.getProjectByOwner(this.userApp)
                                               .subscribe(projects => {
                                                                     this.projectsAux = projects;
                                                                     this.difDyas = [];
@@ -346,7 +340,7 @@ lables = [];
                                                                       this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
                                                                       // console.log(this.differenceDays);
                                                                       this.difDyas.push(this.differenceDays);
-                                                                      console.log(this.difDyas);
+                                                                      // console.log(this.difDyas);
                                                                       this.event.start = startOfDay(this.startD);
                                                                       this.event.end = startOfDay(this.endD);
                                                                       this.event.title = project.name;
@@ -359,7 +353,6 @@ lables = [];
                                                                     });
                                                                     this.refresh.next();
                                               });
-      });
       });
     }
 
@@ -449,69 +442,75 @@ lables = [];
       // Discard the time and time-zone information.
       const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
       const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-  
+
       return Math.floor((utc2 - utc1) / this.MS_PER_DAY);
     }
 
     mostrar(idProject: string) {
-    this.data = [];
-    this.lables = [];
-    this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); });
-    this._projectService.getProject(idProject).subscribe(project => {
-                                                                                                            this.projectApp = project;
-                                                                                                            this.projectApp.start_date = new Date(this.projectApp.start_date['seconds'] * 1000);
-                                                                                                            this.projectApp.end_date = new Date(this.projectApp.end_date['seconds'] * 1000);
-                                                                                                           /*  this.differenceTime = Math.abs(this.projectApp.end_date.getTime() - this.projectApp.start_date.getTime());
-                                                                                                            this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
-                                                                                                            console.log(this.differenceDays); */
-                                                                                                            this._teamService.getTeam(this.projectApp.teamId).subscribe(team => {
-                                                                                                            this.team = team;
-                                                                                                            this._teamService.getDelegates(this.team).subscribe(delegates => {
-                                                                                                              this.delegates = delegates;
-                                                                                                                        });
+      this.post = false;
+      this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); });
+      this._projectService.getProject(idProject).subscribe(project => {
+                                                                                                              this.projectApp = project;
+                                                                                                              this.projectApp.start_date = new Date(this.projectApp.start_date['seconds'] * 1000);
+                                                                                                              this.projectApp.end_date = new Date(this.projectApp.end_date['seconds'] * 1000);
+                                                                                                             /*  this.differenceTime = Math.abs(this.projectApp.end_date.getTime() - this.projectApp.start_date.getTime());
+                                                                                                              this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
+                                                                                                              console.log(this.differenceDays); */
+                                                                                                              this._teamService.getTeam(this.projectApp.teamId).subscribe(team => {
+                                                                                                              this.team = team;
+                                                                                                              this._teamService.getDelegates(this.team).subscribe(delegates => {
+                                                                                                                this.delegates = delegates;
+                                                                                                                          });
+                    });
+                                                                                                              this._projectService.getActivities(this.projectApp).subscribe( activities => {
+                                                                                                                    this.activitiesProject = activities;
+                                                                                                                    this.dataC = [];
+                                                                                                                    this.dataTable = [];
+                                                                                                                    /* this.allstartdates = [];
+                                                                                                                    this.allenddates = []; */
+                                                                                                                    /* this.activitiesProject.forEach(activity => {
+                                                                                                                      this.allstartdates.push(new Date(activity.start_date['seconds'] * 1000));
+                                                                                                                      this.allenddates.push(new Date(activity.end_date['seconds'] * 1000));
+                                                                                                                    }); */
+                                                                                                                    // this.data = [];
+                                                                                                                    // tslint:disable-next-line:prefer-for-of
+                                                                                                                    for (let i = 0; i < this.activitiesProject.length; i++) {
+                                                                                                                            this._projectService.getTasks(this.projectApp.id, this.activitiesProject[i].id).subscribe(tasks => {
+                                                                                                                               this.activitiesProject[i].tasks = tasks;
+                                                                                                                               // console.log(this.activitiesProject[i]);
+                                                                                                                               // tslint:disable-next-line:prefer-for-of
+                                                                                                                               for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
+                                                                                                                                   this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
+                                                                                                                                   this.activitiesProject[i].tasks[j].end_date = new Date(this.activitiesProject[i].tasks[j].end_date['seconds'] * 1000);
+                                                                                                                                   let data: any[] = [];
+                                                                                                                                   data = [ this.activitiesProject[i].name, this.activitiesProject[i].tasks[j].name,  this.activitiesProject[i].tasks[j].start_date, this.activitiesProject[i].tasks[j].end_date ];
+                                                                                                                                   this.dataC.push(data);
+                                                                                                                                  }
+                                                                                                                               // this.timelineChartData =  {
+                                                                                                                               this.chartType = 'Timeline';
+                                                                                                                               this.dataTable = this.dataC;
+                                                                                                                               // console.log(this.dataTable);
+                                                                                                                               this.optionsC = {
+                                                                                                                                              'title': 'Tasks',
+                                                                                                                                              width: 1250,
+                                                                                                                                              height: 1000,
+                                                                                                                                              orientation: 'vertical',
+                                                                                                                                              chartArea: {width: '100%'},
+                                                                                                                                              explorer: {axis: 'horizontal', keepInBounds: true},
+                                                                                                                                              yAxis : {
+                                                                                                                                                textStyle : {
+                                                                                                                                                    fontSize: 7 // or the number you want
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                          };
+                                                                                                                                  //   };
+                                                                                                                      });
+                                                                                                                      }
+                    });
                   });
-                                                                                                            this._projectService.getActivities(this.projectApp).subscribe( activities => {
-                                                                                                                  this.activitiesProject = activities;
-                                                                                                                  /* this.allstartdates = [];
-                                                                                                                  this.allenddates = []; */
-                                                                                                                  /* this.activitiesProject.forEach(activity => {
-                                                                                                                    this.allstartdates.push(new Date(activity.start_date['seconds'] * 1000));
-                                                                                                                    this.allenddates.push(new Date(activity.end_date['seconds'] * 1000));
-                                                                                                                  }); */
-                                                                                                                  // tslint:disable-next-line:prefer-for-of
-                                                                                                                  for (let i = 0; i < this.activitiesProject.length; i++) {
-                                                                                                                          this._projectService.getTasks(this.projectApp.id, this.activitiesProject[i].id).subscribe(tasks => {
-                                                                                                                             this.activitiesProject[i].tasks = tasks;
-                                                                                                                             console.log(this.activitiesProject[i]);
-                                                                                                                             // tslint:disable-next-line:prefer-for-of
-                                                                                                                             for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
-                                                                                                                                 this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
-                                                                                                                                 let st: string;
-                                                                                                                                 st = format(this.activitiesProject[i].tasks[j].start_date, 'yyyy-MM-dd HH:mm:ss');
-                                                                                                                                 // console.log( );
-                                                                                                                                 let end: string;
-                                                                                                                                 ////
-                                                                                                                                 this.activitiesProject[i].tasks[j].end_date = new Date(this.activitiesProject[i].tasks[j].end_date['seconds'] * 1000);
-                                                                                                                                 end = format(this.activitiesProject[i].tasks[j].end_date, 'yyyy-MM-dd HH:mm:ss');
-                                                                                                                                 const dato: any = {
-                                                                                                                                   task: this.activitiesProject[i].tasks[j].name,
-                                                                                                                                   startDate: st,
-                                                                                                                                   endDate: end,
-                                                                                                                                   idAct: this.activitiesProject[i].id,
-                                                                                                                                   nameAct: this.activitiesProject[i].name
-                                                                                                                                 };
-                                                                                                                                 this.data.push(dato);
-                                                                                                                                 console.log(this.data);
-                                                                                                                                 // console.log(this.data);
-                                                                                                                                 this.lables.push(this.activitiesProject[i].tasks[j].name);
-                                                                                                                                }
-                                                                                                                    });
-                                                                                                                    }
-                  });
-                });
-    {
-                  setTimeout(() => { this.createChart(); this.post = true; }, 1000);
-                }
+      {
+                    setTimeout(() => { this.post = true;  }, 2000);
+                  }
   }
 
 

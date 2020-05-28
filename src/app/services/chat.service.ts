@@ -71,7 +71,4 @@ getChats( userId: string) {
   return this.chatsUsers;
 }
 
-
-
-
 }

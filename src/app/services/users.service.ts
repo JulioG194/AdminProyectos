@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+/* import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.interface';
@@ -107,3 +107,4 @@ export class UserService {
 
 
 }
+ */

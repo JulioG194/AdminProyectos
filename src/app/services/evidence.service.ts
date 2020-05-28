@@ -65,7 +65,7 @@ uploadFilesFirebase( files: Evidence[], uid: User, tid: string  ) {
       }
 
       const uploadTask: firebase.storage.UploadTask =
-                  storageRef.child(`${ uid.id }/${ this.FILES_FOLDER }/${ tid }/ ${ item.fileName}`)
+                  storageRef.child(`${ uid.uid }/${ this.FILES_FOLDER }/${ tid }/ ${ item.fileName}`)
                             .put( item.file );
 
       uploadTask.on( firebase.storage.TaskEvent.STATE_CHANGED,
@@ -107,9 +107,9 @@ uploadFilesFirebase( files: Evidence[], uid: User, tid: string  ) {
     this.afs.collection('evidences').doc(photo.tid).collection('files').doc(id).set({
           fileName: photo.fileName,
           url: photo.url,
-          userPhoto: uid.photo,
-          userId: uid.id,
-          userName: uid.name,
+          userPhoto: uid.photoURL,
+          userId: uid.uid,
+          userName: uid.displayName,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 

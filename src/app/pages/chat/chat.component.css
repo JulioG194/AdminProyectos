@@ -2,11 +2,19 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+h2 {
+    color: white;
+}
+
+mat-divider {
+    border-top-color: white;
+}
+
 .box {
     width: 100%;
     height: 80%;
     margin-top: 25px;
-    border: 1px solid black;
+    border: 2px solid rgb(212, 212, 212);
 }
 
 .left {
@@ -16,7 +24,7 @@
 .rigth {
     width: 70%;
     /* background: rgb(241, 243, 242); */
-    background: rgb(207, 207, 207);
+    background: rgb(42, 49, 61);
 }
 
 .align {
@@ -29,14 +37,16 @@ mat-toolbar {
 }
 
 .header1 {
-    /* background: #a34252; */
-    background: #327762;
+    /* background: rgb(64, 90, 94); */
+    background: rgb(12, 27, 34);
     color: white;
 }
 
 .header2 {
-    background: rgb(235, 235, 235);
+    /* background: wheat; */
+    background: rgb(212, 212, 212);
     /* background: white; */
+    color: black;
 }
 
 .contacts {
@@ -52,7 +62,7 @@ mat-toolbar {
     padding: 20px;
     border: none;
     border: 0.1px solid black;
-    background: white;
+    background: rgb(240, 240, 240);
 }
 
 .scroll-contact {
@@ -62,11 +72,12 @@ mat-toolbar {
 
 .scroll-chat {
     overflow-y: scroll;
-    height: 75%;
+    height: 74.5%;
 }
 
 .contacts button:hover {
-    background: #d1ffa6;
+    /* background: #d1ffa6; */
+    background: white;
 }
 
 .send {
@@ -109,23 +120,33 @@ mat-icon {
     width: 5%;
 }
 
+.container>div {
+    float: right;
+}
+
+.container1>div {
+    float: left;
+}
+
 .msgTx {
-    width: 80%;
+    max-width: 80%;
+    min-width: 10%;
     border-radius: 15px;
-    margin-left: 20%;
-    border: 1px solid black;
-    padding: 5px;
-    /* background: rgb(248, 240, 172); */
-    background: #cdf0ea;
+    border: 1px solid white;
+    color: white;
+    padding-right: 1%;
+    background: rgb(71, 65, 65);
 }
 
 .msgRx {
-    width: 80%;
+    max-width: 20%;
     border-radius: 15px;
-    border: 1px solid black;
-    padding: 5px;
-    /* background: rgb(207, 255, 251); */
-    background: white;
+    border: 1px solid white;
+    /* color: wheat; */
+    color: black;
+    min-width: 20%;
+    padding-right: 1%;
+    background: blanchedalmond;
 }
 
 .photo img {

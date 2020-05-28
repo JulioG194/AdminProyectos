@@ -73,10 +73,10 @@ import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+
 const modules: any[] = [
 
   LayoutModule,
-
   MatAutocompleteModule,
   MatCheckboxModule,
   MatDatepickerModule,

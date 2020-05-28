@@ -31,7 +31,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { GraficoBarraHorizontalComponent } from '../components/grafico-barra-horizontal/grafico-barra-horizontal.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GanttComponent } from './gantt/gantt.component';
-
+import { GoogleChartsModule } from 'angular-google-charts';
 
 
 
@@ -55,6 +55,7 @@ registerLocaleData(localeEs);
     }),
     DragDropModule,
     ChartsModule,
+    GoogleChartsModule,
     ChartModule
   ],
   exports: [
@@ -63,7 +64,8 @@ registerLocaleData(localeEs);
     NgbModalModule,
     FlatpickrModule,
     CalendarModule,
-    NgxChartsModule
+    NgxChartsModule,
+    GoogleChartsModule
   ],
   providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' }, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB'} ],
   entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, EvidenceModalComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent]

@@ -1,25 +1,22 @@
 .box {
     width: 100%;
-    background: rgb(241, 243, 242);
+    background: rgb(42, 49, 61);
     border: 1px solid rgb(77, 83, 71);
     margin: 0px auto;
-    
 }
 
 .scroll {
     max-height: 500px;
-    overflow-y: scroll; 
+    overflow-y: scroll;
 }
-
 
 .box h1 {
     color: white;
     font-size: 25px;
     padding: 15px;
-    background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131));
+    background: rgb(12, 27, 34);
     text-align: center;
 }
-
 
 .grid {
     display: grid;
@@ -29,12 +26,10 @@
     grid-row-gap: 40px;
     text-align: center;
     padding: 2%;
-    
 }
 
 .card {
     border: 1px solid black;
-    
 }
 
 .align {

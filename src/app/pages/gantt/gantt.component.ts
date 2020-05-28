@@ -71,14 +71,14 @@ differenceTime: number;
 differenceDays: number;
 
 userApp: User = {
-  name: '',
+  displayName: '',
   email: '',
   password: '',
-  id: '',
+  uid: '',
   birthdate: new Date(),
   description: '',
   gender: '',
-  photo: ''
+  photoURL: ''
 };
 allstartdates: Date[] = [];
 allenddates: Date[] = [];

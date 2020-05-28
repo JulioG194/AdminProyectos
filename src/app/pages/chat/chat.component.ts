@@ -15,16 +15,7 @@ import { NgForm } from '@angular/forms';
 })
 export class ChatComponent implements OnInit {
 
-  users: any[] = [{name: 'Daniel Villavicencio', cel: '0987654321'},
-                {name: 'Vane Perez', cel: '0987654321'},
-                {name: 'Julio Gonzalez', cel: '0987654321'},
-                {name: 'Alexa Fernandez', cel: '0987654321'},
-                {name: 'Yess Chuquimarca', cel: '0987654321'},
-                {name: 'Santo Simba', cel: '0987654321'},
-                {name: 'Bry Carrion', cel: '0987654321'}
-                ];
-
-                usersApp: User[] ;
+                  usersApp: User[] ;
                 usersAppFilter: User[] = [];
                 usersGugo: User[] = [];
                 selectedUsers: User[] = [];
@@ -33,17 +24,16 @@ export class ChatComponent implements OnInit {
                 delegates: User[] = [];
 
                 userGugo: User = {
-                  name: '',
+                  displayName: '',
                   email: '',
                   password: '',
-                  id: '',
+                  uid: '',
                   birthdate: new Date(),
                   description: '',
                   gender: '',
-                  photo: '',
+                  photoURL: '',
                   manager: false,
-                  google: false,
-                  phone_number: ''
+                  phoneNumber: ''
                 };
 
                 teamsObservable: any;
@@ -63,16 +53,19 @@ export class ChatComponent implements OnInit {
                 delegatesAux1: User[] = [];
                 managers: string[] = [];
                 managerAux: User = {
-                    name: '',
-                    email: ''
+                    displayName: '',
+                    email: '',
+                    uid: ''
                 };
                 delegateAux: User = {
-                  name: '',
-                  email: ''
+                  displayName: '',
+                  email: '',
+                  uid: ''
               };
               delegateAux1: User = {
-                name: '',
-                email: ''
+                displayName: '',
+                email: '',
+                uid: ''
               };
                chatUser: Chat = {
                 senderEmail: '',
@@ -85,8 +78,9 @@ export class ChatComponent implements OnInit {
             };
 
             coworker: User = {
-              name: '',
+              displayName: '',
               email: '',
+              uid: ''
             };
 
             chatsSend: Chat[] = [];
@@ -107,7 +101,7 @@ export class ChatComponent implements OnInit {
   getTeam() {
     this.authService.getUser(this.authService.userAuth)
    .subscribe(user => {(this.userGugo = user);
-                       console.log(this.userGugo);
+                      // console.log(this.userGugo);
                        // Obtener todos los usuarios de la App
                       // this.authService.getUsers()
                       // .subscribe(users => {
@@ -132,7 +126,7 @@ export class ChatComponent implements OnInit {
                                   this.teamService.getDelegates(this.teamGugo).subscribe(delegates => {
                                   this.teamGugo.delegates = delegates;
                                   this.delegatesAux1 = this.teamGugo.delegates;
-                                  console.log(this.teamGugo.delegates);
+                                  // console.log(this.teamGugo.delegates);
                                   });
                                }
                        });
@@ -149,15 +143,15 @@ export class ChatComponent implements OnInit {
                                                this.teamsAux1.push(team);
                                                this.teamsAux1.forEach(teamA => {
                                                 this.authService.getUserById(teamA.manager).subscribe(manager => {
-                                                  if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.id === manager.id)) {
+                                                  if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.uid === manager.uid)) {
                                                     this.delegatesAux1.push(manager);
                                                   }
                                                });
                                     });
                                                team.delegates.forEach(delegate => {
-                                                  if (!this.delegatesAux1.some(obj => obj.email === delegate.email && obj.id === delegate.id)) {
+                                                  if (!this.delegatesAux1.some(obj => obj.email === delegate.email && obj.uid === delegate.uid)) {
                                                   this.delegatesAux1.push(delegate);
-                                                  console.log(delegate.photo);
+                                                  // console.log(delegate.photo);
                                                 }
                                                });
                                            }
@@ -206,19 +200,19 @@ export class ChatComponent implements OnInit {
   }
 
   selectUser( id: string, name: string, email: string, photo: string ) {
-    this.coworker.id = id;
-    console.log(this.coworker.id);
-    this.coworker.name = name;
+    this.coworker.uid = id;
+    // console.log(this.coworker.id);
+    this.coworker.displayName = name;
     this.coworker.email = email;
-    this.coworker.photo = photo;
+    this.coworker.photoURL = photo;
 
-    this.chatService.getChats(this.userGugo.id).subscribe(chats => {
+    this.chatService.getChats(this.userGugo.uid).subscribe(chats => {
       this.allChats = chats;
-      console.log(this.allChats);
+      // console.log(this.allChats);
       try {
         this.allChats.sort((a, b) => a.createdAt['seconds'] - b.createdAt['seconds']);
         this.allChats.forEach(chat => {
-          console.log(chat.createdAt);
+          // console.log(chat.createdAt);
         });
       } catch {}
       setTimeout(() => {
@@ -233,38 +227,26 @@ export class ChatComponent implements OnInit {
     if ( form.invalid ) { return; }
 
     this.chatUser.coworkerEmail = this.coworker.email;
-    this.chatUser.coworkerName = this.coworker.name;
+    this.chatUser.coworkerName = this.coworker.displayName;
     this.chatUser.senderEmail = this.userGugo.email;
-    this.chatUser.senderName = this.userGugo.name;
-    this.chatUser.coworkerPhoto = this.coworker.photo;
-    this.chatUser.userId = this.userGugo.id;
-    this.chatUser.coworkerId = this.coworker.id;
+    this.chatUser.senderName = this.userGugo.displayName;
+    this.chatUser.coworkerPhoto = this.coworker.photoURL;
+    this.chatUser.userId = this.userGugo.uid;
+    this.chatUser.coworkerId = this.coworker.uid;
 
-    console.log(this.chatUser);
+    // console.log(this.chatUser);
 
     if ( this.chatUser.message !== null ) {
       this.chatService.addNewChat(this.chatUser);
     }
 
 
-    console.log(this.chatUser.createdAt);
+    // console.log(this.chatUser.createdAt);
 
     this.chatUser.message = '';
 
 
   }
 
-  timeConverter(UNIX_timestamp){
-    var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-    return time;
-  }
 
 }

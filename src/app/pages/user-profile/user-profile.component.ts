@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 
 // tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2';
-import { UserService } from '../../services/users.service';
+// import { UserService } from '../../services/users.service';
 
 
 @Component({
@@ -16,14 +16,15 @@ import { UserService } from '../../services/users.service';
 export class UserProfileComponent implements OnInit {
   userAux: User;
   userApp: User = {
-        name: '',
+        displayName: '',
         email: '',
         password: '',
-        id: '',
+        uid: '',
         birthdate: new Date(),
         description: '',
         gender: '',
-        photo: ''
+        photoURL: '',
+        phoneNumber: ''
   };
 
   selected: string;
@@ -81,7 +82,6 @@ export class UserProfileComponent implements OnInit {
       return;
     }
     }
-    
   }
 
   respError( respuesta: string ) {

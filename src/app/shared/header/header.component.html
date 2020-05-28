@@ -1,18 +1,5 @@
-<!-- <article class="sample-column">
-    <div class="navbar-sample">
-        <igx-navbar title="Gu.Go" actionButtonIcon="menu" [isActionButtonVisible]="true">
-            <igx-icon class="custom-size">notifications</igx-icon>
-            <igx-icon class="custom-size" (click)="ProbarlaApp()">person_pin</igx-icon>
-
-            <igx-action-icon>
-                <igx-icon class="customIcon" fontSet="fas" name="fa-graduation-cap"></igx-icon>
-            </igx-action-icon>
-        </igx-navbar>
-    </div>
-</article> -->
-
 <mat-toolbar class="align">
-    <div class="name">Gu.Go</div>
+    <div class="name">GuGo</div>
     <div class="headerTools">
         <button class="btn btn-outline-light" mat-button [matMenuTriggerFor]="notification">
             <mat-icon>notification_important</mat-icon> 
@@ -20,9 +7,8 @@
 
         <button class="boton" mat-button [matMenuTriggerFor]="profile">
             <div mat-card-avatar >
-                <img class="image" [src]="userGugo.photo" alt="">
+                <img class="image" [src]="userGugo.photoURL" alt="">
             </div>
-           <!--  <mat-icon>person</mat-icon>  -->
         </button>
 
         <mat-menu #notification="matMenu" class="containerNotification">
@@ -46,10 +32,10 @@
                 <mat-divider></mat-divider>
                 <label class="label1">{{ userGugo.employment }}</label> <br>
                 <div class="profileImg">
-                    <img [src]="userGugo.photo" alt="">
+                    <img [src]="userGugo.photoURL" alt="">
                 </div>
                 <br>
-                <label class="label2">{{ userGugo.name }}</label>
+                <label class="label2">{{ userGugo.displayName }}</label>
                 <label class="label3">{{ userGugo.email }}</label>
                 <br>
                 <div class="btnOptions align">

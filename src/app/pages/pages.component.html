@@ -1,8 +1,11 @@
 <app-header></app-header>
 <div class="main" igxLayout>
-    <igx-nav-drawer [width]="'228px'" id="navigation" [isOpen]="drawerState.open" [(pin)]="drawerState.pin" [class.mini-topping]>
+    <igx-nav-drawer [width]="'200px'" id="navigation" [isOpen]="drawerState.open" [(pin)]="drawerState.pin" [class.mini-topping]>
+
         <ng-template igxDrawer>
+
             <nav>
+
                 <!-- <span igxDrawerItem [isHeader]="true">Components</span> -->
                 <!-- <h1>GUUUUU.GOOOO</h1> -->
                 <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
@@ -29,6 +32,7 @@
     </igx-nav-drawer>
 
     <main class="aux" igxFlex [class.mini-padding]="!drawerState.pin && drawerState.miniTemplate">
+
         <span igxButton="icon" igxToggleAction="navigation" matTooltip="Mostrar/Ocultar Menu">
             <igx-icon fontSet="material">menu</igx-icon>
           </span>
@@ -36,6 +40,7 @@
         <!-- <h2>
             Selected: <span class="setting-title">{{ selected }}</span>
         </h2> -->
+
         <router-outlet></router-outlet>
     </main>
 </div>

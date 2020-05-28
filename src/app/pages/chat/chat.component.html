@@ -6,13 +6,13 @@
         <mat-toolbar class="header1">Tus contactos</mat-toolbar>
         <div class="scroll-contact">
             <div class="contacts" *ngFor="let user of delegatesAux1">
-                <button class="select align" (click)="selectUser(user.id,user.name,user.email,user.photo)">
+                <button class="select align" (click)="selectUser(user.uid,user.displayName,user.email,user.photoURL)">
                     <div class="image">
-                        <img [src]="user.photo" alt="">
+                        <img [src]="user.photoURL" alt="">
                     </div>
                     <div class="info">
-                        {{user.name}} <br>
-                        {{user.phone_number}}
+                        {{user.displayName}} <br>
+                        {{user.phoneNumber}}
                         
                     </div>
 
@@ -27,19 +27,21 @@
     </div>
 
     <div class="rigth">
-        <mat-toolbar class="header2">{{ coworker.name }}</mat-toolbar>
-        <div class="scroll-chat" id="app-mensajes">
-            <br>
-            <div *ngFor="let chat of allChats">
 
-                <span>
-        </span>
+        <mat-toolbar class="header2">{{ coworker.displayName }}</mat-toolbar>
+        <div class="scroll-chat" id="app-mensajes">
+
+            <div *ngFor="let chat of allChats">
+                <span></span>
+                <br>
                 <div class="align photo">
                     <!-- <div class="align" *ngIf="chat.coworkerEmail == coworker.email"> -->
-
-                    <p class="msgTx" *ngIf="chat.coworkerEmail == coworker.email">
-                        <img [src]="userGugo.photo" alt=""> {{ chat.message }}
-                    </p>
+                    <div class="container">
+                        <div class="msgTx align" *ngIf="chat.coworkerEmail == coworker.email">
+                            <img [src]="userGugo.photoURL" alt=""> &nbsp;
+                            <p>{{ chat.message }}</p>
+                        </div>
+                    </div>
 
                     <!--  </div> -->
                     <!--   <img src="../../../assets/img/gg.jpg" alt=""> -->
@@ -47,10 +49,11 @@
                 </div>
 
                 <div class="align photo">
-
-                    <p class="msgRx" *ngIf="chat.coworkerEmail == userGugo.email && chat.senderEmail == coworker.email">
-                        <img [src]="coworker.photo" alt=""> {{ chat.message }}
-                    </p>
+                    &nbsp;
+                    <div class="msgRx align" *ngIf="chat.coworkerEmail == userGugo.email && chat.senderEmail == coworker.email">
+                        <img [src]="coworker.photoURL" alt=""> &nbsp;
+                        <p>{{ chat.message }}</p>
+                    </div>
 
                     <!--  <p class="msgRx">recibido</p> -->
 
@@ -64,10 +67,10 @@
                 </div> -->
             </div>
         </div>
-        <form (keyup.enter)="onSendMessage( f2 )" (click)="onSendMessage( f2 )" #f2="ngForm">
+        <form (keyup.enter)="onSendMessage( f2 )" #f2="ngForm">
             <div class="align send" *ngIf="coworker.email">
                 <input name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required>
-                <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                <button class="btn btn-light" matTooltip="Enviar" type="submit" (click)="onSendMessage( f2 )">
                 <mat-icon style="width: 20px; height: 10px">send</mat-icon>  
         </button>
             </div>

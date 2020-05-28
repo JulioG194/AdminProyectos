@@ -2,17 +2,39 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+h2,
+h3,
+h5 {
+    color: white;
+}
+
+mat-divider {
+    border-top-color: white;
+}
+
 
 /*CSS CUANDO NO EXISTE REGISTRO*/
 
 .box1 {
-    width: 100%;
+    width: 80%;
     height: 360px;
-    background: floralwhite;
+    background: rgb(12, 27, 34);
     border: 1px solid rgb(0, 0, 0);
     padding: 30px;
     margin-top: 20px;
     text-align: center;
+    color: white;
+    margin: 0px auto;
+    border-bottom-left-radius: 100px;
+    border-top-right-radius: 100px;
+}
+
+.box1 h5 {
+    color: rgb(227, 241, 245);
+}
+
+.box1 p {
+    color: rgb(93, 122, 124);
 }
 
 .box1 img {
@@ -22,21 +44,23 @@
 }
 
 .btnProject {
-    background: black;
-    color: white;
+    background: rgb(208, 211, 212);
+    color: black;
     width: 215px;
     border: none;
     border-radius: 15px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 18px;
     float: right;
     margin-top: 15px;
 }
 
-.btnProject:hover {
+
+/* .btnProject:hover {
     background: rgb(20, 109, 112);
     color: white;
 }
+ */
 
 
 /*CSS PARA LISTAR LOS PROYECTOS*/
@@ -47,29 +71,33 @@
 
 table {
     width: 100%;
-    background-color: white;
-    border: 1px solid black;
+    background: rgb(12, 27, 34);
+    border: 3px solid black;
     margin: 0px auto;
+    color: rgb(212, 212, 212);
 }
 
 thead {
     /* background-color:rgb(21, 128, 101); */
-    background: black;
-    color: white;
+    background: rgb(212, 212, 212);
+    color: black;
     border-bottom: solid 3px black;
 }
 
-tr:hover td {
+
+/* tr:hover td {
     background-color: rgb(36, 170, 31);
     color: white;
-}
+} */
 
 .title {
     font-size: 18px;
 }
 
 tr:nth-child(even) {
-    background-color: #ddd;
+    /* background-color: #ddd ;*/
+    background-color: rgb(42, 49, 61);
+    color: rgb(212, 212, 212);
 }
 
 td {

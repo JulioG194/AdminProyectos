@@ -3,38 +3,45 @@
         <h1>Nuevo Proyecto</h1>
         <div class="container">
 
-            <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" name="name" [(ngModel)]="projectApp.name" required>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Nombre</mat-label>
+                <input matInput type="text" name="name" [(ngModel)]="projectApp.name" required>
             </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Cliente" type="text" name="client" [(ngModel)]="projectApp.client" required>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Cliente</mat-label>
+                <input matInput type="text" name="client" [(ngModel)]="projectApp.client" required>
             </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Tipo" type="text" name="type" [(ngModel)]="projectApp.type" required>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Tipo</mat-label>
+                <input matInput type="text" name="type" [(ngModel)]="projectApp.type" required>
             </mat-form-field>
 
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Fecha de inicio" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="projectApp.start_date" required>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Fecha de inicio</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="minDate" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="projectApp.start_date" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field>
-                <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Fecha de fin" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="projectApp.end_date" required>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Fecha de fin</mat-label>
+                <input matInput [matDatepicker]="picker1" [min]="minDate" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="projectApp.end_date" required>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field>
-                <textarea cols="5" rows="5" matInput placeholder="Descripción" name="description" [(ngModel)]="projectApp.description"></textarea>
+            <mat-form-field appearance="outline">
+                <mat-label class="placeholder">Descripcion</mat-label>
+                <textarea cols="2" rows="2" matInput name="description" [(ngModel)]="projectApp.description"></textarea>
             </mat-form-field>
-            <span *ngIf="f.submitted && (f.controls['name'].errors || f.controls['client'].errors || f.controls['type'].errors || f.controls['start_date'].errors || f.controls['end_date'].errors || f.controls['description'].errors)" style="color:red;">* Todos los campos deben ser llenados</span>
-
+            <br>
             <div>
                 <button type="submit">Guardar</button>
             </div>
+            <!--  <br> -->
+            <span *ngIf="f.submitted && (f.controls['name'].errors || f.controls['client'].errors || f.controls['type'].errors || f.controls['start_date'].errors || f.controls['end_date'].errors)" style="color:red;"> Todos los campos (*) deben ser llenados</span>
         </div>
     </form>
 </div>

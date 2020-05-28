@@ -5,7 +5,7 @@ import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 // tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2';
-import { UserService } from '../../services/users.service';
+// import { UserService } from '../../services/users.service';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import { Observable } from 'rxjs';
@@ -39,7 +39,7 @@ export interface PAT {
   task: Task;
   start_date: Date;
   end_date: Date;
-  photo?: string;
+  photoURL?: string;
   manager_name?: string;
 }
 
@@ -72,14 +72,14 @@ export class ProjectsComponent implements OnInit {
   team: string[] = [];
 
   userApp: User = {
-        name: '',
+        displayName: '',
         email: '',
         password: '',
-        id: '',
+        uid: '',
         birthdate: new Date(),
         description: '',
         gender: '',
-        photo: ''
+        photoURL: ''
     };
 
 
@@ -138,12 +138,12 @@ export class ProjectsComponent implements OnInit {
     task: null,
     start_date: null,
     end_date: null,
-    photo: ''
+    photoURL: ''
   };
   value = '';
 
   ngOnInit() {
-    this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.userApp = user, this.idUser = user.id);
+    this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.userApp = user, this.idUser = user.uid);
                                                                            if ( this.userApp.manager === true ) {
                                                                                 this.teamService.getTeamByUser(this.userApp).subscribe(team => {
                                                                                     this.teamAux1 = team;
@@ -205,9 +205,10 @@ export class ProjectsComponent implements OnInit {
                                                                                                          this.allstartdates.push(new Date(project.start_date['seconds'] * 1000));
                                                                                                          this.allenddates.push(new Date(project.end_date['seconds'] * 1000));
                                                                                                          let userAux: User = {
-                                                                                                          name: '',
+                                                                                                          displayName: '',
                                                                                                           email: '',
-                                                                                                          photo: ''
+                                                                                                          photoURL: '',
+                                                                                                          uid: ''
                                                                                                       };
                                                                                                          this.authService.getUserById(project.ownerId).subscribe( user => {
                                                                                                             userAux = user;
@@ -238,8 +239,8 @@ export class ProjectsComponent implements OnInit {
                                                                                                                             task,
                                                                                                                             start_date: new Date(task.start_date['seconds'] * 1000),
                                                                                                                             end_date: new Date(task.end_date['seconds'] * 1000),
-                                                                                                                            photo : userAux.photo,
-                                                                                                                            manager_name: userAux.name
+                                                                                                                            photoURL : userAux.photoURL,
+                                                                                                                            manager_name: userAux.displayName
                                                                                                                           };
                                                                                                                            this.pats.push(this.pat);
 
@@ -396,6 +397,7 @@ export class ProjectsComponent implements OnInit {
         type: '',
         teamId: '',
         ownerId: '',
+        progress: 0,
         status: 'Por Realizar',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
@@ -418,7 +420,7 @@ export class ProjectsComponent implements OnInit {
 
     ngOnInit() {
 
-      this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.projectApp.ownerId = user.id);
+      this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.projectApp.ownerId = user.uid);
                                                                              this.teamService.getTeamByUser(this.data.userApp)
                                                                                               .subscribe(team => {
                                                                                                           this.teamsObservable = team;

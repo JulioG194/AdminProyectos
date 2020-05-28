@@ -155,7 +155,7 @@ export class ProjectService {
  }
 
  getProjectByOwner( user: User) {
-  this.projectListObservable = this.afs.collection('projects', ref => ref.where('ownerId', '==', user.id).orderBy('createdAt')).snapshotChanges().pipe(
+  this.projectListObservable = this.afs.collection('projects', ref => ref.where('ownerId', '==', user.uid).orderBy('createdAt')).snapshotChanges().pipe(
     map( changes => {
       return changes.map(action => {
         const data = action.payload.doc.data() as Project;
@@ -263,21 +263,46 @@ getProject( id: string ) {
 }
 updateProject( project: Project ) {
   this.afs.collection('projects').doc(project.id).update({
-
+      name: project.name,
+      client: project.client,
+      type: project.type,
+      start_date: project.start_date,
+      end_date: project.end_date,
+      description: project.description
   });
 }
-updateActivity() {
-
+updateActivity( idProject: string, idActivity: string, activity: Activity ) {
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).update({
+      name: activity.name,
+      start_date: activity.start_date,
+      end_date: activity.end_date
+  });
 }
 
-updateTask() {
-
+updateTask(idProject: string, idActivity: string, idTask: string, task: Task) {
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).collection('tasks').doc(idTask).update({
+    name: task.name,
+    start_date: task.start_date,
+    end_date: task.end_date,
+    delegate: task.delegate
+  });
 }
 
 setTaskProgress( idProject: string, idActivity: string, idTask: string, prog: number ) {
   this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).collection('tasks').doc(idTask).update(
     {
-       progress: prog
+       progress: prog,
+       status: 'Por Verificar'
+    }
+  );
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).update(
+    {
+       status: 'Por Verificar'
+    }
+  );
+  this.afs.collection('projects').doc(idProject).update(
+    {
+       status: 'Por Verificar'
     }
   );
 }
@@ -296,6 +321,29 @@ setProjectProgress( idProject: string, percent: number) {
        progress: percent
     }
   );
+}
+
+checkTask(projectId: string, activityId: string, taskId: string, progressTask: number) {
+    if ( (progressTask > 0) && (progressTask < 100)   ) {
+      this.projectCollection.doc(projectId).collection('activities').doc(activityId).collection('tasks').doc(taskId).update(
+        {
+           status: 'Realizando'
+        }
+      );
+    } else if ( progressTask === 100 ) {
+      this.projectCollection.doc(projectId).collection('activities').doc(activityId).collection('tasks').doc(taskId).update(
+        {
+           status: 'Realizado'
+        }
+      );
+    } else {
+      this.projectCollection.doc(projectId).collection('activities').doc(activityId).collection('tasks').doc(taskId).update(
+        {
+           status: 'Por Realizar'
+        }
+      );
+    }
+
 }
 
 }

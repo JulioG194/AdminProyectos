@@ -1,46 +1,81 @@
-<mat-toolbar class="align1 header">
-    <div class="logo">Gu.Go</div>
-    <div class="btn-header">
-        <button (click)="post1 = true">Ingresar</button>&nbsp;
-        <button (click)="post1 = false">Registrarse</button>
-    </div>
-</mat-toolbar>
-
 <div class="align2">
-    <div class="container1">
-
-        <!-- <igx-carousel #carousel [loop]="true">
-            <igx-slide *ngFor="let slide of slides;">
-                <h3>{{slide.heading}}</h3>
-                <p>{{slide.description}}</p>
-                <img [src]="slide.image">
-            </igx-slide>
-        </igx-carousel> -->
-
+    <div class="container1 bodyt">
+        <div class="aux">
+            <svg viewBox="0 0 800 600">
+            <symbol id="s-text">
+              <text text-anchor="middle"
+                    x="25%"
+                    y="30%"
+                    class="text--line"
+                    >
+                EPN
+              </text>
+              <text text-anchor="middle"
+                    x="40%"
+                    y="63%"
+                    class="text--line2"
+                    >
+                GuGo
+              </text>
+              
+            </symbol>
+            
+            <g class="g-ants">
+              <use xlink:href="#s-text"
+                class="text-copy"></use>     
+              <use xlink:href="#s-text"
+                class="text-copy"></use>     
+              <use xlink:href="#s-text"
+                class="text-copy"></use>     
+              <use xlink:href="#s-text"
+                class="text-copy"></use>     
+              <use xlink:href="#s-text"
+                class="text-copy"></use>     
+            </g>
+        
+          </svg>
+        </div>
     </div>
     <div class="container2">
         <div class="box">
             <form (ngSubmit)="onLogin( f2 )" #f2="ngForm">
                 <div *ngIf="post1 == true; else register">
-                    <div class="logo">
+                    <!--  <div class="logo">
                         <img src="../../../assets/img/gg.jpg" alt=""><br><br>
-                    </div>
+                    </div> -->
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <h3>Ingreso</h3>
                     <br>
-                    <div class="container align">
-
-                        <span *ngIf="f2.submitted && f2.controls['email'].errors" style="color:red;">* Correo electrónico obligatorio</span>
-                        <mat-form-field>
-                            <input matInput type="email" name="email" [(ngModel)]="userLogin.email" placeholder="Correo electrónico" required>
+                    <div class="align">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Correo electrónico</mat-label>
+                            <input matInput type="email" name="email" [(ngModel)]="userLogin.email" required>
+                            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                            <mat-error *ngIf="f2.submitted && f2.controls['email']?.errors">
+                                Correo electrónico obligatorio
+                            </mat-error>
                         </mat-form-field>
 
-                        <span *ngIf="f2.submitted && f2.controls['password'].errors" style="color:red;">* Contraseña obligatoria</span>
-                        <mat-form-field>
-                            <input matInput type="password" name="password" [(ngModel)]="userLogin.password" placeholder="Contraseña" required>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contraseña</mat-label>
+                            <input matInput type="password" name="password" [(ngModel)]="userLogin.password" required>
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <mat-error *ngIf="f2.submitted && f2.controls['password']?.errors">
+                                Contraseña obligatoria
+                            </mat-error>
                         </mat-form-field>
-
+                        <br>
                         <div>
-                            <button class="btn-sign" type="submit">INGRESAR</button>
+                            <button class="btn-sign" type="submit">Listo</button>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="test">
+                            <a routerLink="" (click)="post1 = false">Obtener cuenta GuGo</a>
                         </div>
 
                     </div>
@@ -50,44 +85,74 @@
 
             <ng-template #register>
                 <form (ngSubmit)="onRegister( f )" #f="ngForm">
+                    <br>
                     <h3>Registrarse</h3>
-                    <div class="container align">
-                        <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red;">* Nombre obligatorio</span>
-                        <mat-form-field>
-                            <input matInput type="text" name="name" [(ngModel)]="userRegister.name" minlength="2" placeholder="Nombre Completo" required>
+                    <br>
+                    <div class="align">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nombre Completo</mat-label>
+                            <input matInput type="text" name="name" [(ngModel)]="userRegister.displayName" minlength="2" required>
+                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                            <mat-error *ngIf="f.submitted && f.controls['name']?.errors">
+                                Nombre completo obligatorio
+                            </mat-error>
                         </mat-form-field>
 
-                        <span *ngIf="f.submitted && f.controls['email'].errors" style="color:red;">* Correo electronico obligatorio</span>
-                        <mat-form-field>
-                            <input matInput type="email" name="email" [(ngModel)]="userRegister.email" placeholder="Correo electrónico" required email>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Correo electrónico</mat-label>
+                            <input matInput type="email" name="email" [(ngModel)]="userRegister.email" required email>
+                            <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                            <mat-error *ngIf="f.submitted && f.controls['email']?.errors">
+                                Correo electrónico obligatorio
+                            </mat-error>
                         </mat-form-field>
 
-                        <span *ngIf="f.submitted && f.controls['password'].errors" style="color:red;">* Contraseña de al menos 6 caracteres</span>
-                        <mat-form-field>
-                            <input matInput type="password" name="password" [(ngModel)]="userRegister.password" minlength="6" placeholder="Contraseña" type="password" required>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contraseña</mat-label>
+                            <input matInput type="password" name="password" [(ngModel)]="userRegister.password" minlength="6" type="password" required>
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <mat-error *ngIf="f.submitted && f.controls['password']?.errors">
+                                Contraseña obligatoria
+                            </mat-error>
                         </mat-form-field>
 
-                        <span *ngIf="f.submitted && f.controls['re-password'].errors" style="color:red;">* Contraseña de al menos 6 caracteres</span>
-                        <mat-form-field>
-                            <input matInput type="password" name="re-password" [(ngModel)]="password" minlength="6" placeholder="Confirmar contraseña" type="password" required>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Confirmar Contraseña</mat-label>
+                            <input matInput type="password" name="re-password" [(ngModel)]="password" minlength="6" type="password" required>
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <mat-error *ngIf="f.submitted && f.controls['re-password']?.errors">
+                                Confirme contraseña obligatoria
+                            </mat-error>
                         </mat-form-field>
 
-                        <span *ngIf="f.submitted && f.controls['phone'].errors" style="color:red;">* Numero Celular obligatorio</span>
-                        <mat-form-field>
-                            <input matInput type="text" name="phone" [(ngModel)]="userRegister.phone_number" placeholder="Número celular" required>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Número Celular</mat-label>
+                            <input matInput type="text" name="phone" [(ngModel)]="userRegister.phoneNumber" required>
+                            <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                            <mat-error *ngIf="f.submitted && f.controls['phone']?.errors">
+                                Número de celular obligatorio
+                            </mat-error>
                         </mat-form-field>
 
                         <div>
-                            <span *ngIf="f.submitted && f.controls['manager'].errors && !userRegister.manager" style="color:red;">* Funcion que desempeña obligatoria</span><br>
                             <mat-radio-group [(ngModel)]="userRegister.manager" name="manager" required>
-                                <mat-label>Que funcion desempeña?</mat-label><br><br>
                                 <mat-radio-button value=true>Gestor de proyectos</mat-radio-button>&nbsp;
                                 <mat-radio-button value=false>Delegado</mat-radio-button>
+                                <mat-error *ngIf="f.submitted && f.controls['manager']?.errors && !userRegister?.manager">
+                                    Función desempeñada obligatoria
+                                </mat-error>
                             </mat-radio-group>
+
                         </div>
+                        <br>
                         <div>
-                            <button class="btn-sign" type="submit">Registrar</button>
+                            <button class="btn-sign" type="submit">Listo</button>
                         </div>
+                        <br>
+                        <div class="test">
+                            <a routerLink="" (click)="post1 = true">Ingresar a GuGo</a>
+                        </div>
+
                     </div>
                 </form>
             </ng-template>

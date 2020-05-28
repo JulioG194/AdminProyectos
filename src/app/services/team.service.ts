@@ -78,7 +78,7 @@ export class TeamService {
   }
 
   getTeamByUser( user: User) {
-     this.teamsObservable = this.afs.collection('teams', ref => ref.where('manager', '==', user.id)).snapshotChanges().pipe(
+     this.teamsObservable = this.afs.collection('teams', ref => ref.where('manager', '==', user.uid)).snapshotChanges().pipe(
        map( changes => {
          return changes.map(action => {
            const data = action.payload.doc.data() as Team;
@@ -95,7 +95,7 @@ export class TeamService {
         map(changes => {
           return changes.map(action => {
             const data = action.payload.doc.data() as User;
-            data.id = action.payload.doc.id;
+            data.uid = action.payload.doc.id;
             return data;
           });
         }));
@@ -105,7 +105,7 @@ export class TeamService {
 
    getDelegatesUser( team: Team, user: User ) {
     this.delegatesUser = this.afs.collection('teams').doc(team.id).collection('delegates', ref => {let query = ref;
-                                                                                                   query.where('id', '==', user.id);
+                                                                                                   query.where('id', '==', user.uid);
                                                                                                    // this.teamsAux = [];
                                                                                                    this.teamId = query.parent.id;
                                                                                                   // console.log(this.teamId);
@@ -118,7 +118,7 @@ export class TeamService {
          map(changes => {
            return changes.map(action => {
              const data = action.payload.doc.data() as User;
-             data.id = action.payload.doc.id;
+             data.uid = action.payload.doc.id;
              return data;
            });
          }));
@@ -128,16 +128,16 @@ export class TeamService {
 
   addDelegates( team: Team, users: User[] ) {
     let userAux: User = {
-      name: '',
-      id: '',
+      displayName: '',
+      uid: '',
       email: '',
-      photo: '',
+      photoURL: '',
       employment: '',
       createdAt: null,
-      phone_number:  ''
+      phoneNumber:  ''
     };
     users.forEach(user => {
-      userAux = {
+      /* userAux = {
           name: user.name,
           id: user.id,
           email: user.email,
@@ -145,15 +145,15 @@ export class TeamService {
           employment: user.employment,
           createdAt: user.createdAt,
           phone_number: user.phone_number
-      };
-      this.afs.collection('teams').doc(team.id).collection('delegates').doc(userAux.id).set({
-        name: userAux.name,
-        id: userAux.id,
+      }; */
+      this.afs.collection('teams').doc(team.id).collection('delegates').doc(user.uid).set({
+        displayName: user.displayName,
+        uid: userAux.uid,
         email: userAux.email,
-        photo: userAux.photo,
+        photo: userAux.photoURL,
         employment: userAux.employment,
         createdAt: userAux.createdAt,
-        phone_number: userAux.phone_number
+        phone_number: userAux.phoneNumber
       });
     });
    }
@@ -178,21 +178,21 @@ export class TeamService {
   setTeamtoUser( user: User, users: User[] ) {
 
     this.afs.collection('teams').add({
-      manager: user.id,
+      manager: user.uid,
     }).then(doc => {
       let delegatesCollection = doc.collection('delegates');
 
       let batch = this.afs.firestore.batch();
 
       users.forEach( d => {
-        let ref = delegatesCollection.doc(d.id);
+        let ref = delegatesCollection.doc(d.uid);
         batch.set(ref, {
-          name: d.name,
+          displayName: d.displayName,
           email: d.email,
-          id: d.id,
-          photo: d.photo,
+          uid: d.uid,
+          photoURL: d.photoURL,
           employment: d.employment,
-          phone_number: d.phone_number,
+          phoneNumber: d.phoneNumber,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
       });

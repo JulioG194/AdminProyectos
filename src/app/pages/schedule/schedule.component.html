@@ -1,39 +1,50 @@
-<h2>Revisa tus proximas entregas</h2>
+<h2>Cronograma</h2>
 <mat-divider></mat-divider>
-<br>
-<table>
-    <thead>
-        <tr>
-            <th>Proyecto</th>
-            <th>Fecha de entrega</th>
-            <th>Dias restantes</th>
-            <th>Porcentaje de avance</th>
-            <th>Vistas</th>
-        </tr>
-    </thead>
+<div *ngIf="userApp.manager == true && projectsAux?.length > 0; else NoProjects ">
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Proyecto</th>
+                <th>Fecha de entrega</th>
+                <th>Dias restantes</th>
+                <th>Porcentaje de avance</th>
+                <th>Vistas</th>
+            </tr>
+        </thead>
 
-    <tbody>
-        <tr *ngFor="let item of projectsAux; let i = index">
-            <td>{{item.name}}</td>
-            <td>{{allenddates[i] | date : "dd/MM/y"}}</td>
-            <td>{{difDyas[i]}}</td>
-            <td>
-                {{item.progress}}%
-                <progress max="100" value="{{item.progress}}"></progress>
-                <!-- <mat-progress-bar style="height: 20px;border-radius: 5px;" mode="determinate" value="{{item.porcentaje}}"></mat-progress-bar> -->
-            </td>
-            <td>
-                <button (click)="mostrar(item.id)">
+        <tbody>
+            <tr *ngFor="let item of projectsAux; let i = index">
+                <td>{{item.name}}</td>
+                <td>{{allenddates[i] | date : "dd/MM/y"}}</td>
+                <td>{{difDyas[i]}}</td>
+                <td>
+                    {{item.progress}}%
+                    <progress [ngStyle]="{'background-color': item.progress >= 50 ? 'green' : 'red'}" max="100" value="{{item.progress}}"></progress>
+                    <!-- <mat-progress-bar style="height: 20px;border-radius: 5px;" mode="determinate" value="{{item.porcentaje}}"></mat-progress-bar> -->
+                </td>
+                <td>
+                    <button (click)="mostrar(item.id)">
           <mat-icon>notes</mat-icon>
         </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br><br>
+    <br>
+    <div *ngIf="post == true">
+        <google-chart [data]="dataTable" [type]="chartType" [options]="optionsC"></google-chart>
+    </div>
 
-<div *ngIf="post == true">
-    <chart class="chart" type="horizontalBar" [data]="chartData" [options]="options"></chart>
 </div>
+
+<ng-template #NoProjects>
+    <br>
+    <h5>No olvides crear proyectos lo mas pronto :)</h5>
+</ng-template>
+
 
 <div *ngIf="userApp.employment == 'user'">
     <mat-divider></mat-divider>

@@ -16,29 +16,28 @@ export class HeaderComponent implements OnInit {
  /*  title: string; */
  panelOpenState = false;
  post = true;
- notifications: string [] = ['Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion','Notificacion'];
+ notifications: string [] = ['Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion'];
 
  userGugo: User = {
-  name: '',
+  displayName: '',
   email: '',
   password: '',
-  id: '',
+  uid: '',
   birthdate: new Date(),
   description: '',
   gender: '',
-  photo: '',
+  photoURL: '',
   manager: false,
-  google: false,
-  phone_number: ''
+  phoneNumber: ''
 };
- 
-    value = 'Gu.Go';
+
+  value = 'Gu.Go';
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
 
-   title = 'Gu.go';
+   title = 'Gu.Go';
 
   constructor(private breakpointObserver: BreakpointObserver,
               private router: Router,
@@ -55,8 +54,8 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  public openNotifications(){
-    this.router.navigateByUrl('/notifications')
+  public openNotifications() {
+    this.router.navigateByUrl('/notifications');
   }
 
   public editUser() {

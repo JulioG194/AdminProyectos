@@ -192,3 +192,12 @@ td {
     background: rgb(61, 116, 61);
     color: white;
 }
+
+h1,
+h4 {
+    color: white;
+}
+
+mat-divider {
+    border-top-color: white;
+}

@@ -8,7 +8,7 @@
 }
 
 mat-toolbar {
-    background: linear-gradient(to bottom, rgb(34, 189, 163), black);
+    background: rgb(12, 27, 34);
 }
 
 .align {
@@ -20,15 +20,16 @@ mat-toolbar {
 }
 
 .name {
-    font-size: 25px;
+    font-size: 20px;
     font-family: Channel;
     color: white;
+    margin-left: -1%;
 }
 
 mat-icon {
     font-size: 30px;
     text-align: center;
-    color: white;
+    color: rgb(23, 180, 180);
 }
 
 .headerTools button {

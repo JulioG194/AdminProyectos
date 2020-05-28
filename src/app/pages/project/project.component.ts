@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.interface';
 import { ProjectService } from '../../services/project.service';
@@ -21,6 +21,8 @@ export interface DialogData1 {
   project: Project;
   actId: string;
   delegatesG: User[];
+  taskId?: string;
+  taskAux?: Task;
 }
 
 
@@ -29,6 +31,10 @@ export interface DialogData {
   minDate: Date;
   maxDate: Date;
   userApp: User;
+  idAct: string;
+  actAux: Activity;
+  dateS: Date;
+  dateE: Date;
 }
 
 export interface DialogData2 {
@@ -77,6 +83,8 @@ export class ProjectComponent implements OnInit {
 };
 startD = new Date();
 endD = new Date();
+startDt = new Date();
+endDt = new Date();
 id: string;
 idActivity: string;
 minDate = new Date();
@@ -102,14 +110,14 @@ differenceTime: number;
 differenceDays: number;
 
 userApp: User = {
-  name: '',
+  displayName: '',
   email: '',
   password: '',
-  id: '',
+  uid: '',
   birthdate: new Date(),
   description: '',
   gender: '',
-  photo: ''
+  photoURL: ''
 };
 allstartdates: Date[] = [];
 allenddates: Date[] = [];
@@ -144,7 +152,7 @@ aux7: number;
                                                                                                 this.projectApp.end_date = new Date(this.projectApp.end_date['seconds'] * 1000);
                                                                                                 this.differenceTime = Math.abs(this.projectApp.end_date.getTime() - this.projectApp.start_date.getTime());
                                                                                                 this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
-                                                                                                console.log(this.differenceDays);
+                                                                                                // console.log(this.differenceDays);
                                                                                                 this._teamService.getTeam(this.projectApp.teamId).subscribe(team => {
                                                                                                 this.team = team;
                                                                                                 this._teamService.getDelegates(this.team).subscribe(delegates => {
@@ -161,9 +169,14 @@ aux7: number;
                                                                                                       });
                                                                                                       // tslint:disable-next-line:prefer-for-of
                                                                                                       for (let i = 0; i < this.activitiesProject.length; i++) {
+                                                                                                        this.activitiesProject[i].start_date = new Date(this.activitiesProject[i].start_date['seconds'] * 1000);
+                                                                                                        this.activitiesProject[i].end_date = new Date(this.activitiesProject[i].end_date['seconds'] * 1000);
+                                                                                                  }
+                                                                                                      // tslint:disable-next-line:prefer-for-of
+                                                                                                      for (let i = 0; i < this.activitiesProject.length; i++) {
                                                                                                               this._projectService.getTasks(this.projectApp.id, this.activitiesProject[i].id).subscribe(tasks => {
                                                                                                                  this.activitiesProject[i].tasks = tasks;
-                                                                                                                 console.log(this.activitiesProject[i]);
+                                                                                                                 // console.log(this.activitiesProject[i]);
                                                                                                                  // tslint:disable-next-line:prefer-for-of
                                                                                                                  for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
                                                                                                                      this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
@@ -251,6 +264,42 @@ aux7: number;
 
   }
 
+  inputEvent($event) {
+    this.startD = new Date($event.value);
+  }
+
+  inputEvent2($event) {
+    this.endD = new Date($event.value);
+  }
+
+  saveEditproject( projectAux: Project) {
+
+    if ( this.endD < this.startD ) {
+
+      Swal.fire({
+        type: 'error',
+        title: 'Fechas fuera de rango',
+      });
+      return;
+  }
+
+    Swal.fire({
+    allowOutsideClick: false,
+    type: 'info',
+    text: 'Espere por favor...'
+  });
+    Swal.showLoading();
+
+    this._projectService.updateProject(projectAux);
+    this.post1 = !this.post1;
+    this.open = !this.open;
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'success',
+      title: 'Tarea asignada con exito'
+    });
+  }
+
   getActivity( id: string) {
      this.idActivity = id;
      this.post4 = false;
@@ -276,23 +325,51 @@ aux7: number;
     });
   }
 
-  openTask( id: string ): void {
+  openTask( id: string ) {
+    // tslint:disable-next-line: no-use-before-declare
     const dialogRef = this.dialog.open( TaskComponent1, {
     width: '600px',
     data: { project: this.projectApp, actId: id, delegatesG: this.delegates }
   });
 
     dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
+    // console.log('The dialog was closed');
   });
 
   }
+
+  openEditTask(idActivity: string, idTask: string, task: Task) {
+      // tslint:disable-next-line: no-use-before-declare
+      const dialogRef = this.dialog.open( TaskComponent1, {
+        width: '600px',
+        data: { project: this.projectApp, actId: idActivity, taskId: idTask, taskAux: task, delegatesG: this.delegates }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // console.log('The dialog was closed');
+      });
+  }
+
 
   openActivities( id: string, minDateF: Date, maxDateF: Date ): void {
     // tslint:disable-next-line: no-use-before-declare
     const dialogRef = this.dialog.open( ActivitiesModalComponent1, {
       width: '600px',
       data: {  projectAppId: id, minDate: minDateF, maxDate: maxDateF  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed')
+    });
+  }
+
+  openEditActivities( id: string, minDateF: Date, maxDateF: Date, idActivity: string, activity: Activity ) {
+    this.startDt = new Date(activity.start_date['seconds'] * 1000);
+    this.endDt = new Date(activity.end_date['seconds'] * 1000);
+    // tslint:disable-next-line: no-use-before-declare
+    const dialogRef = this.dialog.open( ActivitiesModalComponent1, {
+      width: '600px',
+      data: {  projectAppId: id, minDate: minDateF, maxDate: maxDateF, idAct: idActivity, actAux: activity, dateS: this.startDt, dateE: this.endDt   }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -311,15 +388,22 @@ aux7: number;
       console.log('The dialog was closed')
     });
   }
+
+  checkTask( idActivity: string, idTask: string, progressTask: number ) {
+    this._projectService.checkTask(this.projectApp.id, idActivity, idTask, progressTask);
+  }
+
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css']
 })
 
 
+// tslint:disable-next-line:component-class-suffix
 export class TaskComponent1 {
 
 task: Task = {
@@ -352,14 +436,16 @@ task: Task = {
       this.projectService.getActivity(this.data.project.id, this.data.actId).subscribe(act => {
         this.activityAux = act;
         console.log(this.activityAux);
+        console.log(this.data.delegatesG);
         this.minD = new Date(this.activityAux.start_date['seconds'] * 1000);
         this.maxD = new Date(this.activityAux.end_date['seconds'] * 1000);
       });
+      if ( this.data.taskAux != null) {
+        this.task = this.data.taskAux;
+      }
     }
 
- /*  onNoClick(): void {
-    this.dialogRef.close();
-  } */
+
 
   onSaveTask( form: NgForm ) {
 
@@ -394,6 +480,42 @@ task: Task = {
     this.dialogRef.close();
 
     }
+
+
+    onEditTask( form: NgForm ) {
+
+      if ( form.invalid ) { return; }
+
+      if ( this.endD < this.startD ) {
+
+          Swal.fire({
+            type: 'error',
+            title: 'Fechas fuera de rango',
+          });
+          return;
+      }
+
+      Swal.fire({
+        allowOutsideClick: false,
+        type: 'info',
+        text: 'Espere por favor...'
+      });
+      Swal.showLoading();
+
+
+      this.projectService.updateTask( this.data.project.id, this.data.actId, this.task.id, this.task );
+
+      Swal.close();
+      Swal.fire({
+          allowOutsideClick: false,
+          type: 'success',
+          title: 'Tarea asignada con exito'
+        });
+
+      this.dialogRef.close();
+  
+      }
+
     inputEvent($event) {
       this.startD = new Date($event.value);
     }
@@ -429,8 +551,6 @@ export class ActivitiesModalComponent1 implements OnInit {
   activityProject: Activity = {
     name: '',
     status: 'Por Realizar',
-    start_date: null,
-    end_date: null,
     percentaje: 0,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
@@ -438,13 +558,17 @@ export class ActivitiesModalComponent1 implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ActivitiesModalComponent1>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private projectService: ProjectService) { }
-
-  ngOnInit() {
+    private projectService: ProjectService) {
       this.id = this.data.projectAppId;
       this.maxD = this.data.maxDate;
       this.minD = this.data.minDate;
+      console.log(this.data.actAux);
+      if (this.data.actAux != null) {
+        this.activityProject = this.data.actAux;
+      }
+    }
 
+  ngOnInit() {
     }
 
   inputEvent($event) {
@@ -475,6 +599,37 @@ export class ActivitiesModalComponent1 implements OnInit {
     Swal.showLoading();
 
     this.projectService.setActivitiestoProject( this.id, this.activityProject );
+
+    Swal.close();
+    Swal.fire({
+        allowOutsideClick: false,
+        type: 'success',
+        title: 'Actividad agregada con exito'
+      });
+
+    this.dialogRef.close();
+  }
+
+  onEditActivity( form: NgForm ) {
+    if ( form.invalid ) { return; }
+
+    if ( this.endD <= this.startD ) {
+
+        Swal.fire({
+          type: 'error',
+          title: 'Fechas fuera de rango',
+        });
+        return;
+    }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor...'
+    });
+    Swal.showLoading();
+
+    this.projectService.updateActivity( this.id, this.activityProject.id, this.activityProject );
 
     Swal.close();
     Swal.fire({

@@ -15,33 +15,39 @@
 
         <div class="align1">
             <mat-form-field>
-                <input matInput placeholder="Nombre" type="text" [value]="projectApp.name" [disabled]="open" required>
+                <input matInput style="color: rgb(212, 212, 212);" type="text" [(ngModel)]="projectApp.name" [disabled]="open" required>
+                <mat-placeholder class="placeholder">Nombre:</mat-placeholder>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
-                <input matInput placeholder="Cliente" [value]="projectApp.client" type="text" [disabled]="open" required>
+                <input matInput style="color: rgb(212, 212, 212);" [(ngModel)]="projectApp.client" type="text" [disabled]="open" required>
+                <mat-placeholder class="placeholder">Cliente:</mat-placeholder>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
-                <input matInput placeholder="Tipo" [value]="projectApp.type" type="text" [disabled]="open" required>
+                <input matInput style="color: rgb(212, 212, 212);" [(ngModel)]="projectApp.type" type="text" [disabled]="open" required>
+                <mat-placeholder class="placeholder">Tipo:</mat-placeholder>
             </mat-form-field>&nbsp;&nbsp;
         </div>
 
         <div class="align1">
             <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio" [(ngModel)]="projectApp.start_date" [disabled]="open" required>
+                <input matInput style="color: rgb(212, 212, 212);" [matDatepicker]="picker" [(ngModel)]="projectApp.start_date" (dateInput)="inputEvent($event)" [disabled]="open" required>
+                <mat-placeholder class="placeholder">Fecha de inicio:</mat-placeholder>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
-                <input matInput [matDatepicker]="picker1" placeholder="Fecha de fin" [(ngModel)]="projectApp.end_date" [disabled]="open" required>
+                <input matInput style="color: rgb(212, 212, 212);" [matDatepicker]="picker1" [(ngModel)]="projectApp.end_date" (dateInput)="inputEvent2($event)" [disabled]="open" required>
+                <mat-placeholder class="placeholder">Fecha de fin:</mat-placeholder>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field>
-                <textarea cols="5" rows="2" matInput placeholder="Descripción" [disabled]="open" [value]="projectApp.description"></textarea>
+                <textarea cols="5" rows="2" matInput [disabled]="open" style="color: rgb(212, 212, 212);" [(ngModel)]="projectApp.description"></textarea>
+                <mat-placeholder class="placeholder">Descripcion:</mat-placeholder>
             </mat-form-field>
             <!--  <button (click)="openTask()">Boton temporal</button> -->
             <!-- solo muestra borrar -->
@@ -54,7 +60,7 @@
     </div>
 
     <ng-template #lookGuardarProy>
-        <button class="btnGuardar">Guardar</button>
+        <button class="btnGuardar" (click)="saveEditproject(projectApp)">Guardar</button>
         <br>
         <br>
     </ng-template>
@@ -89,7 +95,7 @@
                 </button>
 
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="openActivities(projectApp.id, projectApp.start_date, projectApp.end_date)">
+                    <button mat-menu-item (click)="openEditActivities(projectApp.id, projectApp.start_date, projectApp.end_date, act.id, act)">
                         <mat-icon>edit</mat-icon>
                             <span>Editar actividad</span>
                     </button>
@@ -114,9 +120,14 @@
                             <div class="position1">{{allenddates[i] | date : "dd/MM//y"}}</div>
                             <div class="position1">{{act.percentaje}}</div> -->
 
-                            <div class="position11" style="text-transform: uppercase; font-weight: bold; color: rgb(68, 145, 84);">{{act.name}}</div>
-                            <div class="position12">Fecha de inicio: {{allstartdates[i] | date : "dd/MM/y"}}</div>
-                            <div class="position12">Fecha de fin: {{allenddates[i] | date : "dd/MM/y"}}</div>
+                            <div class="position11" style="text-transform: uppercase; font-weight: bold; color: rgb(68, 145, 84);" [ngClass]="{
+                                'badge-danger':act.status === 'Por Realizar',
+                                'badge-info':act.status === 'Realizando',
+                                'badge-success':act.status === 'Realizado',
+                                'badge-warning':act.status === 'Por Verificar'
+                              }">{{act.name}}</div>
+                            <div class="position12">Fecha de inicio: {{act.start_date | date : "dd/MM/y"}}</div>
+                            <div class="position12">Fecha de fin: {{act.end_date| date : "dd/MM/y"}}</div>
                             <div class="position13">% Avance: {{act.percentaje}}</div>
                         </mat-panel-title>
 
@@ -142,8 +153,13 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let task of act.tasks; let k = index">
-                                    <td class="position21">{{task.name}}</td>
-                                    <td class="position22"><img matListAvatar [src]="task.delegate.photo" style="width: 50px; height: 50px;border-radius: 150px" [matTooltip]="task.delegate.name"></td>
+                                    <td class="position21" [ngClass]="{
+                                        'badge-danger':task.status === 'Por Realizar',
+                                        'badge-info':task.status === 'Realizando',
+                                        'badge-success':task.status === 'Realizado',
+                                        'badge-warning':task.status === 'Por Verificar'
+                                      }">{{task.name}}</td>
+                                    <td class="position22"><img matListAvatar [src]="task.delegate.photoURL" style="width: 50px; height: 50px;border-radius: 150px" [matTooltip]="task.delegate.displayName"></td>
                                     <td class="position22">{{task.start_date | date : "dd/MM/y"}}</td>
                                     <td class="position22">&nbsp; {{task.end_date | date : "dd/MM/y"}}</td>
                                     <td class="position23">{{task.progress}}</td>
@@ -152,7 +168,7 @@
                                             <mat-icon>build</mat-icon>
                                           </button>
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="openTask()">
+                                            <button mat-menu-item (click)="openEditTask(act.id, task.id, task)">
                                               <mat-icon>edit</mat-icon>
                                               <span>Editar tarea</span>
                                             </button>
@@ -164,6 +180,10 @@
                                               <mat-icon>folder_open</mat-icon>
                                               <span>Evidencia</span>
                                             </button>
+                                            <button mat-menu-item (click)="checkTask(act.id, task.id, task.progress)">
+                                                <mat-icon>done_outline</mat-icon>
+                                                <span>Verificado</span>
+                                              </button>
                                         </mat-menu>
                                         <!-- <button class="btn tasksTools" matTooltip="Herramientas" mat-button [matMenuTriggerFor]="tools">
                                             <mat-icon>build</mat-icon>

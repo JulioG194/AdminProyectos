@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
 import { ProjectService } from '../../services/project.service';
-import { ChartType, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { Label, Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../models/team.interface';
@@ -22,18 +22,18 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class DashboardComponent implements OnInit {
 
   post = true;
+  show = false;
   userGugo: User = {
-    name: '',
+    displayName: '',
     email: '',
     password: '',
-    id: '',
+    uid: '',
     birthdate: new Date(),
     description: '',
     gender: '',
-    photo: '',
+    photoURL: '',
     manager: false,
-    google: false,
-    phone_number: ''
+    phoneNumber: ''
 };
 projects: any [] = ['asdsd'];
 progressArray: number[] = [];
@@ -52,7 +52,10 @@ dataProjects: number[] = [];
 public tareas: Task[] = [];
 
 view: any[] = [700, 400];
-
+barData: number[] = [];
+labelBar: string[] = [];
+barData1: number[] = [];
+labelBar1: string[] = [];
 // options
 showXAxis = true;
 showYAxis = true;
@@ -79,17 +82,13 @@ constructor( private authService: AuthService,
     },
     plugins: {
       datalabels: {
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-          if (ctx.dataset.data[ctx.dataIndex] > 0) {
-            return label;
-          } else {
+        formatter: () => {
             return '';
           } // retun empty if the data for label is empty
         },
       },
-    }
-  };
+    };
+  // };
   public pieChartLabels: Label[] = ['Proyectos sin realizar', 'Proyectos completados', 'Proyectos en proceso'];
   public pieChartData: number[] = [];
   public pieChartType: ChartType = 'pie';
@@ -97,8 +96,27 @@ constructor( private authService: AuthService,
   public pieChartPlugins = [pluginDataLabels];
   public pieChartColors = [
     {
-      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+      backgroundColor: ['rgba(255,0,0,0.8)', 'rgba(0,255,0,0.8)', 'rgba(0,0,255,0.8)'],
     },
+  ];
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [{ticks: {fontSize: 12, fontFamily: '\'Roboto\', sans-serif', fontColor: '#ffffff', fontStyle: '500', beginAtZero: true, max: 100}}],
+      xAxes: [{ticks: {fontSize: 12, fontFamily: '\'Roboto\', sans-serif', fontColor: '#ffffff', fontStyle: '500', beginAtZero: true, max: 100}}]
+    }
+  };
+  public barChartLabels: Label[] = [];
+  public barChartType: ChartType = 'horizontalBar';
+  public barChartLegend = false;
+
+  public barChartData: ChartDataSets[] = [
+    { data: this.barData },
+  ];
+
+  public barChartColors: Color[] = [
+    { backgroundColor: ['yellow', 'purple', 'grey', 'black', 'blue', 'green', 'red',  'magenta', 'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'black', 'magenta'] }
   ];
 
 
@@ -116,6 +134,10 @@ constructor( private authService: AuthService,
         .subscribe(projects => {
           this.projectsApp = projects;
           this.results = [];
+          this.barData1 = [];
+          //this.labelBar1 = [];
+          this.barChartLabels = [];
+          this.barChartData[0].data = [];
           this.projectsApp.forEach(proj => {
             const gp: any = {
               name: '',
@@ -126,6 +148,8 @@ constructor( private authService: AuthService,
             gp.value = proj.progress;
           //  };
             this.results.push(gp);
+            this.barChartData[0].data.push(gp.value);
+            this.barChartLabels.push(gp.name);
           });
           this.dataProjects = [];
           let projectsInprogress = 0;
@@ -219,6 +243,19 @@ constructor( private authService: AuthService,
 
   onSelect(event) {
     console.log(event);
+  }
+  shower() {
+    this.show = true;
+    this.barData = this.barData1;
+    this.labelBar = this.labelBar1;
+    console.log(this.barData);
+  }
+  doRefresh(event) {
+    console.log('Begin async operation');
+    setTimeout(() => {
+         console.log('Async operation has ended');
+         event.target.complete();
+          }, 2000);
   }
 
 

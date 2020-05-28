@@ -45,11 +45,6 @@ const pagesRoutes: Routes = [
         data: { titulo: 'UserProfile'}
     },
     {
-        path: 'kanban',
-        component: KanbanComponent,
-        data: { titulo: 'Kanban'}
-    },
-    {
         path: 'activities/:id',
         component: ActivitiesComponent,
         data: { titulo: 'Activities'}

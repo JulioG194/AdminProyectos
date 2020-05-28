@@ -11,29 +11,28 @@ import * as firebase from 'firebase/app';
 @Component({
   selector: 'app-login-register',
   templateUrl: './login-register.component.html',
-  styleUrls  : ['./login-register.component.css']
+  styleUrls  : ['./login-register.component.css', './login-register.component.scss' ]
 })
 
 
 export class LoginRegisterComponent implements OnInit {
 
   userRegister: User = {
-    name: '',
+    uid: '',
+    displayName: '',
     email: '',
-    password: '',
     employment: '',
     description: '',
     gender: '',
-    photo: 'https://bauerglobalbrigades.files.wordpress.com/2018/10/no-photo7.png',
-    google: false,
+    photoURL: 'https://firebasestorage.googleapis.com/v0/b/tesis-adminproyectos.appspot.com/o/login.png?alt=media&token=ce8a16cb-009c-4d41-b9c0-c493bd8a355b',
     birthdate: new Date(),
-    phone_number: '',
+    phoneNumber: '',
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
 };
   userLogin: User = {
-    name: '',
-    email: '',
-    password: ''
+    uid: '',
+    displayName: '',
+    email: ''
 };
 
   post1 = true;
@@ -87,6 +86,10 @@ export class LoginRegisterComponent implements OnInit {
       // console.log(resp);
       this.authService.addNewUser(this.userRegister, resp.localId);
       this.router.navigateByUrl('/dashboard');
+      // tslint:disable-next-line:no-shadowed-variable
+/*       this.authService.verifyEmail(localStorage.getItem('token')).subscribe((resp: any) => {
+        console.log(resp);
+      }); */
       Swal.fire({
       allowOutsideClick: false,
       type: 'success',
@@ -135,9 +138,8 @@ export class LoginRegisterComponent implements OnInit {
     .subscribe( resp => {
       setTimeout(() => {
         Swal.close();
-        this.router.navigateByUrl('/dashboard');
       }, 1000);
-
+      this.router.navigateByUrl('/dashboard');
     }, (err) => {
 
         Swal.fire({

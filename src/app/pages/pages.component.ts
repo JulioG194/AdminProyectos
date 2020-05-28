@@ -21,9 +21,7 @@ export class PagesComponent implements OnInit {
     { name: 'group', text: 'Mi Equipo' , path: '/my-team'},
     { name: 'today', text: 'Proyectos' , path: '/projects'},
     { name: 'av_timer', text: 'Cronograma' , path: '/schedule'},
-    { name: 'chat', text: 'Chat' , path: '/chat'},
-    { name: 'home', text: 'Perfil' , path: '/user-profile'},
-    { name: 'group', text: 'kanban' , path: '/kanban'}
+    { name: 'chat', text: 'Chat' , path: '/chat'}
   ];
     public selected = 'Avatar';
     // tslint:disable-next-line:member-ordering
