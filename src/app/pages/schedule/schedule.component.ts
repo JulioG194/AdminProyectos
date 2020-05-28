@@ -102,7 +102,8 @@ idUser: string;
 startD: Date;
 endD: Date;
 minDate = new Date();
-
+activitiesProjectsApp: Activity[] = [];
+tasksActivitiesApp: Task[] = [];
 information: any[];
 dataC: any[] = [];
 dataT: any[] = [];
@@ -331,8 +332,68 @@ lables = [];
                                                                     this.projectsAux = projects;
                                                                     this.difDyas = [];
                                                                     this.allenddates = [];
+                                                                    let projectsInprogress = 0;
+                                                                    let projectsOut = 0;
+                                                                    let projectsCompleted = 0;
+                                                                    let id: string;
+                                                                    let aux9: number;
+          // tslint:disable-next-line:prefer-for-of
+                                                                    for (let index = 0; index < this.projectsAux.length; index++) {
+            // tslint:disable-next-line:no-unused-expression
+            this.projectsAux[index].progress;
+            this.activitiesProjectsApp = [];
+            let numeroActs: number;
+            let aux6: number;
+            let aux7: number;
+            let porcentajeActividad: number;
+            let numeroTasks: number;
+            let porcentajeTask: number;
+            let aux3: number;
+            let aux4: number;
+            let aux5: number;
+            let aux1: number;
+            this._projectService.getActivities(this.projectsAux[index]).subscribe(acts => {
+                let aux8 = 0;
+                this.activitiesProjectsApp = acts;
+                numeroActs = this.activitiesProjectsApp.length;
+                porcentajeActividad = 100 / numeroActs;
+                aux6 = 100 / numeroActs;
+                // tslint:disable-next-line:prefer-for-of
+                for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
+                  aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
+                  aux8 += aux7;
+                  this._projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
+                       let aux2 = 0;
+                       this.tasksActivitiesApp = tasks;
+                       if ( this.tasksActivitiesApp.length === 0 ) {
+                        try {
+                          this._projectService.setActivityProgress(this.projectsAux[index].id, this.activitiesProjectsApp[j].id, 0 );
+                         } catch {}
+                       } else {
+                       numeroTasks = this.tasksActivitiesApp.length;
+                       porcentajeTask = 100 / numeroTasks;
+                       // tslint:disable-next-line:prefer-for-of
+                       for (let k = 0; k < this.tasksActivitiesApp.length; k++) {
+                         aux1 = this.tasksActivitiesApp[k].progress * porcentajeTask;
+                         aux2 += aux1;
+                         aux3 = aux2 / 100;
+                         aux4 = +(aux3.toFixed(2));
+                         id = this.tasksActivitiesApp[k].idActivity;
+                       }
+                       try {
+                          this._projectService.setActivityProgress(this.projectsAux[index].id, id, aux4 );
+                         } catch {}
+                       }
+                   });
+                }
+                aux9 = +((aux8 / 100).toFixed(2));
+                try {
+                  this._projectService.setProjectProgress( this.projectsAux[index].id , aux9 );
+                 } catch {}
+            });
+
                                                                     // console.log(this.projectsAux);
-                                                                    this.projectsAux.forEach(project => {
+            this.projectsAux.forEach(project => {
                                                                       this.startD = new Date();
                                                                       this.endD = new Date(project.end_date['seconds'] * 1000);
                                                                       this.allenddates.push(this.endD);
@@ -351,8 +412,8 @@ lables = [];
                                                                       this.event.draggable = false;
                                                                       this.events.push(this.newObj(this.event));
                                                                     });
-                                                                    this.refresh.next();
-                                              });
+            this.refresh.next();
+                                              }});
       });
     }
 

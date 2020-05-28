@@ -159,10 +159,70 @@ export class ProjectsComponent implements OnInit {
                                                                                 this.projectService.getProjectByOwner(this.userApp)
                                                                                 .subscribe(projects => {
                                                                                   this.projectsApp = projects;
-                                                                                  // console.log(this.projectsApp);
-                                                                                  this.allstartdates = [];
-                                                                                  this.allenddates = [];
-                                                                                  this.projectsApp.forEach(project => {
+                                                                                  let projectsInprogress = 0;
+                                                                                  let projectsOut = 0;
+                                                                                  let projectsCompleted = 0;
+                                                                                  let id: string;
+                                                                                  let aux9: number;
+                                                                                  // tslint:disable-next-line:prefer-for-of
+                                                                                  for (let index = 0; index < this.projectsApp.length; index++) {
+                                                                                    // tslint:disable-next-line:no-unused-expression
+                                                                                    this.projectsApp[index].progress;
+                                                                                    this.activitiesProjectsApp = [];
+                                                                                    let numeroActs: number;
+                                                                                    let aux6: number;
+                                                                                    let aux7: number;
+                                                                                    let porcentajeActividad: number;
+                                                                                    let numeroTasks: number;
+                                                                                    let porcentajeTask: number;
+                                                                                    let aux3: number;
+                                                                                    let aux4: number;
+                                                                                    let aux5: number;
+                                                                                    let aux1: number;
+                                                                                    this.projectService.getActivities(this.projectsApp[index]).subscribe(acts => {
+                                                                                        let aux8 = 0;
+                                                                                        this.activitiesProjectsApp = acts;
+                                                                                        numeroActs = this.activitiesProjectsApp.length;
+                                                                                        porcentajeActividad = 100 / numeroActs;
+                                                                                        aux6 = 100 / numeroActs;
+                                                                                        // tslint:disable-next-line:prefer-for-of
+                                                                                        for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
+                                                                                          aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
+                                                                                          aux8 += aux7;
+                                                                                          this.projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
+                                                                                               let aux2 = 0;
+                                                                                               this.tasksActivitiesApp = tasks;
+                                                                                               if ( this.tasksActivitiesApp.length === 0 ) {
+                                                                                                try {
+                                                                                                  this.projectService.setActivityProgress(this.projectsApp[index].id, this.activitiesProjectsApp[j].id, 0 );
+                                                                                                 } catch {}
+                                                                                               } else {
+                                                                                               numeroTasks = this.tasksActivitiesApp.length;
+                                                                                               porcentajeTask = 100 / numeroTasks;
+                                                                                               // tslint:disable-next-line:prefer-for-of
+                                                                                               for (let k = 0; k < this.tasksActivitiesApp.length; k++) {
+                                                                                                 aux1 = this.tasksActivitiesApp[k].progress * porcentajeTask;
+                                                                                                 aux2 += aux1;
+                                                                                                 aux3 = aux2 / 100;
+                                                                                                 aux4 = +(aux3.toFixed(2));
+                                                                                                 id = this.tasksActivitiesApp[k].idActivity;
+                                                                                               }
+                                                                                               try {
+                                                                                                  this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
+                                                                                                 } catch {}
+                                                                                               }
+                                                                                           });
+                                                                                        }
+                                                                                        aux9 = +((aux8 / 100).toFixed(2));
+                                                                                        try {
+                                                                                          this.projectService.setProjectProgress( this.projectsApp[index].id , aux9 );
+                                                                                         } catch {}
+                                                                                    });
+
+
+                                                                                    this.allstartdates = [];
+                                                                                    this.allenddates = [];
+                                                                                    this.projectsApp.forEach(project => {
                                                                                     this.allstartdates.push(new Date(project.start_date['seconds'] * 1000));
                                                                                     this.allenddates.push(new Date(project.end_date['seconds']* 1000));
                                                                                     // console.log(this.allstartdates);
@@ -181,7 +241,7 @@ export class ProjectsComponent implements OnInit {
                                                                                     });
                                                                                   });
                                                                                 //  console.log(this.projectsApp);
-                                                                                });
+                                                                                }});
                                                                             } else {
                                                                               console.log('ud es delegado');
                                                                               this.teamGugo.delegates = [];
