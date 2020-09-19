@@ -20,8 +20,8 @@
                 <td>{{difDyas[i]}}</td>
                 <td>
                     {{item.progress}}%
-                    <progress [ngStyle]="{'background-color': item.progress >= 50 ? 'green' : 'red'}" max="100" value="{{item.progress}}"></progress>
-                    <!-- <mat-progress-bar style="height: 20px;border-radius: 5px;" mode="determinate" value="{{item.porcentaje}}"></mat-progress-bar> -->
+                    <!-- <progress max="100" value="{{item.progress}}">  </progress> -->
+                    <mat-progress-bar style="height: 20px;border-radius: 5px;" [appProgressBarColor]="item.progress < 40 ? 'red' : (item.progress >= 40 && item.progress <= 70) ? 'orange' : 'green'" mode="determinate" value="{{item.progress}}"></mat-progress-bar>
                 </td>
                 <td>
                     <button (click)="mostrar(item.id)">
@@ -34,8 +34,9 @@
     <br>
     <br><br>
     <br>
+
     <div *ngIf="post == true">
-        <google-chart [data]="dataTable" [type]="chartType" [options]="optionsC"></google-chart>
+        <google-chart class="view1" [data]="dataTable" [type]="chartType" [options]="optionsC"></google-chart>
     </div>
 
 </div>

@@ -1,90 +1,168 @@
 <h2>Mi perfil</h2>
 <mat-divider></mat-divider>
-<br>
-<h5>{{userApp.displayName}}</h5>
-<br>
-<img [src]="userApp.photoURL" alt="">
-<div class="addPhoto">
-    <button>
-        <mat-icon>add_a_photo</mat-icon>
+<br />
+<div class="box1">
+    <h5>{{ userApp.displayName }}</h5>
+    <br />
+    <img [src]="userApp.photoURL" alt="" />
+    <div class="addPhoto">
+        <button class="badge-secondary">
+      <mat-icon>add_a_photo</mat-icon>
     </button>
+    </div>
 </div>
 
-<br>
-<form (ngSubmit)="onProfileUpdate( f )" #f="ngForm">
+<br />
+<form (ngSubmit)="onProfileUpdate(f)" #f="ngForm">
     <div class="aboutMe">
-        <mat-form-field class="box">
+        <mat-form-field class="box2">
             <label for="">Acerca de mi</label>
-            <br>
+            <br />
             <textarea matInput [value]="userApp.description" name="description" [(ngModel)]="userApp.description" cols="5" rows="4"></textarea>
         </mat-form-field>
     </div>
-    <br>
+    <br />
     <!-- <mat-tab-group>
         <mat-tab label="Informacion básica"> -->
     <div class="align">
         <div class="container">
-            <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red;">* Nombre obligatorio</span>
-            <mat-form-field>
-                <label for="">Nombre</label>
-                <input matInput type="text" [value]="userApp.displayName" name="name" [(ngModel)]="userApp.displayName" required>
-            </mat-form-field>
+            <span *ngIf="f.submitted && f.controls['name'].errors" style="color: red">* Nombre obligatorio</span
+      >
+      <mat-form-field>
+        <label for="">Nombre:</label>
+        <input
+          matInput
+          style="color: rgb(212, 212, 212); font-size: 16px"
+          type="text"
+          [value]="userApp.displayName"
+          name="name"
+          [(ngModel)]="userApp.displayName"
+          required
+        />
+      </mat-form-field>
 
-            <mat-form-field>
-                <label for="">Correo electrónico</label>
-                <input matInput [value]="userApp.email" type="email" name="email" [(ngModel)]="userApp.email" disabled required>
-            </mat-form-field>
+      <mat-form-field>
+        <label for="">Correo electrónico:</label>
+        <input
+          matInput
+          style="color: rgb(212, 212, 212); font-size: 16px"
+          [value]="userApp.email"
+          type="email"
+          name="email"
+          [(ngModel)]="userApp.email"
+          disabled
+          required
+        />
+      </mat-form-field>
 
-        </div>
-        <!-- </mat-tab>
-            <mat-tab label="Acerca de mi"> -->
-        <div class="container">
-
-            <span *ngIf="f.submitted && f.controls['phone'].errors" style="color:red;">* Numero Celular obligatorio</span>
-            <mat-form-field>
-                <label for="">Número celular</label>
-                <input matInput [value]="userApp.phoneNumber" type="text" minlength="10" name="phone" [(ngModel)]="userApp.phoneNumber" required>
-            </mat-form-field>
-
-            <mat-form-field>
-                <label for="">Fecha de nacimiento</label>
-                <input matInput [matDatepicker]="picker" [value]="birthdate" (dateInput)="inputEvent($event)" name="birthdate" [(ngModel)]="userApp.birthdate">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-                <label>Genero</label>
-                <mat-select [(value)]="selected" name="gender" [(ngModel)]="userApp.gender">
-                    <mat-option value="Femenino">Femenino</mat-option>
-                    <mat-option value="Masculino">Masculino</mat-option>
-                    <mat-option value="Otros">Otros</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </div>
+      <mat-form-field>
+        <label>Genero:</label>
+        <mat-select
+          [(value)]="selected"
+          name="gender"
+          [(ngModel)]="userApp.gender"
+        >
+          <mat-option value="Femenino">Femenino</mat-option>
+          <mat-option value="Masculino">Masculino</mat-option>
+          <mat-option value="Otros">Otros</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <!-- </mat-tab>
-    </mat-tab-group> -->
-    <div>
-        <button class="btnGuardar" type="submit">Guardar</button>
+            <mat-tab label="Acerca de mi"> -->
+    <div class="container">
+      <span *ngIf="f.submitted && f.controls['phone'].errors" style="color: red"
+        >* Numero Celular obligatorio</span
+      >
+      <mat-form-field>
+        <label for="">Número celular:</label>
+        <input
+          matInput
+          style="color: rgb(212, 212, 212); font-size: 16px"
+          [value]="userApp.phoneNumber"
+          type="text"
+          minlength="10"
+          name="phone"
+          [(ngModel)]="userApp.phoneNumber"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <label for="">Fecha de nacimiento:</label>
+        <input
+          matInput
+          style="color: rgb(212, 212, 212); font-size: 16px"
+          [matDatepicker]="picker"
+          [value]="birthdate"
+          (dateInput)="inputEvent($event)"
+          name="birthdate"
+          [(ngModel)]="userApp.birthdate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
+  </div>
+  <!-- </mat-tab>
+    </mat-tab-group> -->
+  <div>
+    <button class="btnGuardar" type="submit">Guardar</button>
+  </div>
+  <br />
 </form>
 <div>
-    <span *ngIf="password1?.length == 0" style="color:red;">* Contraseña de al menos 6 caracteres</span>
-    <mat-form-field>
-        <label for="">Nueva contraseña</label>
-        <input class="aux" matInput [value]="password1" type="password" name="password1" minlength="6" [(ngModel)]="password1" required>
-    </mat-form-field>
+  <mat-accordion>
+    <mat-expansion-panel
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <p>Cambiar contraseña</p>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <span *ngIf="password1?.length == 0" style="color: red"
+        >* Contraseña de al menos 6 caracteres</span
+      >
+      <mat-form-field class="center">
+        <label style="color: black; font-size: 16px" for=""
+          >Nueva contraseña</label
+        >
+        <input
+          class="aux"
+          matInput
+          [value]="password1"
+          type="password"
+          name="password1"
+          minlength="6"
+          [(ngModel)]="password1"
+          required
+        />
+      </mat-form-field>
 
-    <span *ngIf="password2?.length == 0" style="color:red;">* Contraseña de al menos 6 caracteres</span>
-    <mat-form-field>
-        <label for="">Confirmar nueva contraseña</label>
-        <input matInput [value]="password2" type="password" name="password2" minlength="6" [(ngModel)]="password2" required>
-    </mat-form-field>
-    <div>
-        <button class="btnGuardar" (click)=changePass()>Guardar Contraseña</button>
-    </div>
+      <span *ngIf="password2?.length == 0" style="color: red"
+        >* Contraseña de al menos 6 caracteres</span
+      >
+      <mat-form-field class="center">
+        <label style="color: black; font-size: 16px" for=""
+          >Confirmar nueva contraseña</label
+        >
+        <input
+          matInput
+          [value]="password2"
+          type="password"
+          name="password2"
+          minlength="6"
+          [(ngModel)]="password2"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button class="btnListo" (click)="changePass()">Listo</button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
 <!-- Copyright 2019 Google LLC. All Rights Reserved.

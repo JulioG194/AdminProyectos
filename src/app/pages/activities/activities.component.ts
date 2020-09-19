@@ -4,7 +4,9 @@ import { ProjectService } from '../../services/project.service';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.interface';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
-import Swal from 'sweetalert2';
+// tslint:disable-next-line:import-spacing
+import  Swal  from 'sweetalert2/src/sweetalert2.js';
+
 import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import { User } from 'src/app/models/user.interface';
@@ -20,7 +22,7 @@ export interface DialogData {
 @Component({
   selector: 'app-activities',
   templateUrl: './activities.component.html',
-  styleUrls: ['./activities.component.css']
+  styleUrls: ['./activities.component.scss']
 })
 export class ActivitiesComponent implements OnInit {
 
@@ -100,7 +102,7 @@ export class ActivitiesComponent implements OnInit {
 
     Swal.fire({
       allowOutsideClick: false,
-      type: 'info',
+      icon: 'info',
       text: 'Espere por favor...'
     });
     Swal.showLoading();
@@ -127,7 +129,7 @@ export class ActivitiesComponent implements OnInit {
 
     Swal.fire({
         allowOutsideClick: false,
-        type: 'success',
+        icon: 'success',
         title: 'Actividad guardada con exito, ahora puedes agregar tareas'
       });
 
@@ -181,7 +183,7 @@ export class TaskComponent implements OnInit {
 
       Swal.fire({
         allowOutsideClick: false,
-        type: 'info',
+        icon: 'info',
         text: 'Espere por favor...'
       });
       Swal.showLoading();
@@ -193,7 +195,7 @@ export class TaskComponent implements OnInit {
 
       Swal.fire({
           allowOutsideClick: false,
-          type: 'success',
+          icon: 'success',
           title: 'Tarea agregada con exito'
         });
 

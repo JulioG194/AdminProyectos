@@ -30,6 +30,7 @@ mat-divider {
 .align {
     display: flex;
     flex-direction: row;
+    /*   align-items: center; */
 }
 
 mat-toolbar {
@@ -109,7 +110,7 @@ mat-icon {
 }
 
 .image {
-    width: 25%;
+    width: 20%;
 }
 
 .info {
@@ -117,7 +118,15 @@ mat-icon {
 }
 
 .icon {
-    width: 5%;
+    width: 10%;
+}
+
+.space1 {
+    margin-bottom: -2.5%;
+}
+
+.space2 {
+    margin-bottom: 1%;
 }
 
 .container>div {
@@ -126,6 +135,8 @@ mat-icon {
 
 .container1>div {
     float: left;
+    margin-left: 1%;
+    width: 100%;
 }
 
 .msgTx {
@@ -133,20 +144,24 @@ mat-icon {
     min-width: 10%;
     border-radius: 15px;
     border: 1px solid white;
-    color: white;
+    color: black;
     padding-right: 1%;
-    background: rgb(71, 65, 65);
+    /* background: rgb(71, 65, 65); */
+    background: white;
 }
 
 .msgRx {
-    max-width: 20%;
+    max-width: 80%;
+    min-width: 10%;
     border-radius: 15px;
-    border: 1px solid white;
-    /* color: wheat; */
-    color: black;
-    min-width: 20%;
-    padding-right: 1%;
-    background: blanchedalmond;
+    border: 1px solid black;
+    color: rgb(212, 212, 212);
+    /*  padding-right: 1%; */
+    background: rgb(12, 27, 34);
+}
+
+.test>div {
+    max-width: 80%;
 }
 
 .photo img {

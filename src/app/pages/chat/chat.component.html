@@ -6,72 +6,65 @@
         <mat-toolbar class="header1">Tus contactos</mat-toolbar>
         <div class="scroll-contact">
             <div class="contacts" *ngFor="let user of delegatesAux1">
-                <button class="select align" (click)="selectUser(user.uid,user.displayName,user.email,user.photoURL)">
-                    <div class="image">
-                        <img [src]="user.photoURL" alt="">
-                    </div>
-                    <div class="info">
-                        {{user.displayName}} <br>
-                        {{user.phoneNumber}}
-                        
-                    </div>
+                <button class="select align" (click)="
+            selectUser(user.uid, user.displayName, user.email, user.photoURL)
+          ">
+          <div class="image">
+            <img [src]="user.photoURL" alt="" />
+          </div>
+          <div class="info">
+            {{ user.displayName }}
+          </div>
 
-                    <div class="icon">
-                        <mat-icon matBadge="15" matBadgeColor="warn">message</mat-icon>
-                    </div>
-                   
-                </button>
-
+          <div class="icon" matBadge="15" matBadgeColor="warn"></div>
+        </button>
             </div>
         </div>
     </div>
 
     <div class="rigth">
+        <mat-toolbar class="header2">
+            <div class="image">
+                <img [src]="coworker.photoURL" alt="" />
+            </div>
+            {{ coworker.displayName }}
+        </mat-toolbar>
 
-        <mat-toolbar class="header2">{{ coworker.displayName }}</mat-toolbar>
         <div class="scroll-chat" id="app-mensajes">
-
             <div *ngFor="let chat of allChats">
-                <span></span>
-                <br>
                 <div class="align photo">
                     <!-- <div class="align" *ngIf="chat.coworkerEmail == coworker.email"> -->
-                    <div class="container">
+                    <div class="container space1">
                         <div class="msgTx align" *ngIf="chat.coworkerEmail == coworker.email">
-                            <img [src]="userGugo.photoURL" alt=""> &nbsp;
+                            <img [src]="userGugo.photoURL" alt="" /> &nbsp;
                             <p>{{ chat.message }}</p>
                         </div>
                     </div>
-
                     <!--  </div> -->
                     <!--   <img src="../../../assets/img/gg.jpg" alt=""> -->
-
                 </div>
 
-                <div class="align photo">
-                    &nbsp;
-                    <div class="msgRx align" *ngIf="chat.coworkerEmail == userGugo.email && chat.senderEmail == coworker.email">
-                        <img [src]="coworker.photoURL" alt=""> &nbsp;
+                <div class="align photo space2">
+                    <!-- <div class="container1"> -->
+                    &nbsp;&nbsp;
+                    <div class="msgRx align" *ngIf="
+              chat.coworkerEmail == userGugo.email &&
+              chat.senderEmail == coworker.email
+            ">
+                        <img [src]="coworker.photoURL" alt="" /> &nbsp;
                         <p>{{ chat.message }}</p>
+                        &nbsp;&nbsp;
                     </div>
-
-                    <!--  <p class="msgRx">recibido</p> -->
-
+                    <!-- </div> -->
                 </div>
-                <!--  <div class="msgTx" *ngIf="chat.senderId == userGugo.id">
-                    <label>{{ chat.message }}</label>
-                </div>
-                <br>
-                <div class="msgRx" *ngIf="chat.senderId != userGugo.id">
-                    <label> {{ chat.message }}</label>
-                </div> -->
             </div>
+            <br />
         </div>
-        <form (keyup.enter)="onSendMessage( f2 )" #f2="ngForm">
+        <form (keyup.enter)="onSendMessage(f2)" #f2="ngForm">
             <div class="align send" *ngIf="coworker.email">
-                <input name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required>
-                <button class="btn btn-light" matTooltip="Enviar" type="submit" (click)="onSendMessage( f2 )">
-                <mat-icon style="width: 20px; height: 10px">send</mat-icon>  
+                <input name="message" [(ngModel)]="chatUser.message" cols="" rows="2" required />
+                <button class="btn btn-light" matTooltip="Enviar" type="submit" (click)="onSendMessage(f2)">
+          <mat-icon style="width: 20px; height: 10px">send</mat-icon>
         </button>
             </div>
         </form>

@@ -397,7 +397,7 @@ lables = [];
                                                                       this.startD = new Date();
                                                                       this.endD = new Date(project.end_date['seconds'] * 1000);
                                                                       this.allenddates.push(this.endD);
-                                                                      this.differenceTime = Math.abs(this.endD.getTime() - this.startD.getTime());
+                                                                      this.differenceTime = this.endD.getTime() - this.startD.getTime();
                                                                       this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
                                                                       // console.log(this.differenceDays);
                                                                       this.difDyas.push(this.differenceDays);
@@ -507,6 +507,7 @@ lables = [];
       return Math.floor((utc2 - utc1) / this.MS_PER_DAY);
     }
 
+
     mostrar(idProject: string) {
       this.post = false;
       this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); });
@@ -554,15 +555,14 @@ lables = [];
                                                                                                                                this.optionsC = {
                                                                                                                                               'title': 'Tasks',
                                                                                                                                               width: 1250,
-                                                                                                                                              height: 1000,
+                                                                                                                                              height: 500,
                                                                                                                                               orientation: 'vertical',
-                                                                                                                                              chartArea: {width: '100%'},
-                                                                                                                                              explorer: {axis: 'horizontal', keepInBounds: true},
-                                                                                                                                              yAxis : {
-                                                                                                                                                textStyle : {
-                                                                                                                                                    fontSize: 7 // or the number you want
-                                                                                                                                                }
-                                                                                                                                            }
+                                                                                                                                              chartArea: {width: '100%',
+                                                                                                                                              backgroundColor: {
+                                                                                                                                                fill: '#FF0000',
+                                                                                                                                                fillOpacity: 0.8
+                                                                                                                                              },
+                                                                                                                                            },
                                                                                                                                           };
                                                                                                                                   //   };
                                                                                                                       });

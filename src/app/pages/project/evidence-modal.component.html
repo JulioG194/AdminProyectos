@@ -1,20 +1,81 @@
 <div class="box">
     <form>
         <h1>Evidencia</h1>
-        <h4>Tarea</h4>
-        <p>Estas son las evidencias que ha subido --Usuario--</p>
-        <div class="scroll">
-            <div class="grid">
-                <div *ngFor="let item of evidences" class="card">
-                    <div>Nombre:{{item.fileName}}</div>
-                    <div>Fecha de entrega:{{item.userName}}</div>
-                    <img [src]="item.url" alt="">
-                    <button (click)="downloadFile(item.url)">
-                     <mat-icon>arrow_downward</mat-icon>
-                 </button>
+        <div class="container">
+            <h5>{{ data.task.name }}</h5>
+            <div class="align1">
+                <img matListAvatar [src]="data.task.delegate.photoURL" style="width: 50px; height: 50px; border-radius: 150px" />
+                <h6>{{ data.task.delegate.displayName }}</h6>
+            </div>
+            <br />
+            <div *ngIf="evidences?.length > 0; else sinEvidences">
+                <div class="scroll">
+                    <div class="grid">
+                        <div *ngFor="let item of evidences" class="card">
+                            <img *ngIf="
+                  item.type == 'image/jpeg' ||
+                  item.type == 'image/png' ||
+                  item.type == 'image/gif' ||
+                  item.type == 'image/bmp'
+                " [src]="item.url" alt="" />
+                            <img *ngIf="item.type == 'application/pdf'" src="../../../assets/img/pdf.png" alt="" />
+                            <img *ngIf="
+                  item.type ==
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                  item.type == 'application/msword' ||
+                  item.type == 'application/vnd.oasis.opendocument.text'
+                " src="../../../assets/img/word.jpg" alt="" />
+                            <img *ngIf="
+                  item.type ==
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                  item.type == 'application/vnd.ms-excel' ||
+                  item.type == 'application/vnd.oasis.opendocument.spreadsheet'
+                " src="../../../assets/img/excel.jpg" alt="" />
+                            <img *ngIf="item.type == 'text/plain'" src="../../../assets/img/txt.png" alt="" />
+                            <img *ngIf="
+                  item.type ==
+                    'application/vnd.oasis.opendocument.presentation' ||
+                  item.type ==
+                    'application/vnd.openxmlformats-officedocument.presentationml.presentation' ||
+                  item.type == 'application/vnd.ms-powerpoint'
+                " src="../../../assets/img/pp.jpg" alt="" />
+                            <br />
+                            <div class="text align">
+                                <p>Nombre: {{ item.fileName }}</p>
+                                <p>Subido: {{ item.createdAt | date: 'dd/MM/y' }}</p>
+                            </div>
+                            <button (click)="downloadFile(item.url)">
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+                        </div>
+
+                        <!-- <div *ngFor="let item of files" class="card">x
+                            <img src="../../../assets/img/fondo1.jpg" alt="">
+                            <div>Nombre:{{item}}</div>
+                            <div>Fecha de entrega:{{item}}</div> -->
+                        <!-- <img [src]="item.url" alt="">
+                            <button (click)="downloadFile(item.url)">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </button> -->
+                        <!--  <button matTooltip="Visualizar">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </button> -->
+                        <!-- </div> -->
+                    </div>
                 </div>
             </div>
+
+            <ng-template #sinEvidences>
+                <br />
+                <div class="empty">
+                    <br />
+                    <h5>No existe registro !!!</h5>
+                    <br />
+                    <h6>No se ha subido ninguna evidencia a esta tarea</h6>
+                    <br />
+                </div>
+                <br />
+            </ng-template>
         </div>
     </form>
-
 </div>

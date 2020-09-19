@@ -1,9 +1,10 @@
+<h2>Mi equipo</h2>
+<mat-divider></mat-divider>
 <div *ngIf="userGugo.manager == true; else delegate">
     <div *ngIf="!teamGugo.manager">
-        <h2>Tu equipo de trabajo</h2>
-        <mat-divider></mat-divider>
+
         &nbsp;
-        <h4>Selecciona tu equipo de trabajo:</h4>
+        <h5>Selecciona tu equipo de trabajo:</h5>
         <ul>
             <mat-selection-list #team [(ngModel)]="selectedUsers" (ngModelChange)="onGroupsChange($event)">
                 <li>
@@ -20,14 +21,13 @@
         </ul>
         <div class="end">
             <p>Has elegido {{team.selectedOptions.selected.length}} personas para formar tu equipo de trabajo</p>
-            <button (click)="addNewTeam()">Ok</button>
+            <button (click)="addNewTeam()">Listo</button>
         </div>
     </div>
 
     <div *ngIf="teamGugo.manager">
 
-        <h2>Tu equipo de trabajo</h2>
-        <mat-divider></mat-divider>
+
         <!-- <div class="container"> -->
         <table class="space">
             <thead>
@@ -50,7 +50,7 @@
             </tr>
         </table>
         <div>
-            <button (click)="post = !post" class="style space">+ Personas al equipo</button>
+            <button (click)="post = !post" class="style space">Ampliar equipo</button>
         </div>
 
         <!--  </div> -->
@@ -65,8 +65,9 @@
     <ng-template #chooseTeam>
         <div class="space2">
             <br>
-            <h3>Amplia tu equipo de trabajo</h3>
+            <h4>Amplia tu equipo de trabajo</h4>
             <mat-divider></mat-divider>
+            <br>
             <ul>
                 <mat-selection-list #team2 [(ngModel)]="selectedUsersPlus" (ngModelChange)="onGroupsChangePlus($event)">
                     <li>
@@ -83,7 +84,7 @@
             </ul>
             <div class="end">
                 <p>Has elegido {{team2.selectedOptions.selected.length}} personas para formar tu equipo de trabajo</p>
-                <button (click)="updateTeam()">Ok</button>
+                <button (click)="updateTeam()">Listo</button>
             </div>
         </div>
     </ng-template>
@@ -91,8 +92,7 @@
 
 <ng-template #delegate>
     <div *ngIf="delegatesAux1?.length > 0; else NoTeam">
-        <h2>Tu Equipo</h2>
-        <mat-divider></mat-divider>
+
         <br>
         <h5>Tus gestores de proyectos:</h5>
         <!-- <div class="container"> -->

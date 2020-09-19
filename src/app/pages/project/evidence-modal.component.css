@@ -1,6 +1,7 @@
 .box {
     width: 100%;
     background: rgb(42, 49, 61);
+    /* background: white; */
     border: 1px solid rgb(77, 83, 71);
     margin: 0px auto;
 }
@@ -18,21 +19,80 @@
     text-align: center;
 }
 
+.container {
+    padding: 10px;
+}
+
+.container h5,
+h6 {
+    color: white;
+}
+
+.container h5 {
+    text-align: center;
+}
+
 .grid {
     display: grid;
     grid-template-columns: 30% 30% 30%;
-    grid-template-rows: 150px 150px 150px 150px 150px 150px 150px 150px 150px 150px;
-    grid-column-gap: 3%;
+    grid-template-rows: 300px 300px 300px 300px 300px 300px 300px 300px 300px 300px;
+    grid-column-gap: 4%;
     grid-row-gap: 40px;
     text-align: center;
     padding: 2%;
+    margin: opx auto;
 }
+
+.align1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+/* .align1 img {
+    margin: 0 auto;
+}
+ */
 
 .card {
-    border: 1px solid black;
+    padding: 5px;
+    border: 1px solid white;
+    color: black;
+    background: rgb(212, 212, 212);
+    /* height: 200px; */
 }
 
-.align {
+.card img {
+    margin: 0px auto;
+    width: 60%;
+    height: 50%;
+    border-radius: 10px;
+}
+
+.text p {
+    text-align: left;
+}
+
+.card button {
+    border: none;
+    background: rgb(12, 27, 34);
+    width: 100%;
+    color: white;
+}
+
+.align2 {
     display: flex;
     flex-direction: column;
+}
+
+.empty {
+    width: 70%;
+    text-align: center;
+    border: 1px solid black;
+    background: rgb(12, 27, 34);
+    color: rgb(212, 212, 212);
+    margin: 0px auto;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
 }

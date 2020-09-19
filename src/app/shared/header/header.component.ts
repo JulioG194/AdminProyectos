@@ -13,7 +13,6 @@ import { User } from 'src/app/models/user.interface';
 })
 export class HeaderComponent implements OnInit {
 
- /*  title: string; */
  panelOpenState = false;
  post = true;
  notifications: string [] = ['Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion', 'Notificacion'];
@@ -65,7 +64,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['']). then(() => {
-      // do whatever you need after navigation succeeds
       location.reload();
     });
   }

@@ -68,3 +68,13 @@ tr:nth-child(even) {
     background-color: rgb(36, 170, 31);
     color: white;
 } */
+
+.view1 {
+    height: 70%;
+    width: 100%;
+    border: 1px solid black;
+    padding: 20px;
+    background: white;
+    align-items: center;
+    color: white;
+}

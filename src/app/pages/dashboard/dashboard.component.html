@@ -4,32 +4,35 @@
 <div *ngIf="userGugo.manager == true; else delegate">
     <div *ngIf="projectsApp?.length > 0; else userGuide">
         <div class="btn-GuiaUser">
-            <button (click)="post = !post">Ver guia de usuario</button>
+            <button (click)="openUserGuide()" matTooltip="Ver guia de usuario">
+                <mat-icon>library_books</mat-icon>
+            </button>
         </div>
-        <div>
-            <div>
-                <div class="chart" style="display: block; width: 400px; height: 400px;">
-                    <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
-            </canvas>
+        <br>
+        <br>
+        <br>
+        <div class="align">
+            <div class="view1">
+                <div>
+                    <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
                 </div>
             </div>
-        </div>
-        <!--       <br>
-        <br>
-        <mat-divider></mat-divider> -->
-        <div style="display: block; width: 400px; height: 400px;">
-            <!--  <ngx-charts-bar-horizontal [view]="view" [scheme]="colorScheme" [results]="results" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
-                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
-            </ngx-charts-bar-horizontal> -->
-            <canvas baseChart width="25px" height="25px" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
-            </canvas>
+            <br>
+            <br>
+            <div class="view2">
+                <!--  <ngx-charts-bar-horizontal [view]="view" [scheme]="colorScheme" [results]="results" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                    [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-horizontal> -->
+                <canvas baseChart width="50px" height="12px" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+            </div>
         </div>
     </div>
 
 
-    <div *ngIf="post == true ; else userGuide">
+    <!-- <div *ngIf="post == true ; else userGuide">
 
-    </div>
+    </div> -->
+
     <!--   <div>
         <div>
           <div>
@@ -44,7 +47,7 @@
       </div> -->
 </div>
 <ng-template #delegate>
-    <div *ngIf="projectsApp?.length > 0; else userGuide">
+    <div *ngIf="projectsApp?.length > 0; ">
         <div class="btn-GuiaUser">
             <button (click)="post = !post">Ver guia de usuario</button>
         </div>
@@ -68,16 +71,10 @@
         <mat-divider></mat-divider>
     </div>
 
-    <div *ngIf="post == true ; else userGuide">
 
-    </div>
 </ng-template>
 
-
 <ng-template #userGuide>
-    <!-- <h1>Bienvenid@ {{ userApp.name }}</h1> -->
-    <br>
-    <h4>Guia de usuario:</h4>
     <br>
     <table>
         <tr>
@@ -89,7 +86,7 @@
                             <img src="../../../assets/img/userGuide/team.png" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 Forma tu equipo de trabajo para poder crear proyectos. <br> En el menu lateral se tiene la opcion "Mi equipo", aqui podrás seleccionar las personas con las que vas trabajar dentro de tus proyectos y asignarles distintas
                                 tareas.
@@ -107,7 +104,7 @@
                             <img src="../../../assets/img/userGuide/project.jpg" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 En el menu lateral se tiene la opcion "Proyectos", aqui podrás crear tus proyectos dando click sobre "Nuevo Proyecto". Si ya existen proyectos se presentará una lista de los mismos con dististas herramientas que te permitirán; visualizar detalles, eliminar
                                 y asignar actividades a cada proyecto.
@@ -125,7 +122,7 @@
                             <img src="../../../assets/img/userGuide/activities.jpg" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 Para crear actividades, podrás ir al icono "Asignar Actividades" dentro de la columna "Herramientas" ubicado en el listado de proyectos. Mediante el icono "Ver detalles" podrás visualizar los detalles de tus proyectos; informacion de cada proyecto y su
                                 respectiva lista de actividades.
@@ -163,7 +160,7 @@
                             <img src="../../../assets/img/userGuide/tasks.png" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 Cada actividad tendrá una lista de tareas, las cuales podrán ser creadas mediante el icono "Asignar tareas" ubicado en la tabla de actividades. A cada tarea se le va asignar una persona encargada y mediante el uso del icono "Evidencia" podrás verificar
                                 si la tarea fue o no cumplida.
@@ -183,7 +180,7 @@
                             <img src="../../../assets/img/userGuide/schedule.png" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 En el menu lateral se tiene la opcion "Cronograma", aqui podrás observar las fechas de entrega de todos tus proyectos. Además, cada fecha indica los días restantes para la culminación del proyecto y el porcentaje de avance mediante el uso de colores.
                             </p>
@@ -200,7 +197,7 @@
                             <img src="../../../assets/img/userGuide/notification.png" alt="">
                         </div>
                         <div class="front back">
-                            <!-- <h5>Gu.Go</h5> -->
+
                             <p class="p">
                                 En la parte superior derecha se tiene el icono "Notificaciones", aquí podrás visualizar las notificaciones generadas acerca de eventos significativos como los tiempos restantes de un proyecto, actividades asignadas y culminación de un proyecto.
                             </p>

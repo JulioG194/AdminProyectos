@@ -4,7 +4,7 @@ import { User } from 'src/app/models/user.interface';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 // tslint:disable-next-line:import-spacing
-import  Swal  from 'sweetalert2';
+import  Swal  from 'sweetalert2/src/sweetalert2.js';
 // import { UserService } from '../../services/users.service';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
@@ -55,7 +55,7 @@ export interface StringDate {
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css']
+  styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
 
@@ -179,18 +179,58 @@ export class ProjectsComponent implements OnInit {
                                                                                     let aux4: number;
                                                                                     let aux5: number;
                                                                                     let aux1: number;
+                                                                                    let status: string;
+                                                                                    let countRND = 0;
+                                                                                    let countRD = 0;
+                                                                                    let countPR = 0;
+                                                                                    let max = 0;
+                                                                                    let statusP: string;
+                                                                                    let countPRND = 0;
+                                                                                    let countPRD = 0;
+                                                                                    let countPPR = 0;
                                                                                     this.projectService.getActivities(this.projectsApp[index]).subscribe(acts => {
                                                                                         let aux8 = 0;
+                                                                                        countPRND = 0;
+                                                                                        countPRD = 0;
+                                                                                        countPPR = 0;
                                                                                         this.activitiesProjectsApp = acts;
                                                                                         numeroActs = this.activitiesProjectsApp.length;
                                                                                         porcentajeActividad = 100 / numeroActs;
                                                                                         aux6 = 100 / numeroActs;
+                                                                                        for (let activity of this.activitiesProjectsApp) {
+                                                                                          if (activity.status === 'Por Verificar') {
+                                                                                            statusP = 'Por Verificar';
+                                                                                            break;
+                                                                                          } else {
+                                                                                            statusP = '';
+                                                                                            if (activity.status === 'Realizando') {
+                                                                                              countPRND++;
+                                                                                            } else if (activity.status === 'Realizado') {
+                                                                                              countPRD++;
+                                                                                            } else if (activity.status === 'Por Realizar') {
+                                                                                             countPPR++;
+                                                                                          }
+                                                                                        }
+                                                                                          }
+                                                                                        if (statusP !== 'Por Verificar') {
+                                                                                          if ((countPRND >= countPRD) && (countPRND >=  countPPR)) {
+                                                                                            statusP = 'Realizando';
+                                                                                        } else if ((countPRD >= countPRND) && (countPRD >= countPPR)) {
+                                                                                          statusP = 'Realizado';
+                                                                                          } else {
+                                                                                            statusP = 'Por Realizar';
+                                                                                        }
+                                                                                        }
+
                                                                                         // tslint:disable-next-line:prefer-for-of
                                                                                         for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
                                                                                           aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
                                                                                           aux8 += aux7;
                                                                                           this.projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
                                                                                                let aux2 = 0;
+                                                                                               countRND = 0;
+                                                                                               countRD = 0;
+                                                                                               countPR = 0;
                                                                                                this.tasksActivitiesApp = tasks;
                                                                                                if ( this.tasksActivitiesApp.length === 0 ) {
                                                                                                 try {
@@ -207,8 +247,43 @@ export class ProjectsComponent implements OnInit {
                                                                                                  aux4 = +(aux3.toFixed(2));
                                                                                                  id = this.tasksActivitiesApp[k].idActivity;
                                                                                                }
+
+                                                                                               for (let task of this.tasksActivitiesApp) {
+                                                                                                if (task.status === 'Por Verificar') {
+                                                                                                  status = 'Por Verificar';
+                                                                                                  break;
+                                                                                                } else if ( task.status === 'Realizando' ) {
+                                                                                                  status = 'Realizando';
+                                                                                                  break;
+                                                                                                } else {
+                                                                                                  status = '';
+                                                                                                  if (task.status === 'Realizado') {
+                                                                                                    countRD++;
+                                                                                                  } else if (task.status === 'Por Realizar') {
+                                                                                                   countPR++;
+                                                                                                }
+                                                                                                }
+                                                                                                // status = '';
+                                                                                                  /* if (task.status === 'Realizando') {
+                                                                                                    // countRND++;
+                                                                                                    status = 'Realizando';
+                                                                                                    break;
+                                                                                                  } else 
+                                                                                              }
+
+                                                                                               if (status !== 'Por Verificar') {
+                                                                                               /*  if ((countRND >= countRD) && (countRND >=  countPR)) {
+                                                                                                  status = 'Realizando';
+                                                                                              } else */ 
+                                                                                                if (/* (countRD >= countRND) && */ (countRD > countPR)) {
+                                                                                                status = 'Realizado';
+                                                                                                } else {
+                                                                                                  status = 'Por Realizar';
+                                                                                              }
+                                                                                              }
                                                                                                try {
                                                                                                   this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
+                                                                                                  this.projectService.setStatusActivity(this.projectsApp[index].id, id, status);
                                                                                                  } catch {}
                                                                                                }
                                                                                            });
@@ -216,6 +291,7 @@ export class ProjectsComponent implements OnInit {
                                                                                         aux9 = +((aux8 / 100).toFixed(2));
                                                                                         try {
                                                                                           this.projectService.setProjectProgress( this.projectsApp[index].id , aux9 );
+                                                                                          // this.projectService.setStatusProject(this.projectsApp[index].id, statusP);
                                                                                          } catch {}
                                                                                     });
 
@@ -420,7 +496,7 @@ export class ProjectsComponent implements OnInit {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'No podrás revertir esta acción!',
-      type: 'warning',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -443,7 +519,7 @@ export class ProjectsComponent implements OnInit {
     // tslint:disable-next-line:component-selector
     selector: 'newProject-modal',
     templateUrl: './newProject-modal.component.html',
-    styleUrls: ['./newProject-modal.component.css']
+    styleUrls: ['./newProject-modal.component.scss']
   })
 
   export class NewProjectModalComponent implements OnInit {
@@ -503,7 +579,7 @@ export class ProjectsComponent implements OnInit {
       if ( this.endD <= this.startD ) {
 
           Swal.fire({
-            type: 'error',
+            icon: 'error',
             title: 'Fechas fuera de rango',
           });
           return;
@@ -511,7 +587,7 @@ export class ProjectsComponent implements OnInit {
 
       Swal.fire({
         allowOutsideClick: false,
-        type: 'info',
+        icon: 'info',
         text: 'Espere por favor...'
       });
       Swal.showLoading();
@@ -522,7 +598,7 @@ export class ProjectsComponent implements OnInit {
       Swal.close();
       Swal.fire({
           allowOutsideClick: false,
-          type: 'success',
+          icon: 'success',
           title: 'Proyecto creado con exito'
         });
 
@@ -597,7 +673,7 @@ export class ProjectsComponent implements OnInit {
       if ( this.endD <= this.startD ) {
 
           Swal.fire({
-            type: 'error',
+            icon: 'error',
             title: 'Fechas fuera de rango',
           });
           return;
@@ -605,7 +681,7 @@ export class ProjectsComponent implements OnInit {
 
       Swal.fire({
         allowOutsideClick: false,
-        type: 'info',
+        icon: 'info',
         text: 'Espere por favor...'
       });
       Swal.showLoading();
@@ -615,7 +691,7 @@ export class ProjectsComponent implements OnInit {
       Swal.close();
       Swal.fire({
           allowOutsideClick: false,
-          type: 'success',
+          icon: 'success',
           title: 'Actividad agregada con exito'
         });
 

@@ -315,10 +315,26 @@ setActivityProgress( idProject: string, idActivity: string, percent: number) {
   );
 }
 
+setStatusActivity(idProject: string, idActivity: string, statusA: string) {
+  this.afs.collection('projects').doc(idProject).collection('activities').doc(idActivity).update(
+    {
+       status: statusA
+    }
+  );
+}
+
 setProjectProgress( idProject: string, percent: number) {
   this.afs.collection('projects').doc(idProject).update(
     {
        progress: percent
+    }
+  );
+}
+
+setStatusProject( idProject: string, statusP: string) {
+  this.afs.collection('projects').doc(idProject).update(
+    {
+       status: statusP
     }
   );
 }

@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit {
         .subscribe( resp => {
           Swal.fire({
             allowOutsideClick: false,
-            type: 'info',
+            icon: 'info',
             text: 'Espere por favor...'
           });
           Swal.showLoading();
@@ -63,12 +63,12 @@ export class UserProfileComponent implements OnInit {
 
           Swal.fire({
               allowOutsideClick: false,
-              type: 'success',
+              icon: 'success',
               title: 'Constraseña actualizada con exito'
           });
         }, (err) => {
           Swal.fire({
-            type: 'error',
+            icon: 'error',
             title: 'Error al registrar',
             text: this.respError(err.error.error.message)
           });
@@ -76,7 +76,7 @@ export class UserProfileComponent implements OnInit {
     } else {
       Swal.fire({
         allowOutsideClick: false,
-        type: 'error',
+        icon: 'error',
         text: 'Las contraseñas no coinciden'
       });
       return;
@@ -99,7 +99,7 @@ export class UserProfileComponent implements OnInit {
 
     Swal.fire({
       allowOutsideClick: false,
-      type: 'info',
+      icon: 'info',
       text: 'Espere por favor...'
     });
     Swal.showLoading();
@@ -113,7 +113,7 @@ export class UserProfileComponent implements OnInit {
 
     Swal.fire({
         allowOutsideClick: false,
-        type: 'success',
+        icon: 'success',
         title: 'Perfil actualizado con exito'
       });
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
 import { ProjectService } from '../../services/project.service';
@@ -11,6 +11,13 @@ import { Project } from 'src/app/models/project.interface';
 import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DialogData } from '../projects/projects.component';
+
+export interface State {
+    name: string;
+    count: number;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +26,31 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 })
 
 
+
 export class DashboardComponent implements OnInit {
+
+  statesT: State [] = [];
+
+  stateTP: State = {
+      name: 'Por Realizar',
+      count: 0
+  };
+
+  stateR: State = {
+    name: 'Realizando',
+    count: 0
+};
+
+stateRD: State = {
+  name: 'Realizado',
+  count: 0
+};
+
+stateV: State = {
+  name: 'Por Verificar',
+  count: 0
+};
+
 
   post = true;
   show = false;
@@ -72,7 +103,8 @@ colorScheme = {
 
 constructor( private authService: AuthService,
              private projectService: ProjectService,
-             private teamService: TeamService
+             private teamService: TeamService,
+             public dialog: MatDialog
   ) {  }
 
   public pieChartOptions: ChartOptions = {
@@ -138,6 +170,7 @@ constructor( private authService: AuthService,
           //this.labelBar1 = [];
           this.barChartLabels = [];
           this.barChartData[0].data = [];
+
           this.projectsApp.forEach(proj => {
             const gp: any = {
               name: '',
@@ -172,18 +205,62 @@ constructor( private authService: AuthService,
             let aux4: number;
             let aux5: number;
             let aux1: number;
+            let status: string;
+            let idAuxiliar: string;
+            let countRND = 0;
+            let countRD = 0;
+            let countPR = 0;
+            let max = 0;
+            let statusP: string;
+            let countPRND = 0;
+            let countPRD = 0;
+           let countPPR = 0;
             this.projectService.getActivities(this.projectsApp[index]).subscribe(acts => {
                 let aux8 = 0;
+                countPRND = 0;
+                countPRD = 0;
+                countPPR = 0;
                 this.activitiesProjectsApp = acts;
                 numeroActs = this.activitiesProjectsApp.length;
                 porcentajeActividad = 100 / numeroActs;
                 aux6 = 100 / numeroActs;
+                for (let activity of this.activitiesProjectsApp) {
+                  if (activity.status === 'Por Verificar') {
+                    statusP = 'Por Verificar';
+                    break;
+                  } else {
+                    statusP = '';
+                    if (activity.status === 'Realizando') {
+                      countPRND++;
+                    } else if (activity.status === 'Realizado') {
+                      countPRD++;
+                    } else if (activity.status === 'Por Realizar') {
+                     countPPR++;
+                  }
+                }
+                  }
+
+                if (statusP !== 'Por Verificar') {
+                  if ((countPRND >= countPRD) && (countPRND >=  countPPR)) {
+                    statusP = 'Realizando';
+                } else if ((countPRD >= countPRND) && (countPRD >= countPPR)) {
+                  statusP = 'Realizado';
+                  } else {
+                    statusP = 'Por Realizar';
+                }
+                }
+                // console.log(statusP);
                 // tslint:disable-next-line:prefer-for-of
                 for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
+                  status = '';
+                  idAuxiliar = '';
                   aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
                   aux8 += aux7;
                   this.projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
                        let aux2 = 0;
+                       countRND = 0;
+                       countRD = 0;
+                       countPR = 0;
                        this.tasksActivitiesApp = tasks;
                        if ( this.tasksActivitiesApp.length === 0 ) {
                         try {
@@ -199,16 +276,57 @@ constructor( private authService: AuthService,
                          aux3 = aux2 / 100;
                          aux4 = +(aux3.toFixed(2));
                          id = this.tasksActivitiesApp[k].idActivity;
+
                        }
+
+                       for (let task of this.tasksActivitiesApp) {
+                         console.log(`${task.name} de la actividad ${task.idActivity}`);
+                         if (task.status === 'Por Verificar') {
+                          status = 'Por Verificar';
+                          break;
+                        } else {
+                          status = '';
+                          if (task.status === 'Realizando') {
+                            countRND++;
+                            console.log(countRND);
+                          } else if (task.status === 'Realizado') {
+                            countRD++;
+                            console.log(countRD);
+                          } else if (task.status === 'Por Realizar') {
+                           countPR++;
+                           console.log(countPR);
+                           console.log(task.name);
+                        }
+                        }
+                      }
+
+                       if (status !== 'Por Verificar') {
+                        if ((countRND >= countRD) && (countRND >=  countPR)) {
+                          status = 'Realizando';
+                      } else if ((countRD >= countRND) && (countRD >= countPR)) {
+                        status = 'Realizado';
+                        } else {
+                          status = 'Por Realizar';
+                          console.log('si llegue aca');
+                      }
+                      }
+
+                      //}
+                      console.log(status);
                        try {
                           this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
+                          console.log(`proyecto:${this.projectsApp[index].id} ${id} estado:${status}`);
+                          // this.projectService.setStatusActivity(this.projectsApp[index].id, id, status);
                          } catch {}
                        }
                    });
                 }
                 aux9 = +((aux8 / 100).toFixed(2));
+
                 try {
                   this.projectService.setProjectProgress( this.projectsApp[index].id , aux9 );
+                  console.log(`proyectoASubir:${this.projectsApp[index].id} estado:${statusP}`);
+                  // this.projectService.setStatusProject(this.projectsApp[index].id, statusP);
                  } catch {}
             });
             if ( this.projectsApp[index].progress === 100 ) {
@@ -258,7 +376,31 @@ constructor( private authService: AuthService,
           }, 2000);
   }
 
-
+  openUserGuide(): void {
+    // tslint:disable-next-line: no-use-before-declare
+    const dialogRef = this.dialog.open( UserGuideModalComponent, {
+      width: '1300px',
+      data: { }
+  });
+  }
 
 }
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'userGuide-modal',
+  templateUrl: './userGuide-modal.component.html',
+  styleUrls: ['./userGuide-modal.component.css']
+})
+
+export class UserGuideModalComponent implements OnInit {
+
+  constructor(
+    public dialogRef: MatDialogRef<UserGuideModalComponent>,
+
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  ngOnInit() {}
+
+  }
 

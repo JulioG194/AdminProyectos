@@ -1,47 +1,56 @@
 <div class="box">
     <h1>Tarea</h1>
-    <form #f="ngForm" (ngSubmit)="data.taskAux == null ? onSaveTask( f ) : onEditTask( f )">
+    <form #f="ngForm" (ngSubmit)="data.taskAux == null ? onSaveTask(f) : onEditTask(f)">
         <div class="align">
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Nombre</mat-label>
-                <textarea style="color: rgb(212,212,212);" rows="3" cols="10" matInput name="name" [(ngModel)]="task.name" required></textarea>
+                <textarea style="color: rgb(212, 212, 212)" rows="3" cols="10" matInput name="name" [(ngModel)]="task.name" required></textarea>
+                <mat-icon matSuffix class="secondary-text">create</mat-icon>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Fecha de inicio</mat-label>
-                <input style="color: rgb(212,212,212);" matInput [matDatepicker]="picker" [min]="minD" [max]="maxD" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="task.start_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input style="color: rgb(212, 212, 212)" matInput readonly [matDatepicker]="picker" [min]="minD" [max]="maxD" (dateInput)="inputEvent($event)" name="start_date" [(ngModel)]="task.start_date" required />
+                <mat-datepicker-toggle style="color: white" matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Fecha de fin</mat-label>
-                <input style="color: rgb(212,212,212);" matInput [matDatepicker]="picker1" [min]="minD" [max]="maxD" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="task.end_date" required>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <input style="color: rgb(212, 212, 212)" matInput readonly [matDatepicker]="picker1" [min]="minD" [max]="maxD" (dateInput)="inputEvent2($event)" name="end_date" [(ngModel)]="task.end_date" required />
+                <mat-datepicker-toggle style="color: white" matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
-
 
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Delegado: {{ task.delegate?.displayName }}</mat-label>
                 <!-- <mat-label class="placeholder">{{task.delegate.displayName}}</mat-label> -->
                 <mat-select name="delegate" [(ngModel)]="task.delegate" required>
                     <mat-option *ngFor="let delegate of data.delegatesG" [value]="delegate">
-                        <img matListAvatar [src]="delegate?.photoURL" style="width: 30px; height: 30px;border-radius: 150px">
-                        <b style="font-size: 12px;">{{ delegate.displayName }}</b>
+                        <img matListAvatar [src]="delegate?.photoURL" style="width: 30px; height: 30px; border-radius: 150px" />
+                        <b style="font-size: 12px">{{ delegate.displayName }}</b>
                     </mat-option>
                 </mat-select>
+                <mat-icon matSuffix class="secondary-text">person</mat-icon>
             </mat-form-field>
 
             <!--  <mat-form-field>
             <input matInput placeholder="Porcentaje de avance" type="number" required>
         </mat-form-field> -->
-            <br>
+            <br />
             <div>
                 <button type="submit">Guardar</button>
             </div>
 
-            <span *ngIf="f.submitted && (f.controls['name'].errors || f.controls['start_date'].errors || f.controls['end_date'].errors || f.controls['delegate'].errors)" style="color:red;"> Todos los campos deben ser llenados</span>
-        </div>
-    </form>
+            <span *ngIf="
+          f.submitted &&
+          (f.controls['name'].errors ||
+            f.controls['start_date'].errors ||
+            f.controls['end_date'].errors ||
+            f.controls['delegate'].errors)
+        " style="color: red">
+        Todos los campos deben ser llenados</span
+      >
+    </div>
+  </form>
 </div>

@@ -3,14 +3,15 @@ import { TeamService } from '../../services/team.service';
 import { User } from 'src/app/models/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { Team } from 'src/app/models/team.interface';
-import Swal from 'sweetalert2';
+
+import Swal from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-my-team',
   templateUrl: './my-team.component.html',
-  styleUrls: ['./my-team.component.css']
+  styleUrls: ['./my-team.component.scss']
 })
 export class MyTeamComponent implements OnInit {
 
@@ -91,7 +92,7 @@ addNewTeam() {
   } else {
     Swal.fire({
       allowOutsideClick: false,
-      type: 'warning',
+      icon: 'warning',
       text: 'No se han seleccionado personas para tu equipo'
     });
   }
@@ -130,7 +131,7 @@ updateTeam() {
   } else {
     Swal.fire({
       allowOutsideClick: false,
-      type: 'warning',
+      icon: 'warning',
       text: 'No se han seleccionado personas para tu equipo'
     });
   }

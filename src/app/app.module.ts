@@ -28,10 +28,6 @@ import { PagesComponent } from './pages/pages.component';
 import { environment } from 'src/environments/environment';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

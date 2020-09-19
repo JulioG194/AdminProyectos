@@ -1,7 +1,7 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule, registerLocaleData, DatePipe } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent, UserGuideModalComponent } from './dashboard/dashboard.component';
 import { PAGES_ROUTES } from './pages.routes';
 import { SharedModule } from '../shared/shared.module';
 import { AngularMaterialModule } from '../design/angular-material.module';
@@ -16,7 +16,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-
+import '../../styles.scss';
 import localeEsAr from '@angular/common/locales/es-AR';
 import { ActivitiesComponent, TaskComponent  } from './activities/activities.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -32,13 +32,15 @@ import { GraficoBarraHorizontalComponent } from '../components/grafico-barra-hor
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GanttComponent } from './gantt/gantt.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { ProgressBarColor } from './schedule/progress-bar-color';
+
 
 
 
 registerLocaleData(localeEs);
 
 @NgModule({
-  declarations: [DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent, ActivitiesModalComponent1, GraficoBarraHorizontalComponent, EvidenceModalComponent, EvidenceModalComponent1, GanttComponent],
+  declarations: [ ProgressBarColor, DashboardComponent, MyTeamComponent, ChatComponent, ScheduleComponent, ProjectsComponent, NewProjectModalComponent, UserProfileComponent, ActivitiesComponent, TaskComponent, KanbanComponent, ProjectComponent, TasksComponent, TaskComponent1, ActivitiesModalComponent, NotificationsComponent, ActivitiesModalComponent1, GraficoBarraHorizontalComponent, EvidenceModalComponent, EvidenceModalComponent1, GanttComponent, UserGuideModalComponent],
   imports: [
     CommonModule,
     PAGES_ROUTES,
@@ -68,6 +70,6 @@ registerLocaleData(localeEs);
     GoogleChartsModule
   ],
   providers: [ { provide: LOCALE_ID, useValue: 'es-Ar' }, DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB'} ],
-  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, EvidenceModalComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent]
+  entryComponents: [ProjectsComponent, NewProjectModalComponent, TaskComponent, TaskComponent1, EvidenceModalComponent1, ActivitiesModalComponent, ActivitiesModalComponent1, EvidenceModalComponent, UserGuideModalComponent]
 })
 export class PagesModule { }
