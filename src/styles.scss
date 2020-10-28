@@ -121,3 +121,46 @@ $green-palette: igx-palette($primary: #09f, $secondary: #72da67, $surface: #333)
         @include igx-fluent-dark-theme($fluent-excel-palette);
     }
 }
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: rgb(66, 134, 244);
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    color: rgb(66, 134, 244);
+    background-color: rgb(66, 134, 244);
+}
+
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color: rgb(255, 37, 37, .26)
+}
+
+.mat-tab-label {
+    // min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: white;
+    font-weight: 700;
+}
+
+
+/* Styles for the active tab label */
+
+.mat-tab-label.mat-tab-label-active {
+    // min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: white;
+    font-weight: 700;
+}
+
+
+/* Styles for the ink bar */
+
+.mat-ink-bar {
+    background-color: green;
+}
+
+.mat-tab-group {
+    margin-bottom: 48px;
+}

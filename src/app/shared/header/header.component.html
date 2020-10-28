@@ -1,23 +1,24 @@
-<mat-toolbar class="align">
+<mat-toolbar *ngIf="!isLoading" class="align">
     <div class="name">GuGo</div>
+    <div class="name">Version Web v1.0.0-2020.26.10 - {{manager}}</div>
     <div class="headerTools">
-        <button class="btn btn-outline-light" mat-button [matMenuTriggerFor]="notification">
-            <mat-icon>notification_important</mat-icon> 
+        <button mat-icon-button color="primary" [matMenuTriggerFor]="notification">
+            <mat-icon matBadge="15" matBadgeColor="warn" matTooltip="Ver notificaciones">notifications</mat-icon>
         </button>
 
-        <button class="boton" mat-button [matMenuTriggerFor]="profile">
-            <div mat-card-avatar >
-                <img class="image" [src]="userGugo.photoURL" alt="">
-            </div>
+        <button class="btn btn-outline-info shadow-none" mat-button [matMenuTriggerFor]="profile">
+      <!-- <div > -->
+            <img class="image" matTooltip="Ver mi perfil" [src]="userGugo.photoURL" alt="" />
+      <!-- </div> -->
         </button>
 
         <mat-menu #notification="matMenu" class="containerNotification">
             <div class="notification">
                 <h6>Notificaciones</h6>
                 <mat-divider></mat-divider>
-                <br>
-                <div *ngFor="let notif of notifications; let indice=index" class="btnNot">
-                    <label>{{notif}}{{indice+1}}</label>
+                <br />
+                <div *ngFor="let notif of notifications; let indice = index" class="btnNot">
+                    <label>{{ notif }}{{ indice + 1 }}</label>
                 </div>
                 <div>
                     <button (click)="openNotifications()">Ver todas</button>
@@ -27,23 +28,30 @@
 
         <mat-menu #profile="matMenu" class="containerProfile">
             <div class="profile">
-
                 <h6>Perfil</h6>
                 <mat-divider></mat-divider>
-                <label class="label1">{{ userGugo.employment }}</label> <br>
+                <label class="label1">{{ userGugo.employment }}</label> <br />
                 <div class="profileImg">
-                    <img [src]="userGugo.photoURL" alt="">
+                    <img [src]="userGugo.photoURL" alt="" />
                 </div>
-                <br>
+                <br />
                 <label class="label2">{{ userGugo.displayName }}</label>
                 <label class="label3">{{ userGugo.email }}</label>
-                <br>
+                <br />
                 <div class="btnOptions align">
                     <button (click)="editUser()">Ver Perfil</button>
                     <button (click)="logout()">Cerrar sesión</button>
                 </div>
             </div>
         </mat-menu>
-
     </div>
+    <!-- <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white;">
+        <mat-spinner class="spinner" diameter="20" style="background-color: midnightblue;"></mat-spinner>
+    </div> -->
+
 </mat-toolbar>
+
+<div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: rgb(12, 27, 34);">
+    <mat-progress-spinner color="primary" mode="indeterminate" diameter="63">
+    </mat-progress-spinner>
+</div>

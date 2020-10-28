@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
+import * as _ from 'lodash';
 
 // tslint:disable-next-line:import-spacing
-import  Swal  from 'sweetalert2/src/sweetalert2.js';
+import Swal from 'sweetalert2/src/sweetalert2.js';
 import * as firebase from 'firebase/app';
+import { ValidatorService } from '../../services/validators.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login-register',
   templateUrl: './login-register.component.html',
-  styleUrls  : ['./login-register.component.css', './login-register.component.scss' ]
+  styleUrls: [
+    './login-register.component.css',
+    './login-register.component.scss',
+  ],
 })
-
-
 export class LoginRegisterComponent implements OnInit {
-
+  storagePhoto =
+    'https://firebasestorage.googleapis.com/v0/b/tesis-adminproyectos.appspot.com/o/login.png?alt=media&token=ce8a16cb-009c-4d41-b9c0-c493bd8a355b';
+  serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp();
   userRegister: User = {
     uid: '',
     displayName: '',
@@ -24,144 +30,276 @@ export class LoginRegisterComponent implements OnInit {
     employment: '',
     description: '',
     gender: '',
-    photoURL: 'https://firebasestorage.googleapis.com/v0/b/tesis-adminproyectos.appspot.com/o/login.png?alt=media&token=ce8a16cb-009c-4d41-b9c0-c493bd8a355b',
+    photoURL: this.storagePhoto,
     birthdate: new Date(),
     phoneNumber: '',
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-};
+    createdAt: this.serverTimeStamp,
+  };
+
   userLogin: User = {
     uid: '',
     displayName: '',
-    email: ''
-};
+    email: '',
+  };
 
-  post1 = true;
+  section = true;
   password = '';
+  hide = true;
+  hidePasswd = true;
 
-  // Definimos el constructor del componente y declaramos los servicios y clases externas a usar
-  constructor( private authService: AuthService,
-               private router: Router
-               ) { }
+  registerForm: FormGroup;
+  loginForm: FormGroup;
+  submitted = false;
+  selected = '';
+  registered: any;
 
+  constructor(private authService: AuthService,
+              private router: Router,
+              private fb: FormBuilder,
+              private validators: ValidatorService) {}
 
-  // Metodo que se ejecuta al momento de iniciar el componente
   ngOnInit() {
-      /* if ( localStorage.getItem('token') ) {
-          this.router.navigateByUrl('/dashboard');
-      } */
-   }
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.compose([Validators.required, this.validators.patternValidator()])]
+    });
+    this.registerForm = this.fb.group({
+      fullName: ['', Validators.compose([Validators.required, this.validators.noWhitespaceValidator()])],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.compose([Validators.required, this.validators.patternValidator()])],
+      confirmPassword: ['', [Validators.required]],
+      phoneNumber: ['', Validators.compose([ Validators.required,
+        this.validators.patternPhoneValidator(),
+        Validators.minLength(10), Validators.maxLength(10)])],
+      role: ['', Validators.required],
+      app: ['', Validators.required]
+    },
+     {
+        validator: this.validators.MatchPassword('password', 'confirmPassword'),
+      }
+    );
+  }
 
-  // Metodo par registrar nuevos usuarios
-  onRegister( form: NgForm ) {
+  get loginFormControl() {
+    return this.loginForm.controls;
+  }
 
-    if ( form.invalid ) { return; }
+  get registerFormControl() {
+    return this.registerForm.controls;
+  }
 
-    if ( this.userRegister.password !== this.password) {
+  async onRegister() {
+     try {
+       this.submitted = true;
+       if (!this.registerForm.valid) {
+        return;
+      }
+       const role = this.registerForm.value.role;
+       const company = this.selected;
+       const email = this.registerForm.value.email;
+
+       this.loadingLoginRegister();
+
+       this.setEmployment(role);
+
+       if (company === 'Empresa' && role === 'true') {
+        this.authService.getCompanyManager(email).subscribe(async (data) => {
+            const snap = _.head(data);
+            if (snap) {
+              this.userRegister.company = {
+              id: snap.cid,
+              name: snap.name,
+              address: snap.address,
+              ref: snap.ref
+            };
+              await this.sucessRegister();
+            } else {
+              this.failedRegister();
+            }
+          });
+      }
+
+       if ( company === 'Empresa' && role === 'false' ) {
+        this.authService.getCompanyDelegate(email).subscribe(async (data) => {
+            const snap = _.head(data);
+            if (snap) {
+            this.userRegister.company = {
+              id: snap.cid,
+              name: snap.name,
+              address: snap.address,
+              ref: snap.ref
+            };
+            await this.sucessRegister();
+            } else {
+              this.failedRegister();
+            }
+          });
+       }
+       if ( company === 'Personal' ) {
+           await this.sucessRegister();
+       }
+    }  catch (error) {
+      this.userRegister.manager = null;
+      Swal.close();
       Swal.fire({
-        allowOutsideClick: false,
         icon: 'error',
-        text: 'Las contraseñas no coinciden'
+        title: 'Error al autenticar',
+        text: this.modalError(error),
       });
-      return;
     }
 
-    Swal.fire({
-      allowOutsideClick: false,
-      text: 'Espere por favor...'
-    });
-    Swal.showLoading();
+    // this.submitted = true;
+    // if (this.registerForm.valid) {
+    //   alert('Form Submitted succesfully!!!\n Check the values in browser console.');
+    //   console.table(this.registerForm.value);
+    //   const company = this.selected;
+    //   const role = this.registerForm.value.role;
+    //   const email = this.registerForm.value.email;
+    //   console.log(company, role, email);
+    //   console.log(this.authService.getCompanyByRole(company, role, email));
+    //   console.log(this.authService.companyUser);
 
-    if ( form.value.manager === 'true' ) {
-       this.userRegister.manager = true;
-       this.userRegister.employment = 'Gestor de proyectos';
+    // }
+  }
+
+  async sucessRegister() {
+      const userReg = await this.authService.register(this.userRegister);
+      const { uid } = userReg;
+      delete this.userRegister.password;
+      this.userRegister.uid = uid;
+      this.authService.createUser(this.userRegister, uid);
+      await this.authService.verifyEmail();
+      Swal.fire({
+        icon: 'success',
+        title: 'Registrado con exito',
+        text: 'Por favor verifica tu cuenta para poder iniciar',
+        position: 'center',
+        showCloseButton: true
+      });
+      this.registerForm.reset();
+      this.section = true;
+  }
+
+  failedRegister() {
+      Swal.fire({
+              icon: 'error',
+              title: 'Usuario no encontrado',
+              text: 'Por favor verifique su correo, rol o comuniquese con la empresa a la que pertenece',
+              position: 'center',
+              showCloseButton: true
+              });
+      this.userRegister.manager = null;
+  }
+
+  loadingLoginRegister() {
+      Swal.fire({
+        allowOutsideClick: false,
+        text: 'Espere por favor...',
+      });
+      Swal.showLoading();
+  }
+
+  async onLogin() {
+    this.submitted = true;
+    if (!this.loginForm.valid) {
+      return;
+    }
+    // Swal.fire({
+    //   allowOutsideClick: false,
+    //   text: 'Espere por favor...',
+    // });
+    // Swal.showLoading();
+
+    this.loadingLoginRegister();
+
+    try {
+      const user = await this.authService.login(this.userLogin);
+      const { emailVerified } = user;
+      if (emailVerified) {
+        this.authService.getUser(user).subscribe((userObs) => {
+          const loginUser = userObs;
+          this.authService.saveUserOnStorage(loginUser);
+          const token = localStorage.getItem('fcm');
+          this.authService.setTokenUser(loginUser, token);
+        });
+        Swal.close();
+        this.router.navigateByUrl('/dashboard');
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Verifique su cuenta',
+          text: 'Para iniciar sesion verifique su cuenta',
+          showCloseButton: true
+        });
+      }
+    } catch (error) {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al autenticar',
+        text: this.modalError(error),
+        showCloseButton: true
+      });
+    }
+  }
+
+     setEmployment(value: string) {
+    if (value === 'true') {
+      this.userRegister.manager = true;
+      this.userRegister.employment = 'Gestor de proyectos';
     } else {
       this.userRegister.manager = false;
       this.userRegister.employment = 'Tecnico asistente';
     }
+  }
 
-    this.authService.register( this.userRegister )
-    .subscribe( resp => {
-
-      Swal.close();
-      // console.log(resp);
-      this.authService.addNewUser(this.userRegister, resp.localId);
-      this.router.navigateByUrl('/dashboard');
-      // tslint:disable-next-line:no-shadowed-variable
-/*       this.authService.verifyEmail(localStorage.getItem('token')).subscribe((resp: any) => {
-        console.log(resp);
-      }); */
-      Swal.fire({
-      allowOutsideClick: false,
-      icon: 'success',
-      title: 'Registrado con exito',
-      text: 'Ahora puedes acceder a la aplicacion',
-      position: 'center',
-      showConfirmButton: false,
-      timer: 1500
+     async openResetPassword() {
+    const { value: email } = await Swal.fire({
+      title: 'Olvide mi contraseña',
+      input: 'email',
+      inputPlaceholder: 'Ingrese el correo electrónico',
+      showCloseButton: true
     });
 
-      form.reset();
-      this.post1 = true;
+    if (email) {
+      Swal.fire(`Hemos enviado un correo a: ${email}`);
+      return email;
+    }
+  }
 
-
-    }, (err) => {
+     async resetPassword() {
+    try {
+      const value = await this.openResetPassword();
+      const email: any = value;
+      await this.authService.resetPassword(email);
+    } catch (error) {
+      Swal.close();
       Swal.fire({
         icon: 'error',
-        title: 'Error al registrar',
-        text: this.respError(err.error.error.message)
+        title: 'Error al recuperar contraseña',
+        text: this.modalError(error),
+        showCloseButton: true
       });
-    });
+    }
   }
 
-  // Metodo complementario cuando existe un problema en el registro
-  respError( respuesta: string ) {
-
-    if ( respuesta === 'EMAIL_EXISTS' ) {
-        respuesta = 'Correo electrónico existente';
+     modalError(error: any) {
+    const { code } = error;
+    switch (code) {
+      case 'auth/wrong-password':
+        return 'Ha ingresado mal su contraseña';
+      case 'auth/user-not-found':
+        return 'Usuario no encontrado';
+      case 'auth/invalid-email':
+        return 'Correo electrónico no válido';
+      case 'auth/email-already-in-use':
+        return 'Usuario ya existente';
+      case 'auth/weak-password':
+        return 'Contraseña muy debil intente ingresando otra';
+      case 'auth/user-not-found':
+        return 'Usuario no encontrado';
+      default:
+        break;
     }
-    return respuesta;
   }
-
-  // Metodo para el ingreso de usuarios a la aplicacion
-  onLogin( form: NgForm ) {
-
-    if ( form.invalid ) { return; }
-
-    Swal.fire({
-      allowOutsideClick: false,
-      text: 'Espere por favor...'
-    });
-    Swal.showLoading();
-
-
-    this.authService.login( this.userLogin )
-    .subscribe( resp => {
-      setTimeout(() => {
-        Swal.close();
-      }, 1000);
-      this.router.navigateByUrl('/dashboard');
-    }, (err) => {
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al autenticar',
-          text: this.respError2(err.error.error.message)
-        });
-
-    });
-    }
-
-  // Metodo complementario cuando existe un problema en el ingreso a la aplicacion
-  respError2( respuesta: string ) {
-
-      if ( respuesta === 'EMAIL_NOT_FOUND' ) {
-          respuesta = 'Correo electrónico no encontrado';
-      } else {
-        respuesta = 'Contraseña incorrecta';
-      }
-      return respuesta;
-
-    }
-
-
 }

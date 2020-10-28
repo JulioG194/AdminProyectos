@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { User } from 'src/app/models/user.interface';
 import { AuthService } from '../../services/auth.service';
@@ -7,6 +7,7 @@ import { Team } from 'src/app/models/team.interface';
 import Swal from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-my-team',
@@ -68,6 +69,8 @@ delegateAux1: User = {
   uid: ''
 };
 
+teamId: string;
+
 
   constructor( private teamService: TeamService,
                private authService: AuthService,
@@ -86,9 +89,22 @@ onGroupsChangePlus(selectedUsersPlus: User[]) {
 }
 
 // Metodo para crear un equipo
-addNewTeam() {
+async addNewTeam() {
   if ( this.selectedUsers.length > 0) {
-    this.teamService.setTeamtoUser(this.userGugo, this.selectedUsers);
+    try {
+      await this.teamService.setTeamtoUser(this.userGugo, this.selectedUsers);
+      Swal.fire({
+          allowOutsideClick: false,
+          icon: 'success',
+          title: 'Guardado con exito',
+        });
+    } catch (error) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Error al guardar',
+          text: error,
+        });
+    }
   } else {
     Swal.fire({
       allowOutsideClick: false,
@@ -142,9 +158,55 @@ updateTeam() {
 
   ngOnInit() {
 
-      this.getTeam();
+     // this.getTeam();
+      this.getLocalCompany();
   }
 
+  getLocalCompany() {
+    // const user = localStorage.getItem('user');
+    // const userObj = JSON.parse(user);
+    // console.log(userObj.company.id);
+    this.userGugo = this.authService.userAuth;
+    this.teamService.getUsersCompany(this.userGugo.company.id).subscribe(users => {
+     const usersGugoArray = _.reject(users, {uid: this.userGugo.uid});
+      // console.log(users);
+     console.log(this.authService.userAuth);
+     this.teamService.getTeamByUser(this.userGugo).subscribe(teams => {
+       // console.log(_.head(teams));
+       if (teams.length > 0) {
+         const {id} = _.head(teams);
+         this.teamId = id;
+         console.log(this.teamId);
+         this.teamService.getDelegatesId(this.teamId).subscribe(delegates => {
+         console.log(delegates);
+         this.usersGugo = _.xorBy(usersGugoArray, delegates, 'uid');
+         this.teamGugo.delegates = delegates;
+         console.log(this.teamGugo.delegates);
+         console.log('result', this.usersGugo);
+        });
+       } else {
+         this.usersGugo = usersGugoArray;
+       }
+    });
+    });
+  }
+
+  removeDelegates(delegateId: string) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, remover delegado!',
+    }).then((result) => {
+      if (result.value) {
+        this.teamService.deleteDelegate(this.teamId, delegateId);
+        Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+      }
+    });
+  }
 
   getTeam() {
     this.authService.getUser(this.authService.userAuth)

@@ -39,6 +39,7 @@ export class TeamService {
 
   usersToChoose: User[];
   usersToChooseS: string[];
+  usersCompany: Observable<User[]>;
 
   constructor(
     private http: HttpClient,
@@ -81,8 +82,9 @@ export class TeamService {
   }
 
   getTeamByUser(user: User) {
+    const { uid } = user;
     this.teamsObservable = this.afs
-      .collection('teams', (ref) => ref.where('manager', '==', user.uid))
+      .collection('teams', (ref) => ref.where('manager', '==', uid))
       .snapshotChanges()
       .pipe(
         map((changes) => {
@@ -100,6 +102,24 @@ export class TeamService {
     this.delegates = this.afs
       .collection('teams')
       .doc(team.id)
+      .collection('delegates', (ref) => ref.orderBy('createdAt'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as User;
+            data.uid = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.delegates;
+  }
+
+  getDelegatesId(id: string) {
+    this.delegates = this.afs
+      .collection('teams')
+      .doc(id)
       .collection('delegates', (ref) => ref.orderBy('createdAt'))
       .snapshotChanges()
       .pipe(
@@ -198,19 +218,23 @@ export class TeamService {
   }
 
   setTeamtoUser(user: User, users: User[]) {
-    this.afs
+    const teamRef = this.afs
       .collection('teams')
-      .add({
+      .doc(user.uid);
+
+    teamRef
+      .set({
         manager: user.uid,
-      })
-      .then((doc) => {
-        const delegatesCollection = doc.collection('delegates');
+      });
+      // .then((doc) => {
+    const delegatesCollection = teamRef
+      .collection('delegates');
 
-        const batch = this.afs.firestore.batch();
+    const batch = this.afs.firestore.batch();
 
-        users.forEach((d) => {
+    users.forEach((d) => {
           const ref = delegatesCollection.doc(d.uid);
-          batch.set(ref, {
+          batch.set(ref.ref, {
             displayName: d.displayName,
             email: d.email,
             uid: d.uid,
@@ -221,21 +245,42 @@ export class TeamService {
           });
         });
 
-        return batch.commit();
-      })
-      .then((result) => {
-        Swal.fire({
-          allowOutsideClick: false,
-          icon: 'success',
-          title: 'Guardado con exito',
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al guardar',
-          text: err,
-        });
-      });
+    return batch.commit();
+      // })
+      // .then((result) => {
+      //   Swal.fire({
+      //     allowOutsideClick: false,
+      //     icon: 'success',
+      //     title: 'Guardado con exito',
+      //   });
+      // })
+      // .catch((err) => {
+      //   Swal.fire({
+      //     icon: 'error',
+      //     title: 'Error al guardar',
+      //     text: err,
+      //   });
+      // });
   }
+
+  getUsersCompany(id: string) {
+    this.usersCompany = this.afs.collection('users', (ref) => ref.where('company.id', '==', id))
+    .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as User;
+            data.uid = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.usersCompany;
+
+  }
+
+  deleteDelegate(teamId: string, delegateId: string) {
+    this.afs.collection('teams').doc(teamId).collection('delegates').doc(delegateId).delete();
+  }
+
 }

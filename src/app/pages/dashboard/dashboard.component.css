@@ -7,39 +7,78 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.test {
-    background-image: url("../../../assets/img/gg1.jpg");
-}
-
 .align {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    /* align-items: center; */
+}
+
+.align2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .view1 {
-    height: 70%;
-    width: 70%;
+    height: 60%;
+    width: 60%;
     border: 1px solid black;
-    padding: 20px;
+    padding: 10px;
     background: rgb(12, 27, 34);
+    /* background: rgb(212,212,212); */
     align-items: center;
     color: white;
 }
 
 .view2 {
-    width: 70%;
+    width: 100%;
     border: 1px solid black;
     padding: 20px;
     background: rgb(12, 27, 34);
     align-items: center;
     color: white;
+    margin: 0 auto;
 }
 
 
 /* .chart1 {
     align-items: center;
 } */
+
+.container1 {
+    width: 30%;
+    background: rgb(12, 27, 34);
+    padding: 10px;
+}
+
+.container2 {
+    width: 70%;
+    padding: 10px;
+}
+
+.container1 mat-divider {
+    border-top-color: rgb(129, 129, 129);
+}
+
+.container2 mat-divider {
+    border-top-color: rgb(129, 129, 129);
+}
+
+.view1 mat-divider {
+    border-top-color: rgb(129, 129, 129);
+}
+
+.container1 h6 {
+    color: rgb(129, 129, 129);
+}
+
+.container2 h6 {
+    color: rgb(129, 129, 129);
+}
+
+.view1 h6 {
+    color: rgb(129, 129, 129);
+}
 
 .box {
     /* margin-top: 30px; */

@@ -1,14 +1,14 @@
 export const environment = {
   production: false,
   firebase : {
-    apiKey: 'AIzaSyC9fGbPafvbFK_Ev_Gpzu650eTIPJGAaEo',
-    authDomain: 'tesis-adminproyectos.firebaseapp.com',
-    databaseURL: 'https://tesis-adminproyectos.firebaseio.com',
-    projectId: 'tesis-adminproyectos',
-    storageBucket: 'tesis-adminproyectos.appspot.com',
-    messagingSenderId: '242212842353',
-    appId: '1:242212842353:web:7c843037dc78bb415e24d0',
-    measurementId: 'G-MK8Q885X62'
+    apiKey: 'AIzaSyAVxruttqstvTjFjwZFaPlisVVYZEdDoTY',
+    authDomain: 'epn-gugo.firebaseapp.com',
+    databaseURL: 'https://epn-gugo.firebaseio.com',
+    projectId: 'epn-gugo',
+    storageBucket: 'epn-gugo.appspot.com',
+    messagingSenderId: '19895797824',
+    appId: '1:19895797824:web:708ec69d8f5bdee09537a5',
+    measurementId: 'G-HVGBC6KN2T'
   }
 };
 

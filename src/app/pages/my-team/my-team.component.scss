@@ -150,3 +150,23 @@ tr:nth-child(even) {
     font-size: 18px;
     float: right;
 }
+
+.list-card-members {
+    margin-bottom: 12px;
+    .list-card-member {
+        margin-right: 8px;
+        .list-card-member-avatar {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+        }
+    }
+}
+
+.content {
+    padding: 16px;
+}
+
+.content>mat-card {
+    width: 160px;
+}

@@ -39,3 +39,13 @@ $hover-icon-color: rgb(0,
         @include igx-navbar($dark-navbar);
     }
 }
+
+.icon-text {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    border: 0px solid transparent;
+    /* this was 1px earlier */
+}

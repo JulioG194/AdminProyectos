@@ -1,219 +1,158 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.interface';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument,
+} from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as firebase from 'firebase/app';
+import * as _ from 'lodash';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  // Urls necesarias para usar la Firebase Auth REST Api
-  private url = 'https://identitytoolkit.googleapis.com/v1';
-  private apikey = 'AIzaSyC9fGbPafvbFK_Ev_Gpzu650eTIPJGAaEo';
-
-  // Variables de usuarios para colecciones y documentos en Firestore
   userCollection: AngularFirestoreCollection<User>;
   userDoc: AngularFirestoreDocument<User>;
   users: Observable<User[]>;
   user: Observable<User>;
+  managers: Observable<any[]>;
+  manager: Observable<any>;
+  delegates: Observable<any[]>;
+  delegate: Observable<any>;
+  userCompanyDoc: AngularFirestoreDocument<User>;
 
-  userDoc1: AngularFirestoreDocument<User>;
-  users1: Observable<User[]>;
-  user1: Observable<User>;
-
-  // Variables auxiliares
-  usersAuth: User [];
+  usersAuth: User[];
   userAuth: User;
   userGuGo: User;
   userToken: string;
   idUser: string;
   photoURL: string;
+  companyUser: any;
+  windowRef: any;
 
-  constructor( private http: HttpClient,
-               private afs: AngularFirestore
-               ) {
+  verificationCode: string;
 
-      // Obtiene los documentos de la coleccion de usuarios
-      this.loadUsers(afs);
-      this.users.subscribe(users => {
-        this.usersAuth = users;
-      });
-      this.loadStorage();
+  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
+    this.loadUsers(afs);
+    this.users.subscribe((users) => {
+      this.usersAuth = users;
+    });
+    this.loadStorage();
+  }
 
-   }
-
-
-  // Funcion para cargar la coleccion de usuarios de la base de Firestore
-  loadUsers(afs: AngularFirestore ) {
-    this.userCollection = afs.collection<User>('users', ref => ref.orderBy('createdAt'));
+  loadUsers(afs: AngularFirestore) {
+    this.userCollection = afs.collection<User>('users', (ref) =>
+      ref.orderBy('createdAt')
+    );
     this.users = this.userCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
+      map((actions) => {
+        return actions.map((a) => {
           const data = a.payload.doc.data() as User;
           data.uid = a.payload.doc.id;
           return data;
         });
-      }));
+      })
+    );
   }
 
-   // Funcion para cargar el loadStorage con todos los datos de la sesion
-   loadStorage() {
-    if ( localStorage.getItem('token')) {
-        this.userToken = localStorage.getItem('token');
-        this.userAuth = JSON.parse( localStorage.getItem('usuario'));
+  loadStorage() {
+    const userLocalStorage = localStorage.getItem('user');
+    if (userLocalStorage) {
+      this.userAuth = JSON.parse(userLocalStorage);
     } else {
-      this.userToken = '';
       this.userAuth = null;
     }
   }
 
-   // Guardar el token del usuario en el localstorage para tener la sesion activa
-   saveTokenOnStorage( id: string, token: string ) {
-    localStorage.setItem('idSession', id);
-    localStorage.setItem('token', token);
-    this.userToken = token;
-
+  async register(userAuth: User) {
+    const { email, password } = userAuth;
+    try {
+      const result = await this.auth.auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      const { user } = result;
+      return Promise.resolve(user);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
-  // Funcion para que el usuario pueda registrarse en la aplicacion
-  register( user: User ) {
+  async login(userAuth: User) {
+    const { email, password } = userAuth;
+    try {
+      const result = await this.auth.auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+      const { user } = result;
+      return Promise.resolve(user);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
-    const authData = {
-      ...user,
-      returnSecureToken: true
+  async resetPassword(emailPasswd: any) {
+    const actionCodeSettings = {
+      url: `http://localhost:4200/#/?email=${emailPasswd}`,
+      handleCodeInApp: true,
     };
-
-    return this.http.post(
-      `${ this.url }/accounts:signUp?key=${ this.apikey }`,
-      authData
-    ).pipe(
-      map( (resp: any) => {
-      //  this.saveTokenOnStorage(resp.localId, resp.idToken );
-        console.log(resp);
-        localStorage.clear();
-        const userAu: User = {
-          uid : resp.localId,
-          displayName : user.displayName,
-          email : resp.email
-        };
-        localStorage.setItem('usuario', JSON.stringify(userAu));
-        this.saveTokenOnStorage(resp.localId, resp.idToken );
-        this.userAuth = JSON.parse( localStorage.getItem('usuario'));
-        return resp;
-      })
-    );
-
+    try {
+      const result = await this.auth.auth.sendPasswordResetEmail(
+        emailPasswd,
+        actionCodeSettings
+      );
+      return Promise.resolve(result);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
- // Funcion para que el usuario pueda iniciar sesion
-  login( user: User ) {
-  const authData = {
-    ...user,
-    returnSecureToken: true
-  };
+  // changePassword(pass: string, idT: string) {
+  //   const authData = {
+  //     idToken: idT,
+  //     password: pass,
+  //     returnSecureToken: true,
+  //   };
 
-  return this.http.post(
-    `${ this.url }/accounts:signInWithPassword?key=${ this.apikey }`,
-    authData
-  ).pipe(
-    map( (resp: any) => {
-     this.saveTokenOnStorage(resp.localId, resp.idToken );
-     this.saveUserOnStorage(user);
-     this.userAuth = JSON.parse( localStorage.getItem('usuario'));
-     return resp;
-    })
-  );
+  //   console.log(authData);
 
-}
+  //   return this.http
+  //     .post(`${this.url}/accounts:update?key=${this.apikey}`, authData)
+  //     .pipe(
+  //       map((resp: any) => {
+  //         return resp;
+  //       })
+  //     );
+  // }
 
- // Funcion para que el usuario pueda iniciar sesion
- changePassword( pass: string, idT: string ) {
-  const authData = {
-    idToken: idT,
-    password: pass,
-    returnSecureToken: true
-  };
-
-  console.log(authData);
-
-  return this.http.post(
-    `${ this.url }/accounts:update?key=${ this.apikey }`,
-    authData
-  ).pipe(
-    map( (resp: any) => {
-    return resp;
-    })
-  );
-
-}
-
-
-  verifyEmail(idT: string) {
-    const authData = {
-      idToken: idT,
-      requestType: 'VERIFY_EMAIL'
-    };
-
-    console.log(authData);
-
-    return this.http.post(
-    `${ this.url }/accounts:sendOobCode?key=${ this.apikey }`,
-    authData
-  ).pipe(
-    map( (resp: any) => {
-    return resp;
-    })
-  );
+  async verifyEmail() {
+    await firebase.auth().currentUser.sendEmailVerification();
   }
 
-  // Funcion para el cierre de la sesion
-  logout() {
+  async logout() {
+    await this.auth.auth.signOut();
     localStorage.clear();
   }
 
-
-
-  // Funcion para guardar un nuevo usuario en la base Firestore
-  addNewUser( user: User, idUser: string ) {
-    // this.userCollection.add(user);
-    this.userCollection.doc(idUser).set({
-        uid: idUser,
-        birthdate: user.birthdate,
-        createdAt: user.createdAt,
-        description: user.description,
-        email: user.email,
-        employment: user.employment,
-        gender: user.gender,
-        manager: user.manager,
-        displayName: user.displayName,
-        phoneNumber: user.phoneNumber,
-        photoURL: user.photoURL
-  });
+  createUser(user: User, uid: string) {
+    this.afs
+      .collection('users')
+      .doc(uid)
+      .set({
+        ...user,
+      });
   }
 
-  // *Opcional* Funcion para ver si el usuario esta autenticado
-  /* isAuthenticated(): boolean {
-    if ( this.userToken.length < 2 ) {
-      return false;
-    }
-    const expira = Number(localStorage.getItem('expira'));
-    const expiraDate = new Date();
-    expiraDate.setTime(expira);
-    if ( expiraDate > new Date() ) {
-      return true;
-    } else {
-      return false;
-    }
-  } */
-
-  // Funcion que retorna un observable para obtener un usuario como parametro de entrada su Id
-  getUser( user: User ) {
-    this.userDoc = this.afs.doc(`users/${user.uid}`);
+  getUser(user: any) {
+    const { uid } = user;
+    this.userDoc = this.afs.collection('users').doc(uid);
     this.user = this.userDoc.snapshotChanges().pipe(
-      map(actions => {
+      map((actions) => {
         if (actions.payload.exists === false) {
           return null;
         } else {
@@ -221,108 +160,127 @@ export class AuthService {
           data.uid = actions.payload.id;
           return data;
         }
-        }));
+      })
+    );
     return this.user;
-
   }
 
- /*  getUserById( user: string ) {
-    this.userDoc1 = this.afs.doc(`users/${user}`);
-    this.user1 = this.userDoc.snapshotChanges().pipe(
-      map(actions => {
+  getUserById(uid: string) {
+    this.userDoc = this.afs.collection('users').doc(uid);
+    this.user = this.userDoc.snapshotChanges().pipe(
+      map((actions) => {
         if (actions.payload.exists === false) {
           return null;
         } else {
           const data = actions.payload.data() as User;
-          data.id = actions.payload.id;
+          data.uid = actions.payload.id;
           return data;
         }
-        }));
-    return this.user1;
-  }
- */
-
- getUserById( id: string ) {
-  this.userDoc1 = this.afs.collection('users').doc(id);
-  this.user1 = this.userDoc1.snapshotChanges().pipe(
-    map(actions => {
-      if (actions.payload.exists === false) {
-        return null;
-      } else {
-        const data = actions.payload.data() as User;
-        data.uid = actions.payload.id;
-        return data;
-      }
-      }));
-  return this.user1;
-
-}
-
-getPhotoById( id: string ): string {
-  this.userDoc1 = this.afs.collection('users').doc(id);
-  this.user1 = this.userDoc1.snapshotChanges().pipe(
-    map(actions => {
-      if (actions.payload.exists === false) {
-        return null;
-      } else {
-        const data = actions.payload.data() as User;
-        data.uid = actions.payload.id;
-        return data;
-      }
-      }));
-  return this.photoURL;
-
-}
-
-
-  updateUser( user: User ) {
-    this.afs.collection('users').doc(user.uid).update(
-      {
-        displayName: user.displayName,
-        birthdate: user.birthdate,
-        description: user.description,
-        gender: user.gender,
-        photoURL: user.photoURL
-      }
+      })
     );
+    return this.user;
   }
 
+  updateUser(user: User) {
+    const { uid } = user;
+    this.afs.collection('users').doc(uid).update({
+      displayName: user.displayName,
+      birthdate: user.birthdate,
+      description: user.description,
+      gender: user.gender,
+      photoURL: user.photoURL,
+    });
+  }
+  setTokenUser(user: User, token: string) {
+    const { uid } = user;
+    this.afs.collection('users').doc(uid).update({
+      token,
+    });
+  }
 
-  // Funcion que retorna un observable para obtener todos los usuarios de la base
-  showUsers() {
+  getUsers() {
+    this.users = this.afs
+      .collection('users')
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as User;
+            data.uid = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
     return this.users;
   }
 
-  getUsers(): Observable<User[]> {
-    this.users = this.userCollection.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
-          const data = action.payload.doc.data() as User;
-          data.uid = action.payload.doc.id;
-          return data;
-        });
-      }));
-    return this.users;
-
+  saveUserOnStorage(user: User) {
+    // localStorage.clear();
+    this.userAuth = user;
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
-  // Funcion para guardar un usuario en el localstorage
-  saveUserOnStorage( user: User) {
-     const userAu: User = {
-      uid : '',
-      displayName : '',
-      email : ''
-    };
-     this.usersAuth.forEach(userAux => {
-      if (userAux.email === user.email) {
-        userAu.uid = userAux.uid;
-        userAu.displayName = userAux.displayName;
-        userAu.email = userAux.email;
 
-        localStorage.setItem('usuario', JSON.stringify(userAu));
-        return userAux;
-    }
-   });
+  getCompanyManager(email: string) {
+    this.managers = this.afs
+      .collection('companies', (ref) => ref.where('managers', 'array-contains', email).limit(1))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.ref = action.payload.doc.ref.path;
+            return data;
+          });
+        })
+      );
+    return (this.managers);
   }
 
+
+  getCompanyByRole(company: string, role: string, email: string ) {
+    if (company === 'Empresa' && role === 'true') {
+      this.getCompanyManager(email).subscribe(data => {
+            const snap = _.head(data);
+            console.log(snap);
+            this.companyUser = {
+              id: snap.cid,
+              name: snap.name,
+              address: snap.address,
+              ref: snap.ref
+            };
+          });
+      } else if ( company === 'Empresa' && role === 'false' ) {
+        this.getCompanyDelegate(email).subscribe(data => {
+            const snap = _.head(data);
+            this.companyUser = {
+              id: snap.cid,
+              name: snap.name,
+              address: snap.address,
+              ref: snap.ref
+            };
+            console.log(company);
+            console.log(_.head(data));
+          });
+      } else {
+        return undefined;
+      }
+  }
+
+
+  getCompanyDelegate(email: string) {
+    this.managers = this.afs
+      .collection('companies', (ref) => ref.where('delegates', 'array-contains', email).limit(1))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.ref = action.payload.doc.ref.path;
+            return data;
+          });
+        })
+      );
+    return this.managers;
+  }
 }
