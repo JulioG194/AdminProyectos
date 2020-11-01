@@ -11,14 +11,14 @@
 
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Fecha de inicio</mat-label>
-                <input matInput style="color: rgb(212, 212, 212)" readonly [matDatepicker]="picker" [min]="minD" [max]="maxD" name="start_date" (dateInput)="inputEvent($event)" [(ngModel)]="activityProject.start_date" required />
+                <input matInput style="color: rgb(212, 212, 212)" readonly [matDatepicker]="picker" [min]="minD" [max]="maxD" name="startDate" (dateInput)="inputEvent($event)" [(ngModel)]="activityProject.startDate" required />
                 <mat-datepicker-toggle style="color: white" matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label class="placeholder">Fecha de fin</mat-label>
-                <input matInput style="color: rgb(212, 212, 212)" readonly [matDatepicker]="picker1" [min]="minD" [max]="maxD" name="end_date" (dateInput)="inputEvent2($event)" [(ngModel)]="activityProject.end_date" required />
+                <input matInput style="color: rgb(212, 212, 212)" readonly [matDatepicker]="picker1" [min]="minD" [max]="maxD" name="endDate" (dateInput)="inputEvent2($event)" [(ngModel)]="activityProject.endDate" required />
                 <mat-datepicker-toggle style="color: white" matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
@@ -35,8 +35,8 @@
             <span *ngIf="
           f.submitted &&
           (f.controls['name'].errors ||
-            f.controls['start_date'].errors ||
-            f.controls['end_date'].errors)
+            f.controls['startDate'].errors ||
+            f.controls['endDate'].errors)
         " style="color: red">
         Todos los campos deben ser llenados</span
       >

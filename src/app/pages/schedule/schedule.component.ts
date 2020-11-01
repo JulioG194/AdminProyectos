@@ -84,8 +84,8 @@ projectApp: Project = {
       name: '',
       client: '',
       description: '',
-      start_date: new Date(),
-      end_date: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       type: '',
       teamId: '',
       ownerId: '',
@@ -360,9 +360,9 @@ lables = [];
                 aux6 = 100 / numeroActs;
                 // tslint:disable-next-line:prefer-for-of
                 for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
-                  aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
+                  aux7 = this.activitiesProjectsApp[j].progress * aux6;
                   aux8 += aux7;
-                  this._projectService.getTasks(this.activitiesProjectsApp[j].idProject, this.activitiesProjectsApp[j].id).subscribe(tasks => {
+                  this._projectService.getTasks(this.activitiesProjectsApp[j].projectId, this.activitiesProjectsApp[j].id).subscribe(tasks => {
                        let aux2 = 0;
                        this.tasksActivitiesApp = tasks;
                        if ( this.tasksActivitiesApp.length === 0 ) {
@@ -395,7 +395,7 @@ lables = [];
                                                                     // console.log(this.projectsAux);
             this.projectsAux.forEach(project => {
                                                                       this.startD = new Date();
-                                                                      this.endD = new Date(project.end_date['seconds'] * 1000);
+                                                                      this.endD = new Date(project.endDate['seconds'] * 1000);
                                                                       this.allenddates.push(this.endD);
                                                                       this.differenceTime = this.endD.getTime() - this.startD.getTime();
                                                                       this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
@@ -508,14 +508,14 @@ lables = [];
     }
 
 
-    mostrar(idProject: string) {
+    mostrar(projectId: string) {
       this.post = false;
       this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); });
-      this._projectService.getProject(idProject).subscribe(project => {
+      this._projectService.getProject(projectId).subscribe(project => {
                                                                                                               this.projectApp = project;
-                                                                                                              this.projectApp.start_date = new Date(this.projectApp.start_date['seconds'] * 1000);
-                                                                                                              this.projectApp.end_date = new Date(this.projectApp.end_date['seconds'] * 1000);
-                                                                                                             /*  this.differenceTime = Math.abs(this.projectApp.end_date.getTime() - this.projectApp.start_date.getTime());
+                                                                                                              this.projectApp.startDate = new Date(this.projectApp.startDate['seconds'] * 1000);
+                                                                                                              this.projectApp.endDate = new Date(this.projectApp.endDate['seconds'] * 1000);
+                                                                                                             /*  this.differenceTime = Math.abs(this.projectApp.endDate.getTime() - this.projectApp.startDate.getTime());
                                                                                                               this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
                                                                                                               console.log(this.differenceDays); */
                                                                                                               this._teamService.getTeam(this.projectApp.teamId).subscribe(team => {
@@ -531,8 +531,8 @@ lables = [];
                                                                                                                     /* this.allstartdates = [];
                                                                                                                     this.allenddates = []; */
                                                                                                                     /* this.activitiesProject.forEach(activity => {
-                                                                                                                      this.allstartdates.push(new Date(activity.start_date['seconds'] * 1000));
-                                                                                                                      this.allenddates.push(new Date(activity.end_date['seconds'] * 1000));
+                                                                                                                      this.allstartdates.push(new Date(activity.startDate['seconds'] * 1000));
+                                                                                                                      this.allenddates.push(new Date(activity.endDate['seconds'] * 1000));
                                                                                                                     }); */
                                                                                                                     // this.data = [];
                                                                                                                     // tslint:disable-next-line:prefer-for-of
@@ -542,10 +542,10 @@ lables = [];
                                                                                                                                // console.log(this.activitiesProject[i]);
                                                                                                                                // tslint:disable-next-line:prefer-for-of
                                                                                                                                for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
-                                                                                                                                   this.activitiesProject[i].tasks[j].start_date = new Date(this.activitiesProject[i].tasks[j].start_date['seconds'] * 1000);
-                                                                                                                                   this.activitiesProject[i].tasks[j].end_date = new Date(this.activitiesProject[i].tasks[j].end_date['seconds'] * 1000);
+                                                                                                                                   this.activitiesProject[i].tasks[j].startDate = new Date(this.activitiesProject[i].tasks[j].startDate['seconds'] * 1000);
+                                                                                                                                   this.activitiesProject[i].tasks[j].endDate = new Date(this.activitiesProject[i].tasks[j].endDate['seconds'] * 1000);
                                                                                                                                    let data: any[] = [];
-                                                                                                                                   data = [ this.activitiesProject[i].name, this.activitiesProject[i].tasks[j].name,  this.activitiesProject[i].tasks[j].start_date, this.activitiesProject[i].tasks[j].end_date ];
+                                                                                                                                   data = [ this.activitiesProject[i].name, this.activitiesProject[i].tasks[j].name,  this.activitiesProject[i].tasks[j].startDate, this.activitiesProject[i].tasks[j].endDate ];
                                                                                                                                    this.dataC.push(data);
                                                                                                                                   }
                                                                                                                                // this.timelineChartData =  {

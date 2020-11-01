@@ -9,13 +9,13 @@
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput [matDatepicker]="picker" [min]="minD" [max]="maxD" name="start_date" (dateInput)="inputEvent($event)" placeholder="Fecha de inicio" [(ngModel)]="activityProject.start_date" required>
+                <input matInput [matDatepicker]="picker" [min]="minD" [max]="maxD" name="startDate" (dateInput)="inputEvent($event)" placeholder="Fecha de inicio" [(ngModel)]="activityProject.startDate" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput [matDatepicker]="picker1" [min]="minD" [max]="maxD" name="end_date" (dateInput)="inputEvent2($event)" placeholder="Fecha de fin" [(ngModel)]="activityProject.end_date" required>
+                <input matInput [matDatepicker]="picker1" [min]="minD" [max]="maxD" name="endDate" (dateInput)="inputEvent2($event)" placeholder="Fecha de fin" [(ngModel)]="activityProject.endDate" required>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>

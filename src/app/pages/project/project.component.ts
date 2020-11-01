@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.interface';
@@ -8,6 +8,7 @@ import { Task } from '../../models/task.interface';
 import { Router } from '@angular/router';
 import {
   MatDialog,
+  MatDialogConfig,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
@@ -20,6 +21,9 @@ import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Evidence } from '../../models/evidence.interface';
 import { EvidenceService } from '../../services/evidence.service';
+import { MatFormField, MatInput } from '@angular/material';
+import { NewActivityModalComponent } from '../../components/newActivity/newActivity-modal.component';
+import { NewTaskModalComponent } from '../../components/newTask/newTask-modal.component';
 
 export interface DialogData1 {
   project: Project;
@@ -50,6 +54,7 @@ export interface DialogData2 {
   styleUrls: ['./project.component.css'],
 })
 export class ProjectComponent implements OnInit {
+
   post = true;
   post1 = true;
   post2 = true;
@@ -57,7 +62,10 @@ export class ProjectComponent implements OnInit {
   post4 = true;
   post5 = true;
   edit = true;
-
+  isLoading = true;
+  isLoadingProject = true;
+  isLoadingActivities = true;
+  delegates: User[] = [];
   open = true;
   open1 = true;
   open2 = true;
@@ -73,8 +81,8 @@ export class ProjectComponent implements OnInit {
     name: '',
     client: '',
     description: '',
-    start_date: new Date(),
-    end_date: new Date(),
+    startDate: new Date(),
+    endDate: new Date(),
     type: '',
     teamId: '',
     ownerId: '',
@@ -102,7 +110,6 @@ export class ProjectComponent implements OnInit {
   };
 
   team: Team;
-  delegates: User[] = [];
   tasksActivity: Task[][];
   activitiesProject: Activity[] = [];
   differenceTime: number;
@@ -125,8 +132,8 @@ export class ProjectComponent implements OnInit {
   activityAux: Activity = {
     name: '',
     status: '',
-    start_date: null,
-    end_date: null,
+    startDate: null,
+    endDate: null,
     activity_time: 0,
   };
 
@@ -134,89 +141,141 @@ export class ProjectComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private _projectService: ProjectService,
+    private projectService: ProjectService,
     private authService: AuthService,
     private router: Router,
     private router1: Router,
     public dialog: MatDialog,
-    public _teamService: TeamService,
+    public teamService: TeamService,
     private datepipe: DatePipe
   ) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.id = this.route.snapshot.paramMap.get('id');
-    this.authService.getUser(this.authService.userAuth).subscribe((user) => {
-      this.userApp = user;
-    });
-    this._projectService.getProject(this.id).subscribe((project) => {
+    this.getProject(this.id);
+    this.getDelegates();
+  }
+
+  getProject(projectId: string) {
+      this.projectService.getProject(projectId).subscribe((project) => {
+      this.isLoading = false;
       this.projectApp = project;
-      this.projectApp.start_date = new Date(
-        this.projectApp.start_date['seconds'] * 1000
+      this.projectApp.startDate = new Date(
+        this.projectApp.startDate['seconds'] * 1000
       );
-      this.projectApp.end_date = new Date(
-        this.projectApp.end_date['seconds'] * 1000
+      this.projectApp.endDate = new Date(
+        this.projectApp.endDate['seconds'] * 1000
       );
-      this.differenceTime = Math.abs(
-        this.projectApp.end_date.getTime() -
-          this.projectApp.start_date.getTime()
-      );
-      this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
-      // console.log(this.differenceDays);
-      this._teamService.getTeam(this.projectApp.teamId).subscribe((team) => {
-        this.team = team;
-        this._teamService.getDelegates(this.team).subscribe((delegates) => {
-          this.delegates = delegates;
-        });
-      });
-      this._projectService
+      this.isLoadingProject = false;
+      this.getActivities();
+      this.getTasks();
+    });
+  }
+
+  getActivities() {
+    this.projectService
         .getActivities(this.projectApp)
         .subscribe((activities) => {
+          activities.map(activity => {
+                            activity.startDate = new Date(activity.startDate['seconds'] * 1000);
+                            activity.endDate = new Date(activity.endDate['seconds'] * 1000);
+                          });
           this.activitiesProject = activities;
-          this.allstartdates = [];
-          this.allenddates = [];
-          this.activitiesProject.forEach((activity) => {
-            this.allstartdates.push(
-              new Date(activity.start_date['seconds'] * 1000)
-            );
-            this.allenddates.push(
-              new Date(activity.end_date['seconds'] * 1000)
-            );
-          });
-          // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < this.activitiesProject.length; i++) {
-            this.activitiesProject[i].start_date = new Date(
-              this.activitiesProject[i].start_date['seconds'] * 1000
-            );
-            this.activitiesProject[i].end_date = new Date(
-              this.activitiesProject[i].end_date['seconds'] * 1000
-            );
-          }
-          // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < this.activitiesProject.length; i++) {
-            this._projectService
+          this.isLoadingActivities = false;
+        });
+  }
+
+  getTasks() {
+    console.log(this.activitiesProject);
+    for (let i = 0; i < this.activitiesProject.length; i++) {
+            this.projectService
               .getTasks(this.projectApp.id, this.activitiesProject[i].id)
               .subscribe((tasks) => {
                 this.activitiesProject[i].tasks = tasks;
-                // console.log(this.activitiesProject[i]);
-                // tslint:disable-next-line:prefer-for-of
-                for (
-                  let j = 0;
-                  j < this.activitiesProject[i].tasks.length;
-                  j++
-                ) {
-                  this.activitiesProject[i].tasks[j].start_date = new Date(
-                    this.activitiesProject[i].tasks[j].start_date['seconds'] *
-                      1000
+                for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
+                  this.activitiesProject[i].tasks[j].startDate = new Date(
+                    this.activitiesProject[i].tasks[j].startDate['seconds'] * 1000
                   );
-                  this.activitiesProject[i].tasks[j].end_date = new Date(
-                    this.activitiesProject[i].tasks[j].end_date['seconds'] *
-                      1000
-                  );
-                }
+                  this.activitiesProject[i].tasks[j].endDate = new Date(
+                    this.activitiesProject[i].tasks[j].endDate['seconds'] * 1000
+                  ); }
               });
           }
-        });
+  }
+
+    getDelegates() {
+    const {uid} = this.authService.userAuth;
+    this.teamService.getDelegatesId(uid).subscribe(delegates => {
+      this.delegates = delegates;
+      console.log(this.delegates);
     });
+  }
+
+  openNewActivity() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    startDate: this.projectApp.startDate,
+    endDate: this.projectApp.endDate,
+  };
+
+  const dialogRef = this.dialog.open(NewActivityModalComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(
+        data => {
+          const newActivity: Activity = {
+            name: data.name as string,
+            description: data.description as string,
+            startDate: data.startDate as Date,
+            endDate: data.endDate as Date,
+          };
+          if (newActivity.name) {
+            this.projectService.setActivitiestoProject(this.projectApp.id, newActivity);
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            title: 'Proyecto agregado con exito'
+          });
+          }
+        });
+  }
+
+  openNewTask(startDateAct: Date, endDateAct: Date) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    startDate: startDateAct,
+    endDate: endDateAct,
+    delegates: this.delegates
+  };
+
+  // const dialogRef =
+  this.dialog.open(NewTaskModalComponent, dialogConfig);
+
+  // dialogRef.afterClosed().subscribe(
+  //       data => {
+  //         const newActivity: Activity = {
+  //           name: data.name as string,
+  //           description: data.description as string,
+  //           startDate: data.startDate as Date,
+  //           endDate: data.endDate as Date,
+  //         };
+  //         if (newActivity.name) {
+  //           this.projectService.setActivitiestoProject(this.projectApp.id, newActivity);
+  //           Swal.fire({
+  //           allowOutsideClick: false,
+  //           icon: 'success',
+  //           title: 'Proyecto agregado con exito'
+  //         });
+  //         }
+  //       });
   }
 
   editProject() {
@@ -234,7 +293,7 @@ export class ProjectComponent implements OnInit {
     this.open2 = !this.open2;
   }
 
-  backProjects(): void {
+  backProjects() {
     this.router.navigateByUrl('/projects');
   }
 
@@ -257,7 +316,7 @@ export class ProjectComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar la actividad!',
     }).then((result) => {
       if (result.value) {
-        this._projectService.deleteActivity(this.projectApp.id, id);
+        this.projectService.deleteActivity(this.projectApp.id, id);
         Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
       }
     });
@@ -274,14 +333,10 @@ export class ProjectComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar la actividad!',
     }).then((result) => {
       if (result.value) {
-        this._projectService.deleteTask(this.projectApp.id, activityId, taskId);
+        this.projectService.deleteTask(this.projectApp.id, activityId, taskId);
         Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
       }
     });
-  }
-
-  getActivities() {
-    // this._projectService.getTasks()
   }
 
   inputEvent($event) {
@@ -312,7 +367,7 @@ export class ProjectComponent implements OnInit {
     });
     Swal.showLoading();
 
-    this._projectService.updateProject(this.projectApp);
+    this.projectService.updateProject(this.projectApp);
     this.post1 = !this.post1;
     this.open = !this.open;
     Swal.fire({
@@ -328,13 +383,13 @@ export class ProjectComponent implements OnInit {
     // this.post = !this.post;
     this.activityProject.id = id;
     console.log(this.activityProject);
-    this._projectService
+    this.projectService
       .getActivity(this.projectApp.id, this.activityProject.id)
       .subscribe((activity) => {
         this.activityProject = activity;
         console.log(this.activityProject);
       });
-    this._projectService
+    this.projectService
       .getTasks(this.projectApp.id, this.activityProject.id)
       .subscribe((tasks) => {
         // this.tasksActivity = tasks;
@@ -344,7 +399,7 @@ export class ProjectComponent implements OnInit {
 
   getTask(id: string) {
     this.post5 = false;
-    this._projectService
+    this.projectService
       .getTask(this.projectApp, this.activityProject, id)
       .subscribe((task) => {
         this.taskActivity = task;
@@ -401,8 +456,8 @@ export class ProjectComponent implements OnInit {
     idActivity: string,
     activity: Activity
   ) {
-    this.startDt = new Date(activity.start_date['seconds'] * 1000);
-    this.endDt = new Date(activity.end_date['seconds'] * 1000);
+    this.startDt = new Date(activity.startDate['seconds'] * 1000);
+    this.endDt = new Date(activity.endDate['seconds'] * 1000);
     // tslint:disable-next-line: no-use-before-declare
     const dialogRef = this.dialog.open(ActivitiesModalComponent1, {
       width: '600px',
@@ -435,7 +490,7 @@ export class ProjectComponent implements OnInit {
   }
 
   checkTask(idActivity: string, idTask: string, progressTask: number) {
-    this._projectService.checkTask(
+    this.projectService.checkTask(
       this.projectApp.id,
       idActivity,
       idTask,
@@ -470,8 +525,8 @@ export class TaskComponent1 {
   activityAux: Activity = {
     name: '',
     status: '',
-    start_date: this.minD,
-    end_date: this.maxD,
+    startDate: this.minD,
+    endDate: this.maxD,
     activity_time: 0,
   };
 
@@ -488,8 +543,8 @@ export class TaskComponent1 {
         this.activityAux = act;
         console.log(this.activityAux);
         console.log(this.data.delegatesG);
-        this.minD = new Date(this.activityAux.start_date['seconds'] * 1000);
-        this.maxD = new Date(this.activityAux.end_date['seconds'] * 1000);
+        this.minD = new Date(this.activityAux.startDate['seconds'] * 1000);
+        this.maxD = new Date(this.activityAux.endDate['seconds'] * 1000);
       });
     if (this.data.taskAux != null) {
       this.task = this.data.taskAux;
@@ -600,7 +655,7 @@ export class ActivitiesModalComponent1 implements OnInit {
   activityProject: Activity = {
     name: '',
     status: 'Por Realizar',
-    percentaje: 0,
+    progress: 0,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   };
 

@@ -199,7 +199,9 @@ updateTeam() {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, remover delegado!',
+      showCloseButton: true,
     }).then((result) => {
       if (result.value) {
         this.teamService.deleteDelegate(this.teamId, delegateId);

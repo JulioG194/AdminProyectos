@@ -3,6 +3,9 @@
   "rulesDirectory": ["codelyzer"],
   "rules": {
     "array-type": false,
+    "component-selector": false,
+    "import-spacing": false,
+    "prefer-for-of": false,
     "component-class-suffix": false,
     "arrow-parens": false,
     "deprecation": {
@@ -30,6 +33,7 @@
     "no-inferrable-types": [true, "ignore-params"],
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
+    "no-string-literal": false,
     "no-switch-case-fall-through": true,
     "no-use-before-declare": true,
     "no-var-requires": false,

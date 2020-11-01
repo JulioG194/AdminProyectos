@@ -2,13 +2,14 @@ import { Task } from './task.interface';
 
 export interface Activity {
     name: string;
-    status: string;
-    start_date?: Date;
-    end_date?: Date;
+    status?: string;
+    startDate?: Date;
+    endDate?: Date;
     activity_time?: number;
-    percentaje?: number;
+    progress?: number;
     id?: string;
     createdAt?: any;
     tasks?: Task[];
-    idProject?: string;
+    projectId?: string;
+    description?: string;
 }

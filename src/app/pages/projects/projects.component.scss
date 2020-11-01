@@ -147,3 +147,25 @@ td button {
 .position5 {
     width: 5%;
 }
+
+.custom-dialog-container .mat-dialog-container {
+    overflow-x: hidden;
+}
+
+:not(spinner-container).spinner-container {
+    position: relative;
+    .spinner-background {
+        // position: absolute;
+        margin-left: 25px;
+        margin-bottom: 1px;
+        // width: 80px;
+        // height: 80px;
+        // line-height: 80px;
+        text-align: center;
+        overflow: hidden;
+        // border-color: rgba(103, 58, 183, 0.12);
+        // border-radius: 50%;
+        // border-style: solid;
+        // border-width: 10px;
+    }
+}

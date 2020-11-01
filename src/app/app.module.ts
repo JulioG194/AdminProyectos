@@ -53,7 +53,8 @@ import { WindowService } from './services/window.service';
     AngularFireAuthModule,
     NgOtpInputModule,
     AngularFireMessagingModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    
   ],
   exports: [],
   providers: [WindowService],

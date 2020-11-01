@@ -145,6 +145,7 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'error',
         title: 'Error al autenticar',
         text: this.modalError(error),
+        confirmButtonText: 'Listo!'
       });
     }
 
@@ -174,7 +175,8 @@ export class LoginRegisterComponent implements OnInit {
         title: 'Registrado con exito',
         text: 'Por favor verifica tu cuenta para poder iniciar',
         position: 'center',
-        showCloseButton: true
+        showCloseButton: true,
+        confirmButtonText: 'Listo!'
       });
       this.registerForm.reset();
       this.section = true;
@@ -186,7 +188,8 @@ export class LoginRegisterComponent implements OnInit {
               title: 'Usuario no encontrado',
               text: 'Por favor verifique su correo, rol o comuniquese con la empresa a la que pertenece',
               position: 'center',
-              showCloseButton: true
+              showCloseButton: true,
+              confirmButtonText: 'Listo!'
               });
       this.userRegister.manager = null;
   }
@@ -195,6 +198,7 @@ export class LoginRegisterComponent implements OnInit {
       Swal.fire({
         allowOutsideClick: false,
         text: 'Espere por favor...',
+        timer: 4000
       });
       Swal.showLoading();
   }
@@ -223,13 +227,20 @@ export class LoginRegisterComponent implements OnInit {
           this.authService.setTokenUser(loginUser, token);
         });
         Swal.close();
+      //   Swal.fire({
+      //   allowOutsideClick: false,
+      //   icon: 'success',
+      //   timer: 2000,
+      //   showConfirmButton: false
+      // });
         this.router.navigateByUrl('/dashboard');
       } else {
         Swal.fire({
           icon: 'info',
           title: 'Verifique su cuenta',
           text: 'Para iniciar sesion verifique su cuenta',
-          showCloseButton: true
+          showCloseButton: true,
+          confirmButtonText: 'Listo!'
         });
       }
     } catch (error) {
@@ -238,7 +249,8 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'error',
         title: 'Error al autenticar',
         text: this.modalError(error),
-        showCloseButton: true
+        showCloseButton: true,
+        confirmButtonText: 'Listo!'
       });
     }
   }
@@ -258,7 +270,9 @@ export class LoginRegisterComponent implements OnInit {
       title: 'Olvide mi contraseña',
       input: 'email',
       inputPlaceholder: 'Ingrese el correo electrónico',
-      showCloseButton: true
+      showCloseButton: true,
+      validationMessage: 'Correo electrónico inválido',
+      confirmButtonText: 'Listo!'
     });
 
     if (email) {
@@ -278,7 +292,8 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'error',
         title: 'Error al recuperar contraseña',
         text: this.modalError(error),
-        showCloseButton: true
+        showCloseButton: true,
+        confirmButtonText: 'Listo!'
       });
     }
   }

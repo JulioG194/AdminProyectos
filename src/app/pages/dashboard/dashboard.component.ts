@@ -199,7 +199,7 @@ export class DashboardComponent implements OnInit {
     // console.log(this.authService.userAuth);
     this.authService.getUser(this.authService.userAuth).subscribe((user) => {
       this.userGugo = user;
-      this.isLoading = false;
+
       if (this.userGugo.manager === true) {
         this.teamService.getTeamByUser(this.userGugo).subscribe((team) => {
           this.teamAux1 = team;
@@ -211,6 +211,7 @@ export class DashboardComponent implements OnInit {
           .getProjectByOwner(this.userGugo)
           .subscribe((projects) => {
             this.projectsApp = projects;
+            this.isLoading = false;
             this.results = [];
             this.barChartLabels = [];
             this.barChartData[0].data = [];
@@ -294,11 +295,11 @@ export class DashboardComponent implements OnInit {
                   for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
                     status = '';
                     idAuxiliar = '';
-                    aux7 = this.activitiesProjectsApp[j].percentaje * aux6;
+                    aux7 = this.activitiesProjectsApp[j].progress * aux6;
                     aux8 += aux7;
                     this.projectService
                       .getTasks(
-                        this.activitiesProjectsApp[j].idProject,
+                        this.activitiesProjectsApp[j].projectId,
                         this.activitiesProjectsApp[j].id
                       )
                       .subscribe((tasks) => {

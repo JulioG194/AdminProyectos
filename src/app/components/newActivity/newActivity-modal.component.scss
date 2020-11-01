@@ -52,3 +52,43 @@ button {
 }
 
  */
+
+.close-button {
+    float: right;
+    top: -24px;
+    right: -24px;
+}
+
+// .close-icon {
+//     transition: 1s ease-in-out;
+// }
+// .close-icon:hover {
+//     transform: rotate(180deg);
+// }
+// ::ng-deep .icon-outside .close-button {
+//     float: right;
+//     top: -52px;
+//     right: -52px;
+// }
+// ::ng-deep .icon-outside .mat-dialog-container {
+//     overflow: unset
+// }
+button:focus {
+    outline: none !important;
+}
+
+.mat-form-field--inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mat-form-field--inline .mat-form-field {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.mat-form-field--inline .mat-form-field:nth-child(1) {
+    margin-right: 10px;
+}

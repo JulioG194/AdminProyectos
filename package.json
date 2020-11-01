@@ -61,6 +61,7 @@
         "igniteui-angular": "^8.2.13",
         "lodash": "^4.17.20",
         "moment": "2.24.0",
+        "ng-circle-progress": "1.5.1",
         "ng-otp-input": "^1.7.1",
         "ng2-charts": "2.3.0",
         "ng2-gantt": "1.0.0-alpha.1",

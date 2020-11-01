@@ -14,12 +14,10 @@ import { ChatComponent } from './chat/chat.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import {
   ProjectsComponent,
-  NewProjectModalComponent,
   ActivitiesModalComponent,
   EvidenceModalComponent,
 } from './projects/projects.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-
 import { FormsModule } from '@angular/forms';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -45,12 +43,14 @@ import { TasksComponent } from './tasks/tasks.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { GraficoBarraHorizontalComponent } from '../components/grafico-barra-horizontal/grafico-barra-horizontal.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GanttComponent } from './gantt/gantt.component';
 import { GoogleChartsModule, ScriptLoaderService } from 'angular-google-charts';
 import { ProgressBarColor } from './schedule/progress-bar-color';
-
+import { NewProjectModalComponent } from '../components/newProject/newProject-modal.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { NewActivityModalComponent } from '../components/newActivity/newActivity-modal.component';
+import { NewTaskModalComponent } from '../components/newTask/newTask-modal.component';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -62,6 +62,8 @@ registerLocaleData(localeEs);
     ScheduleComponent,
     ProjectsComponent,
     NewProjectModalComponent,
+    NewActivityModalComponent,
+    NewTaskModalComponent,
     UserProfileComponent,
     ActivitiesComponent,
     TaskComponent,
@@ -72,7 +74,6 @@ registerLocaleData(localeEs);
     ActivitiesModalComponent,
     NotificationsComponent,
     ActivitiesModalComponent1,
-    GraficoBarraHorizontalComponent,
     EvidenceModalComponent,
     EvidenceModalComponent1,
     GanttComponent,
@@ -96,7 +97,16 @@ registerLocaleData(localeEs);
     ChartsModule,
     GoogleChartsModule,
     ChartModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#C7E596',
+      animationDuration: 300,
+    })
   ],
   exports: [
     DashboardComponent,
@@ -123,6 +133,8 @@ registerLocaleData(localeEs);
     ActivitiesModalComponent1,
     EvidenceModalComponent,
     UserGuideModalComponent,
+    NewActivityModalComponent,
+    NewTaskModalComponent
   ],
 })
 export class PagesModule {}

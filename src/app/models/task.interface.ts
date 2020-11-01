@@ -3,8 +3,8 @@ export interface Task {
     name: string;
     status: string;
     delegate: User;
-    start_date?: Date;
-    end_date?: Date;
+    startDate?: Date;
+    endDate?: Date;
     progress?: number;
     id?: string;
     createdAt?: any;

@@ -12,6 +12,7 @@ import { Team } from '../models/team.interface';
 import { User } from '../models/user.interface';
 import { Activity } from '../models/activity.interface';
 import { Task } from '../models/task.interface';
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root',
@@ -43,13 +44,16 @@ export class ProjectService {
   // Variables auxiliares
   projects: Project[];
   project: Project;
-  idProject: string;
+  projectId: string;
+
+  serverTimeStamp: any;
 
   constructor(private http: HttpClient, private afs: AngularFirestore) {
     this.loadProjects(afs);
     this.projectsObs.subscribe((projects) => {
       this.projects = projects;
     });
+    this.serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp();
   }
 
   loadProjects(afs: AngularFirestore) {
@@ -65,8 +69,33 @@ export class ProjectService {
     );
   }
 
-  addNewProject(project: Project) {
-    this.projectCollection.add(project);
+  addProject(project: Project) {
+    const id = this.afs.createId();
+    this.afs.collection('projects').doc(id).set({
+              ...project,
+              createdAt: this.serverTimeStamp,
+              id,
+              progress: 0,
+              status: 'Por Realizar',
+              delegates: [],
+            });
+  }
+
+   setActivitiestoProject(projectId: string, activity: Activity) {
+    const id = this.afs.createId();
+    this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('activities')
+      .doc(id)
+      .set({
+          ...activity,
+          createdAt: this.serverTimeStamp,
+          id,
+          projectId,
+          progress: 0,
+          status: 'Por Realizar',
+      });
   }
 
   deleteProject(projectId: string) {
@@ -171,8 +200,7 @@ export class ProjectService {
     const { uid } = user;
     this.projectListObservable = this.afs
       .collection('projects', (ref) =>
-        ref.where('ownerId', '==', uid).orderBy('createdAt')
-      )
+        ref.where('ownerId', '==', uid).orderBy('createdAt'))
       .snapshotChanges()
       .pipe(
         map((changes) => {
@@ -269,21 +297,7 @@ export class ProjectService {
     return this.taskObs;
   }
 
-  setActivitiestoProject(projectId: string, activity: Activity) {
-    this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .add({
-        name: activity.name,
-        percentaje: activity.percentaje,
-        status: activity.status,
-        start_date: activity.start_date,
-        end_date: activity.end_date,
-        createdAt: activity.createdAt,
-        idProject: projectId,
-      });
-  }
+ 
 
   setTaskstoActivity(project: Project, activityId: string, task: Task) {
     this.afs
@@ -296,8 +310,8 @@ export class ProjectService {
         name: task.name,
         progress: task.progress,
         status: task.status,
-        start_date: task.start_date,
-        end_date: task.end_date,
+        startDate: task.startDate,
+        endDate: task.endDate,
         createdAt: task.createdAt,
         delegate: task.delegate,
         idActivity: activityId,
@@ -324,54 +338,54 @@ export class ProjectService {
       name: project.name,
       client: project.client,
       type: project.type,
-      start_date: project.start_date,
-      end_date: project.end_date,
+      startDate: project.startDate,
+      endDate: project.endDate,
       description: project.description,
     });
   }
-  updateActivity(idProject: string, idActivity: string, activity: Activity) {
+  updateActivity(projectId: string, idActivity: string, activity: Activity) {
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .update({
         name: activity.name,
-        start_date: activity.start_date,
-        end_date: activity.end_date,
+        startDate: activity.startDate,
+        endDate: activity.endDate,
       });
   }
 
   updateTask(
-    idProject: string,
+    projectId: string,
     idActivity: string,
     idTask: string,
     task: Task
   ) {
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .collection('tasks')
       .doc(idTask)
       .update({
         name: task.name,
-        start_date: task.start_date,
-        end_date: task.end_date,
+        startDate: task.startDate,
+        endDate: task.endDate,
         delegate: task.delegate,
       });
   }
 
   setTaskProgress(
-    idProject: string,
+    projectId: string,
     idActivity: string,
     idTask: string,
     prog: number
   ) {
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .collection('tasks')
@@ -382,32 +396,32 @@ export class ProjectService {
       });
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .update({
         status: 'Por Verificar',
       });
-    this.afs.collection('projects').doc(idProject).update({
+    this.afs.collection('projects').doc(projectId).update({
       status: 'Por Verificar',
     });
   }
 
-  setActivityProgress(idProject: string, idActivity: string, percent: number) {
+  setActivityProgress(projectId: string, idActivity: string, percent: number) {
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .update({
-        percentaje: percent,
+        progress: percent,
       });
   }
 
-  setStatusActivity(idProject: string, idActivity: string, statusA: string) {
+  setStatusActivity(projectId: string, idActivity: string, statusA: string) {
     this.afs
       .collection('projects')
-      .doc(idProject)
+      .doc(projectId)
       .collection('activities')
       .doc(idActivity)
       .update({
@@ -415,14 +429,14 @@ export class ProjectService {
       });
   }
 
-  setProjectProgress(idProject: string, percent: number) {
-    this.afs.collection('projects').doc(idProject).update({
+  setProjectProgress(projectId: string, percent: number) {
+    this.afs.collection('projects').doc(projectId).update({
       progress: percent,
     });
   }
 
-  setStatusProject(idProject: string, statusP: string) {
-    this.afs.collection('projects').doc(idProject).update({
+  setStatusProject(projectId: string, statusP: string) {
+    this.afs.collection('projects').doc(projectId).update({
       status: statusP,
     });
   }
