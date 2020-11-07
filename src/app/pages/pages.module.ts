@@ -35,8 +35,6 @@ import { ChartModule } from 'angular2-chartjs';
 import { KanbanComponent } from './kanban/kanban.component';
 import {
   ProjectComponent,
-  TaskComponent1,
-  ActivitiesModalComponent1,
   EvidenceModalComponent1,
 } from './project/project.component';
 import { TasksComponent } from './tasks/tasks.component';
@@ -46,11 +44,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GanttComponent } from './gantt/gantt.component';
 import { GoogleChartsModule, ScriptLoaderService } from 'angular-google-charts';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { ProgressBarColor } from './schedule/progress-bar-color';
 import { NewProjectModalComponent } from '../components/newProject/newProject-modal.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { NewActivityModalComponent } from '../components/newActivity/newActivity-modal.component';
 import { NewTaskModalComponent } from '../components/newTask/newTask-modal.component';
+import { OpenEvidenceModalComponent } from '../components/openEvidence/openEvidence-modal.component';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -70,14 +70,13 @@ registerLocaleData(localeEs);
     KanbanComponent,
     ProjectComponent,
     TasksComponent,
-    TaskComponent1,
     ActivitiesModalComponent,
     NotificationsComponent,
-    ActivitiesModalComponent1,
     EvidenceModalComponent,
     EvidenceModalComponent1,
     GanttComponent,
     UserGuideModalComponent,
+    OpenEvidenceModalComponent
   ],
   imports: [
     CommonModule,
@@ -95,7 +94,7 @@ registerLocaleData(localeEs);
     }),
     DragDropModule,
     ChartsModule,
-    GoogleChartsModule,
+    Ng2GoogleChartsModule,
     ChartModule,
     FlexLayoutModule,
     NgCircleProgressModule.forRoot({
@@ -115,7 +114,7 @@ registerLocaleData(localeEs);
     FlatpickrModule,
     CalendarModule,
     NgxChartsModule,
-    GoogleChartsModule,
+    Ng2GoogleChartsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-Ar' },
@@ -127,14 +126,13 @@ registerLocaleData(localeEs);
     ProjectsComponent,
     NewProjectModalComponent,
     TaskComponent,
-    TaskComponent1,
     EvidenceModalComponent1,
     ActivitiesModalComponent,
-    ActivitiesModalComponent1,
     EvidenceModalComponent,
     UserGuideModalComponent,
     NewActivityModalComponent,
-    NewTaskModalComponent
+    NewTaskModalComponent,
+    OpenEvidenceModalComponent
   ],
 })
 export class PagesModule {}

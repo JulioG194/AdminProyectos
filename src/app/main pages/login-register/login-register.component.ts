@@ -148,19 +148,6 @@ export class LoginRegisterComponent implements OnInit {
         confirmButtonText: 'Listo!'
       });
     }
-
-    // this.submitted = true;
-    // if (this.registerForm.valid) {
-    //   alert('Form Submitted succesfully!!!\n Check the values in browser console.');
-    //   console.table(this.registerForm.value);
-    //   const company = this.selected;
-    //   const role = this.registerForm.value.role;
-    //   const email = this.registerForm.value.email;
-    //   console.log(company, role, email);
-    //   console.log(this.authService.getCompanyByRole(company, role, email));
-    //   console.log(this.authService.companyUser);
-
-    // }
   }
 
   async sucessRegister() {
@@ -208,11 +195,6 @@ export class LoginRegisterComponent implements OnInit {
     if (!this.loginForm.valid) {
       return;
     }
-    // Swal.fire({
-    //   allowOutsideClick: false,
-    //   text: 'Espere por favor...',
-    // });
-    // Swal.showLoading();
 
     this.loadingLoginRegister();
 
@@ -227,12 +209,6 @@ export class LoginRegisterComponent implements OnInit {
           this.authService.setTokenUser(loginUser, token);
         });
         Swal.close();
-      //   Swal.fire({
-      //   allowOutsideClick: false,
-      //   icon: 'success',
-      //   timer: 2000,
-      //   showConfirmButton: false
-      // });
         this.router.navigateByUrl('/dashboard');
       } else {
         Swal.fire({

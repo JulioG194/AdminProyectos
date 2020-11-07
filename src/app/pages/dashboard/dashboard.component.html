@@ -12,90 +12,170 @@
             <br>
             <br>
             <div>
-                <!-- <div class="container1"> -->
                 <div class="align2">
                     <div class="view1">
-                        <h6>Diagrama de pastel</h6>
-                        <mat-divider></mat-divider>
-                        <br>
                         <div>
-                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image"></div>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p style="font-size: 30px; text-align: center;">
+                                        Total Proyectos
+                                    </p>
+                                    <p style="font-size: 50px; text-align: center;">
+                                        {{projectsApp.length}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </div> &nbsp;&nbsp;
                     <div class="view1">
-                        <h6>Diagrama de pastel</h6>
-                        <mat-divider></mat-divider>
-                        <br>
                         <div>
-                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image"></div>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p style="font-size: 30px; text-align: center;">
+                                        Total Actividades
+                                    </p>
+                                    <p style="font-size: 50px; text-align: center;">
+                                        {{activitiesNumber}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </div> &nbsp;&nbsp;
                     <div class="view1">
-                        <h6>Diagrama de pastel</h6>
-                        <mat-divider></mat-divider>
-                        <br>
                         <div>
-                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image"></div>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p style="font-size: 30px; text-align: center;">
+                                        Total Tareas
+                                    </p>
+                                    <p style="font-size: 50px; text-align: center;">
+                                        {{tasksNumber}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </div>
                 </div>
                 <br>
+                <div class="align2">
+                    <div class="view1" style="text-align: center;">
+                        <h6>Estadisticas Proyectos</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <div style="text-align: center;">
+                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="view1" style="text-align: center;">
+                        <h6>Estadisticas Actividades</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <div style="text-align: center;">
+                            <canvas baseChart [data]="pieChartDataAct" [labels]="pieChartLabelsAct" [chartType]="pieChartTypeAct" [options]="pieChartOptionsAct" [plugins]="pieChartPluginsAct" [colors]="pieChartColorsAct" [legend]="pieChartLegendAct"></canvas>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="view1" style="text-align: center;">
+                        <h6>Estadisticas Tareas</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <div style="text-align: center;">
+                            <canvas baseChart [data]="pieChartDataTsk" [labels]="pieChartLabelsTsk" [chartType]="pieChartTypeTsk" [options]="pieChartOptionsTsk" [plugins]="pieChartPluginsTsk" [colors]="pieChartColorsTsk" [legend]="pieChartLegendTsk"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="align2">
+                    <br>
+                    <div class="view2 container2">
+                        <h6>Porcentaje de proyecto</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+
+                        <div class="content" fxLayout="row wrap" fxLayoutGap="2px">
+                            <!-- <div > -->
+                            <mat-card *ngFor="let project of projectsApp" class="mat-elevation-z4 " style="background-color:#082330; ">
+                                <mat-card-content style="text-align: center; ">
+                                    <circle-progress [percent]="project.progress" [radius]="50" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Avance'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'"
+                                        [animation]="true" [animationDuration]="300">
+
+                                    </circle-progress>
+                                    <p style="font-size: 12px; color: white;">{{project.name}}</p>
+                                </mat-card-content>
+                                <mat-card-actions>
+
+                                </mat-card-actions>
+                            </mat-card>
+                            <!-- </div> -->
+                        </div>
+
+                    </div>
+                </div>
                 <br>
                 <div class="align2">
                     <div class="container1">
                         <h6>Ultimos movimientos</h6>
                         <mat-divider></mat-divider>
-                    </div> &nbsp;&nbsp;
+                        <br>
+                        <mat-form-field style="background-color: white;width:300px;">
+                            <mat-select placeholder="Seleccione el proyecto" (selectionChange)="projectsChangeAction(project)" name="project" [(ngModel)]="project">
+                                <mat-option *ngFor="let project of projectsApp" [matTooltip]="project.name" [value]="project.id">{{ project.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <div class="view2 container2">
-                        <h6>Porcentaje de proyecto</h6>
+                        <mat-form-field style="background-color: white; width:300px;">
+                            <mat-select placeholder="Seleccione la actividad" (selectionChange)="activitiesChangeAction(activity)" name="activity" [(ngModel)]="activity">
+                                <mat-option *ngFor="let activity of activitiesProjectsApp" [value]="activity.id">{{ activity.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div> &nbsp;&nbsp;
+                    <div class="view2 container2 ">
+                        <h6>Porcentaje de actividades</h6>
                         <mat-divider></mat-divider>
                         <br>
-                        <!--  <ngx-charts-bar-horizontal [view]="view" [scheme]="colorScheme" [results]="results" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
-                            [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
-                        </ngx-charts-bar-horizontal> -->
                         <canvas baseChart width="50px" height="15px" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
                     </div>
                 </div>
-                <!-- </div> -->
+                <br>
+                <div class="align2">
+                    <div class="container1" style="width: 430px;">
+                        <h6>Ultimos movimientos</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+                    </div> &nbsp;&nbsp;
 
+                    <div class="view2 container2 ">
+                        <h6>Porcentaje de tareas</h6>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <canvas baseChart width="50px" height="15px" [datasets]="barChartDataTask" [labels]="barChartLabelsTask" [options]="barChartOptionsTask" [colors]="barChartColorsTask" [legend]="barChartLegendTask" [chartType]="barChartTypeTask"></canvas>
+                    </div>
+                </div>
             </div>
-
         </div>
-
-
-        <!-- <div *ngIf="post == true ; else userGuide">
-
-    </div> -->
-
-        <!--   <div>
-        <div>
-          <div>
-            <div style="display: block">
-              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-            <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button>
-          </div>
-        </div>
-      </div> -->
     </div>
 </div>
 
-<!-- <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white;">
-    <mat-progress-spinner color="primary" mode="indeterminate">
-    </mat-progress-spinner>
-</div> -->
 
-<div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background:#082330; text-align: center;">
+<div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background:#082330; text-align: center; ">
     <mat-progress-spinner color="primary" mode="indeterminate" diameter="120">
     </mat-progress-spinner>
 </div>
 
 
 <ng-template #delegate>
-    <div *ngIf="projectsApp?.length > 0; else userGuide">
+    <div *ngIf="projectsApp?.length> 0; else userGuide">
         <div class="btn-GuiaUser">
             <button (click)="post = !post">Ver guia de usuario</button>
         </div>
@@ -107,13 +187,6 @@
                 </div>
             </div>
         </div>
-        <!--  <div>
-            <button mat-button mat-raised-button color="primary" (click)="pieChartLegend=!pieChartLegend">Toggle Legend</button>
-            <button mat-button mat-raised-button color="primary" (click)="changeLabels()">Change Labels</button>
-            <button mat-button mat-raised-button color="primary" (click)="addSlice()">Add Slice</button>
-            <button mat-button mat-raised-button color="primary" (click)="removeSlice()">Remove Slice</button>
-            <button mat-button mat-raised-button color="primary" (click)="changeLegendPosition()">Change Legend Position</button>
-        </div> -->
         <br>
         <br>
         <mat-divider></mat-divider>

@@ -1,3 +1,4 @@
+import { User } from 'firebase';
 import { Task } from './task.interface';
 
 export interface Activity {
@@ -12,4 +13,5 @@ export interface Activity {
     tasks?: Task[];
     projectId?: string;
     description?: string;
+    delegates?: User[];
 }

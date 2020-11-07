@@ -2,7 +2,7 @@
   <mat-icon style="margin-bottom: 15px; color: black;" class="close-icon" color="warn">close</mat-icon>
 </button>
 
-<h1 mat-dialog-title>Nuevo Proyecto</h1>
+<h1 mat-dialog-title>Nuevo Tarea</h1>
 
 <mat-dialog-content class="custom-dialog-container" [formGroup]="form">
 
@@ -28,17 +28,8 @@
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
 
-        <!-- <mat-form-field style="margin-bottom: -1.25em" appearance="outline">
-            <mat-label>Tipo de proyecto</mat-label>
-            <mat-select [(value)]="type" formControlName="typeProj">
-                <mat-option [value]="typ" *ngFor="let typ of types">{{typ}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field> -->
-
         <mat-form-field style="margin-bottom: -1.25em" appearance="outline">
             <mat-label>Delegado</mat-label>
-            <!-- <mat-label class="placeholder">{{task.delegate.displayName}}</mat-label> -->
             <mat-select [(value)]="deleg" formControlName="delegateTask" required>
                 <mat-option [value]="delegate" *ngFor="let delegate of delegates">
                     <img matListAvatar [src]="delegate?.photoURL" style="width: 30px; height: 30px; border-radius: 150px" />

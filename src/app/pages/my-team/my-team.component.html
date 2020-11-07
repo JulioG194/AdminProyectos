@@ -1,10 +1,9 @@
 <h2>Mi equipo</h2>
 <mat-divider></mat-divider>
 <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="Seleccionar delegados para el equipo">
-        <div *ngIf="userGugo.manager == true; else delegate">
-            <div>
-
+    <mat-tab *ngIf="userGugo.manager == true" label="Seleccionar delegados para el equipo">
+        <div>
+            <div *ngIf="userGugo.manager == true && usersGugo.length > 0; else NoDelegatesToChoose">
                 &nbsp;
                 <h5>Selecciona tu equipo de trabajo:</h5>
                 <ul>
@@ -19,17 +18,6 @@
                             </mat-list-option>
                         </li>
                     </mat-selection-list>
-                    <!-- <mat-selection-list #team2 [(ngModel)]="selectedUsersPlus" (ngModelChange)="onGroupsChangePlus($event)">
-                        <li>
-                            <mat-list-option class="card" *ngFor="let user of usersGugo" [value]="user">
-                                <img matListAvatar [src]="user.photoURL">
-                                <p mat-line> {{user.displayName}} </p>
-                                <p mat-line> {{user.email}} </p>
-                                <p mat-line> {{user.employment}} </p>
-
-                            </mat-list-option>
-                        </li>
-                    </mat-selection-list> -->
                 </ul>
                 <div class="end">
                     <p>Debes escojer al menos un delegado para conformar tu equipo</p>
@@ -39,51 +27,12 @@
                     <button (click)="addNewTeam()">Listo</button>
                 </div>
             </div>
-
-
-
-            <!-- <div *ngIf="post == true; else chooseTeam ">
-                <br>
-            </div> -->
-
-
-
-            <ng-template #chooseTeam>
-                <div class="space2">
-                    <br>
-                    <h4>Amplia tu equipo de trabajo</h4>
-                    <mat-divider></mat-divider>
-                    <br>
-                    <ul>
-                        <mat-selection-list #team2 [(ngModel)]="selectedUsersPlus" (ngModelChange)="onGroupsChangePlus($event)">
-                            <li>
-                                <mat-list-option class="card" *ngFor="let user of usersAppFilter" [value]="user">
-                                    <img matListAvatar [src]="user.photoURL">
-                                    <p mat-line> {{user.displayName}} </p>
-                                    <p mat-line> {{user.email}} </p>
-                                    <p mat-line> {{user.employment}} </p>
-                                    <!-- cargo de la persona  -->
-
-                                </mat-list-option>
-                            </li>
-                        </mat-selection-list>
-                    </ul>
-                    <div class="end">
-                        <p>Has elegido {{team2.selectedOptions.selected.length}} personas para formar tu equipo de trabajo</p>
-                        <button (click)="updateTeam()">Listo</button>
-                    </div>
-                </div>
-            </ng-template>
         </div>
-
-
     </mat-tab>
 
     <mat-tab label="Vista general del equipo">
-        <div *ngIf="userGugo.manager && teamGugo.delegates?.length > 0">
-
+        <div *ngIf="userGugo.manager && teamGugo.delegates?.length > 0; else delegate">
             <h5>Delegados de tu Equipo</h5>
-            <!-- <div class="container"> -->
             <table class="space">
                 <thead>
                     <tr>
@@ -100,47 +49,19 @@
                     <td> {{delegate.displayName}} </td>
                     <td> {{delegate.email}} </td>
                     <td> {{delegate.phoneNumber}} </td>
-                    <!-- celular -->
                     <td> {{delegate.employment}} </td>
                     <td>
                         <button mat-fab color="warn" matTooltip="Eliminar del equipo" (click)="removeDelegates(delegate.uid)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>
-                    <!-- cargo -->
                 </tr>
             </table>
-            <!-- <div>
-                <button (click)="post = !post" class="style space">Ampliar equipo</button>
-            </div> -->
-
-            <!--  </div> -->
         </div>
     </mat-tab>
 
 
     <mat-tab label="Lista de equipos por proyecto">
-
-        <!-- <mat-toolbar color="primary">
-            Card view demo
-        </mat-toolbar> -->
-        <!-- <div class="content">
-            <mat-card class="mat-elevation-z4">
-                <mat-card-header>
-                    <mat-card-title>Himalayan Peaks</mat-card-title>
-                </mat-card-header>
-                <img mat-card-image src="./../../../assets/img/fondo1.jpg">
-                <mat-card-content>
-                    <p>
-                        The Himalayas is a mountain range in Asia.
-                    </p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-        </div> -->
         <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let num of [1,2,3,4,5,6,7]">
                 <mat-card class="mat-elevation-z4">
@@ -148,7 +69,6 @@
                         <mat-card-title>Proyecto {{num}}</mat-card-title>
 
                     </mat-card-header>
-                    <!-- <img mat-card-image src="./../../../assets/img/fondo1.jpg"> -->
                     <mat-card-content>
                         <p>
                             The Himalayas is a mountain range in Asia.
@@ -164,9 +84,7 @@
 
                         <div fxLayout="row" fxLayoutAlign="end center">
                             <button mat-button style="width: 5px; height: 35px; background-color: #082330; color:mintcream">
-                             <!-- <span class="list-card-footer-item" fxLayout="row" fxLayoutAlign="start center"> -->
                                     <mat-icon class="s-18">remove_red_eye</mat-icon>
-                                <!-- </span> -->
                         </button>
                         </div>
 
@@ -174,8 +92,6 @@
 
                     </mat-card-content>
                     <mat-card-actions>
-                        <!-- <button mat-button>LIKE</button> -->
-                        <!-- <button mat-button>SHARE</button> -->
 
                         <div class="list-card-footer" fxLayout="row" fxLayoutAlign="space-between center">
 
@@ -209,11 +125,9 @@
 
 
 <ng-template #delegate>
-    <div *ngIf="delegatesAux1?.length > 0; else NoTeam">
-
+    <div *ngIf="managers.length > 0; else NoTeam">
         <br>
         <h5>Tus gestores de proyectos:</h5>
-        <!-- <div class="container"> -->
         <table class="space">
             <thead>
                 <tr>
@@ -224,19 +138,16 @@
                     <td>CELULAR</td>
                 </tr>
             </thead>
-            <tr *ngFor="let delegate of delegatesAux1">
-                <!-- compañeros del delegado -->
-                <td *ngIf="delegate.manager == true"><img matListAvatar [src]="delegate.photoURL" style="width: 50px; height: 50px;border-radius: 150px"></td>
-                <td *ngIf="delegate.manager == true"> {{delegate.displayName}} </td>
-                <td *ngIf="delegate.manager == true"> {{delegate.email}} </td>
-                <td *ngIf="delegate.manager == true"> {{delegate.employment}} </td>
-                <td *ngIf="delegate.manager == true"> {{delegate.phoneNumber}} </td>
+            <tr *ngFor="let manager of managers">
+                <td><img matListAvatar [src]="manager.photoURL" style="width: 50px; height: 50px;border-radius: 150px"></td>
+                <td> {{manager.displayName}} </td>
+                <td> {{manager.email}} </td>
+                <td> {{manager.employment}} </td>
+                <td> {{manager.phoneNumber}} </td>
             </tr>
         </table>
-        <!-- </div> -->
         <br>
         <h5>Tus compañeros de proyectos:</h5>
-        <!-- <div class="container"> -->
         <table class="space">
             <thead>
                 <tr>
@@ -247,23 +158,29 @@
                     <td>CELULAR</td>
                 </tr>
             </thead>
-            <tr *ngFor="let delegate of delegatesAux1">
-                <!-- compañeros del delegado -->
-                <td *ngIf="delegate.manager != true"><img matListAvatar [src]="delegate.photoURL" style="width: 50px; height: 50px;border-radius: 150px"></td>
-                <td *ngIf="delegate.manager != true"> {{delegate.displayName}} </td>
-                <td *ngIf="delegate.manager != true"> {{delegate.email}} </td>
-                <td *ngIf="delegate.manager != true"> {{delegate.employment}} </td>
-                <td *ngIf="delegate.manager != true"> {{delegate.phoneNumber}} </td>
+            <tr *ngFor="let partner of partnersAll">
+                <td><img matListAvatar [src]="partner.photoURL" style="width: 50px; height: 50px;border-radius: 150px"></td>
+                <td> {{partner.displayName}} </td>
+                <td> {{partner.email}} </td>
+                <td> {{partner.employment}} </td>
+                <td> {{partner.phoneNumber}} </td>
             </tr>
         </table>
     </div>
-
-    <!-- </div> -->
 </ng-template>
 
 <ng-template #NoTeam>
+    <br>
     <h2>No has sido asignado a ningun equipo</h2>
     <mat-divider></mat-divider>
     <br>
     <h5>Muy pronto seras asignado a uno :)</h5>
+</ng-template>
+
+<ng-template #NoDelegatesToChoose>
+    <br>
+    <h2>No hay delegados para agregar al equipo</h2>
+    <mat-divider></mat-divider>
+    <br>
+    <h5>Espera muy pronto, para poder ampliar tu equipo</h5>
 </ng-template>

@@ -24,6 +24,7 @@ import { EvidenceService } from '../../services/evidence.service';
 import { MatFormField, MatInput } from '@angular/material';
 import { NewActivityModalComponent } from '../../components/newActivity/newActivity-modal.component';
 import { NewTaskModalComponent } from '../../components/newTask/newTask-modal.component';
+import { OpenEvidenceModalComponent } from '../../components/openEvidence/openEvidence-modal.component';
 
 export interface DialogData1 {
   project: Project;
@@ -62,6 +63,7 @@ export class ProjectComponent implements OnInit {
   post4 = true;
   post5 = true;
   edit = true;
+  expand = false;
   isLoading = true;
   isLoadingProject = true;
   isLoadingActivities = true;
@@ -70,6 +72,7 @@ export class ProjectComponent implements OnInit {
   open1 = true;
   open2 = true;
   open3 = true;
+  newActivityId = '';
 
   validate = true;
 
@@ -153,6 +156,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.id = this.route.snapshot.paramMap.get('id');
+    this.panelOpenState = false;
     this.getProject(this.id);
     this.getDelegates();
   }
@@ -167,32 +171,26 @@ export class ProjectComponent implements OnInit {
       this.projectApp.endDate = new Date(
         this.projectApp.endDate['seconds'] * 1000
       );
+      this.panelOpenState = false;
       this.isLoadingProject = false;
-      this.getActivities();
-      this.getTasks();
-    });
-  }
-
-  getActivities() {
-    this.projectService
-        .getActivities(this.projectApp)
+      this.projectService
+        .getActivities(this.projectApp.id)
         .subscribe((activities) => {
           activities.map(activity => {
                             activity.startDate = new Date(activity.startDate['seconds'] * 1000);
                             activity.endDate = new Date(activity.endDate['seconds'] * 1000);
                           });
           this.activitiesProject = activities;
+          this.panelOpenState = false;
+          console.log(this.activitiesProject);
           this.isLoadingActivities = false;
-        });
-  }
-
-  getTasks() {
-    console.log(this.activitiesProject);
-    for (let i = 0; i < this.activitiesProject.length; i++) {
+          for (let i = 0; i < this.activitiesProject.length; i++) {
             this.projectService
               .getTasks(this.projectApp.id, this.activitiesProject[i].id)
               .subscribe((tasks) => {
+                this.panelOpenState = false;
                 this.activitiesProject[i].tasks = tasks;
+                console.log(this.activitiesProject[i].tasks);
                 for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
                   this.activitiesProject[i].tasks[j].startDate = new Date(
                     this.activitiesProject[i].tasks[j].startDate['seconds'] * 1000
@@ -200,8 +198,12 @@ export class ProjectComponent implements OnInit {
                   this.activitiesProject[i].tasks[j].endDate = new Date(
                     this.activitiesProject[i].tasks[j].endDate['seconds'] * 1000
                   ); }
-              });
+                this.panelOpenState = false;
+              }
+              );
           }
+        });
+    });
   }
 
     getDelegates() {
@@ -234,17 +236,21 @@ export class ProjectComponent implements OnInit {
             endDate: data.endDate as Date,
           };
           if (newActivity.name) {
-            this.projectService.setActivitiestoProject(this.projectApp.id, newActivity);
+            this.newActivityId = this.projectService.setActivitiestoProject(this.projectApp.id, newActivity);
+            // this.panelOpenState = false;
+            this.expand = true;
             Swal.fire({
-            allowOutsideClick: false,
-            icon: 'success',
-            title: 'Proyecto agregado con exito'
-          });
+              allowOutsideClick: false,
+              text: 'Actividad Agregada con Exito...Recargando Tabla...',
+              timer: 2000,
+              icon: 'success'
+            });
+            Swal.showLoading();
           }
         });
   }
 
-  openNewTask(startDateAct: Date, endDateAct: Date) {
+  openNewTask(startDateAct: Date, endDateAct: Date, activityId: string) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = false;
@@ -256,26 +262,43 @@ export class ProjectComponent implements OnInit {
     delegates: this.delegates
   };
 
-  // const dialogRef =
-  this.dialog.open(NewTaskModalComponent, dialogConfig);
+  const dialogRef = this.dialog.open(NewTaskModalComponent, dialogConfig);
 
-  // dialogRef.afterClosed().subscribe(
-  //       data => {
-  //         const newActivity: Activity = {
-  //           name: data.name as string,
-  //           description: data.description as string,
-  //           startDate: data.startDate as Date,
-  //           endDate: data.endDate as Date,
-  //         };
-  //         if (newActivity.name) {
-  //           this.projectService.setActivitiestoProject(this.projectApp.id, newActivity);
-  //           Swal.fire({
-  //           allowOutsideClick: false,
-  //           icon: 'success',
-  //           title: 'Proyecto agregado con exito'
-  //         });
-  //         }
-  //       });
+
+  dialogRef.afterClosed().subscribe(
+        async (data) => {
+          const newTask: Task = {
+            name: data.name as string,
+            description: data.description as string,
+            startDate: data.startDate as Date,
+            endDate: data.endDate as Date,
+            delegate: data.delegateTask as User
+          };
+          if (newTask.name) {
+            await this.projectService.setTaskstoActivity(this.projectApp.id, activityId, newTask);
+            this.newActivityId = activityId;
+            // this.panelOpenState = false;
+            Swal.fire({
+              allowOutsideClick: false,
+              text: 'Tarea Agregada con Exito...Recargando Tabla...' ,
+              icon: 'success',
+              timer: 2000
+            });
+            Swal.showLoading();
+          }
+        });
+  }
+
+  openEvidence() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    delegates: this.delegates
+  };
+  this.dialog.open(OpenEvidenceModalComponent, dialogConfig);
   }
 
   editProject() {
@@ -407,87 +430,17 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  openTask(id: string) {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open(TaskComponent1, {
-      width: '600px',
-      data: { project: this.projectApp, actId: id, delegatesG: this.delegates },
-    });
+  // openEvidence(taskAux: Task): void {
+  //   // tslint:disable-next-line: no-use-before-declare
+  //   const dialogRef = this.dialog.open(EvidenceModalComponent1, {
+  //     width: '1000px',
+  //     data: { task: taskAux },
+  //   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log('The dialog was closed');
-    });
-  }
-
-  openEditTask(idActivity: string, idTask: string, task: Task) {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open(TaskComponent1, {
-      width: '600px',
-      data: {
-        project: this.projectApp,
-        actId: idActivity,
-        taskId: idTask,
-        taskAux: task,
-        delegatesG: this.delegates,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log('The dialog was closed');
-    });
-  }
-
-  openActivities(id: string, minDateF: Date, maxDateF: Date): void {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open(ActivitiesModalComponent1, {
-      width: '600px',
-      data: { projectAppId: id, minDate: minDateF, maxDate: maxDateF },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  openEditActivities(
-    id: string,
-    minDateF: Date,
-    maxDateF: Date,
-    idActivity: string,
-    activity: Activity
-  ) {
-    this.startDt = new Date(activity.startDate['seconds'] * 1000);
-    this.endDt = new Date(activity.endDate['seconds'] * 1000);
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open(ActivitiesModalComponent1, {
-      width: '600px',
-      data: {
-        projectAppId: id,
-        minDate: minDateF,
-        maxDate: maxDateF,
-        idAct: idActivity,
-        actAux: activity,
-        dateS: this.startDt,
-        dateE: this.endDt,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  openEvidence(taskAux: Task): void {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open(EvidenceModalComponent1, {
-      width: '1000px',
-      data: { task: taskAux },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
-  }
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     console.log('The dialog was closed');
+  //   });
+  // }
 
   checkTask(idActivity: string, idTask: string, progressTask: number) {
     this.projectService.checkTask(
@@ -499,257 +452,257 @@ export class ProjectComponent implements OnInit {
   }
 }
 
-@Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css'],
-})
+// @Component({
+//   // tslint:disable-next-line:component-selector
+//   selector: 'tasks',
+//   templateUrl: './tasks.component.html',
+//   styleUrls: ['./tasks.component.css'],
+// })
 
-// tslint:disable-next-line:component-class-suffix
-export class TaskComponent1 {
-  task: Task = {
-    name: '',
-    status: 'Por Realizar',
-    delegate: null,
-    progress: 0,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  };
+// // tslint:disable-next-line:component-class-suffix
+// export class TaskComponent1 {
+//   task: Task = {
+//     name: '',
+//     status: 'Por Realizar',
+//     delegate: null,
+//     progress: 0,
+//     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+//   };
 
-  startD: Date;
-  endD: Date;
+//   startD: Date;
+//   endD: Date;
 
-  minD: Date;
-  maxD: Date;
+//   minD: Date;
+//   maxD: Date;
 
-  activityAux: Activity = {
-    name: '',
-    status: '',
-    startDate: this.minD,
-    endDate: this.maxD,
-    activity_time: 0,
-  };
+//   activityAux: Activity = {
+//     name: '',
+//     status: '',
+//     // startDate: this.minD,
+//     // endDate: this.maxD,
+//     activity_time: 0,
+//   };
 
-  constructor(
-    public dialogRef: MatDialogRef<TaskComponent1>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData1,
-    private projectService: ProjectService
-  ) {
-    console.log(this.data.project.id);
-    console.log(this.data.actId);
-    this.projectService
-      .getActivity(this.data.project.id, this.data.actId)
-      .subscribe((act) => {
-        this.activityAux = act;
-        console.log(this.activityAux);
-        console.log(this.data.delegatesG);
-        this.minD = new Date(this.activityAux.startDate['seconds'] * 1000);
-        this.maxD = new Date(this.activityAux.endDate['seconds'] * 1000);
-      });
-    if (this.data.taskAux != null) {
-      this.task = this.data.taskAux;
-    }
-  }
+//   constructor(
+//     public dialogRef: MatDialogRef<TaskComponent1>,
+//     @Inject(MAT_DIALOG_DATA) public data: DialogData1,
+//     private projectService: ProjectService
+//   ) {
+//     console.log(this.data.project.id);
+//     console.log(this.data.actId);
+//     this.projectService
+//       .getActivity(this.data.project.id, this.data.actId)
+//       .subscribe((act) => {
+//         this.activityAux = act;
+//         console.log(this.activityAux);
+//         console.log(this.data.delegatesG);
+//         this.minD = new Date(this.activityAux.startDate['seconds'] * 1000);
+//         this.maxD = new Date(this.activityAux.endDate['seconds'] * 1000);
+//       });
+//     if (this.data.taskAux != null) {
+//       this.task = this.data.taskAux;
+//     }
+//   }
 
-  onSaveTask(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+//   onSaveTask(form: NgForm) {
+//     if (form.invalid) {
+//       return;
+//     }
 
-    if (this.endD < this.startD) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fechas fuera de rango',
-      });
-      return;
-    }
+//     if (this.endD < this.startD) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Fechas fuera de rango',
+//       });
+//       return;
+//     }
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...',
-    });
-    Swal.showLoading();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'info',
+//       text: 'Espere por favor...',
+//     });
+//     Swal.showLoading();
 
-    this.projectService.setTaskstoActivity(
-      this.data.project,
-      this.data.actId,
-      this.task
-    );
+//     // this.projectService.setTaskstoActivity(
+//     //   this.data.project,
+//     //   this.data.actId,
+//     //   this.task
+//     // );
 
-    Swal.close();
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'success',
-      title: 'Tarea asignada con exito',
-    });
+//     Swal.close();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'success',
+//       title: 'Tarea asignada con exito',
+//     });
 
-    this.dialogRef.close();
-  }
+//     this.dialogRef.close();
+//   }
 
-  onEditTask(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+//   onEditTask(form: NgForm) {
+//     if (form.invalid) {
+//       return;
+//     }
 
-    if (this.endD < this.startD) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fechas fuera de rango',
-      });
-      return;
-    }
+//     if (this.endD < this.startD) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Fechas fuera de rango',
+//       });
+//       return;
+//     }
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...',
-    });
-    Swal.showLoading();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'info',
+//       text: 'Espere por favor...',
+//     });
+//     Swal.showLoading();
 
-    this.projectService.updateTask(
-      this.data.project.id,
-      this.data.actId,
-      this.task.id,
-      this.task
-    );
+//     this.projectService.updateTask(
+//       this.data.project.id,
+//       this.data.actId,
+//       this.task.id,
+//       this.task
+//     );
 
-    Swal.close();
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'success',
-      title: 'Tarea asignada con exito',
-    });
+//     Swal.close();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'success',
+//       title: 'Tarea asignada con exito',
+//     });
 
-    this.dialogRef.close();
-  }
+//     this.dialogRef.close();
+//   }
 
-  inputEvent($event) {
-    this.startD = new Date($event.value);
-  }
+//   inputEvent($event) {
+//     this.startD = new Date($event.value);
+//   }
 
-  inputEvent2($event) {
-    this.endD = new Date($event.value);
-  }
-}
+//   inputEvent2($event) {
+//     this.endD = new Date($event.value);
+//   }
+// }
 
-@Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'activities-modal',
-  templateUrl: './activities-modal.component.html',
-  styleUrls: ['./activities-modal.component.css'],
-})
-export class ActivitiesModalComponent1 implements OnInit {
-  task: Task = {
-    name: '',
-    status: 'Por realizar',
-    delegate: null,
-  };
+// @Component({
+//   // tslint:disable-next-line:component-selector
+//   selector: 'activities-modal',
+//   templateUrl: './activities-modal.component.html',
+//   styleUrls: ['./activities-modal.component.css'],
+// })
+// export class ActivitiesModalComponent1 implements OnInit {
+//   task: Task = {
+//     name: '',
+//     status: 'Por realizar',
+//     delegate: null,
+//   };
 
-  id: string;
-  maxD: Date;
-  minD: Date;
-  startD: Date;
-  endD: Date;
+//   id: string;
+//   maxD: Date;
+//   minD: Date;
+//   startD: Date;
+//   endD: Date;
 
-  activityProject: Activity = {
-    name: '',
-    status: 'Por Realizar',
-    progress: 0,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  };
+//   activityProject: Activity = {
+//     name: '',
+//     status: 'Por Realizar',
+//     progress: 0,
+//     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+//   };
 
-  constructor(
-    public dialogRef: MatDialogRef<ActivitiesModalComponent1>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private projectService: ProjectService
-  ) {
-    this.id = this.data.projectAppId;
-    this.maxD = this.data.maxDate;
-    this.minD = this.data.minDate;
-    if (this.data.actAux != null) {
-      this.activityProject = this.data.actAux;
-    }
-  }
+//   constructor(
+//     public dialogRef: MatDialogRef<ActivitiesModalComponent1>,
+//     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+//     private projectService: ProjectService
+//   ) {
+//     this.id = this.data.projectAppId;
+//     this.maxD = this.data.maxDate;
+//     this.minD = this.data.minDate;
+//     if (this.data.actAux != null) {
+//       this.activityProject = this.data.actAux;
+//     }
+//   }
 
-  ngOnInit() {}
+//   ngOnInit() {}
 
-  inputEvent($event) {
-    this.startD = new Date($event.value);
-  }
+//   inputEvent($event) {
+//     this.startD = new Date($event.value);
+//   }
 
-  inputEvent2($event) {
-    this.endD = new Date($event.value);
-  }
+//   inputEvent2($event) {
+//     this.endD = new Date($event.value);
+//   }
 
-  onSaveActivity(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+//   onSaveActivity(form: NgForm) {
+//     if (form.invalid) {
+//       return;
+//     }
 
-    if (this.endD <= this.startD) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fechas fuera de rango',
-      });
-      return;
-    }
+//     if (this.endD <= this.startD) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Fechas fuera de rango',
+//       });
+//       return;
+//     }
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...',
-    });
-    Swal.showLoading();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'info',
+//       text: 'Espere por favor...',
+//     });
+//     Swal.showLoading();
 
-    this.projectService.setActivitiestoProject(this.id, this.activityProject);
+//     this.projectService.setActivitiestoProject(this.id, this.activityProject);
 
-    Swal.close();
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'success',
-      title: 'Actividad agregada con exito',
-    });
+//     Swal.close();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'success',
+//       title: 'Actividad agregada con exito',
+//     });
 
-    this.dialogRef.close();
-  }
+//     this.dialogRef.close();
+//   }
 
-  onEditActivity(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+//   onEditActivity(form: NgForm) {
+//     if (form.invalid) {
+//       return;
+//     }
 
-    if (this.endD <= this.startD) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fechas fuera de rango',
-      });
-      return;
-    }
+//     if (this.endD <= this.startD) {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Fechas fuera de rango',
+//       });
+//       return;
+//     }
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...',
-    });
-    Swal.showLoading();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'info',
+//       text: 'Espere por favor...',
+//     });
+//     Swal.showLoading();
 
-    this.projectService.updateActivity(
-      this.id,
-      this.activityProject.id,
-      this.activityProject
-    );
+//     this.projectService.updateActivity(
+//       this.id,
+//       this.activityProject.id,
+//       this.activityProject
+//     );
 
-    Swal.close();
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'success',
-      title: 'Actividad agregada con exito',
-    });
+//     Swal.close();
+//     Swal.fire({
+//       allowOutsideClick: false,
+//       icon: 'success',
+//       title: 'Actividad agregada con exito',
+//     });
 
-    this.dialogRef.close();
-  }
-}
+//     this.dialogRef.close();
+//   }
+// }
 
 @Component({
   // tslint:disable-next-line:component-selector

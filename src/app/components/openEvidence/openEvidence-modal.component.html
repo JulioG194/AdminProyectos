@@ -1,0 +1,77 @@
+<button style="width: fit-content; background-color: white;" mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon style="margin-bottom: 15px; color: black;" class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h1 mat-dialog-title>Panel de Evidencias</h1>
+
+<mat-dialog-content class="custom-dialog-container" [formGroup]="form">
+    <mat-tab-group style="background-color: #082330;" mat-align-tabs="center">
+        <mat-tab label="Archivos">
+            <div style="overflow: hidden;" class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
+                <div fxFlex="25%" *ngFor="let num of [1,2]">
+                    <mat-card class="mat-elevation-z4">
+                        <mat-card-header>
+                            <mat-card-title style="font-size: 14px;">Evidencia {{num}}</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                        <mat-card-content>
+                            <p>
+                                The Himalayas is a mountain range in Asia.
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <!-- <button fxFlex="row" mat-button>LIKE</button>
+                            <button fxFlex="row" mat-button>SHARE</button> -->
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Comentarios">
+            <div style="overflow: hidden;" class="content" fxLayout="row wrap">
+                <div style="text-align: center;">
+                    <div class="align photo">
+                        <div class="container space1">
+                            <div class="msgTx align">
+                                <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
+                                <p>skabasbkjasdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsdbaksdbasjkdbkj </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input name="message" cols="" placeholder="Enviar Comentario" rows="2" required />
+                    <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                    <mat-icon >send</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Observaciones de Tarea">
+
+            <div style="overflow: hidden;" class="content" fxLayout="row wrap">
+                <div style="text-align: center;">
+                    <div class="align photo">
+                        <div class="container space1">
+                            <div class="msgTx align">
+                                <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
+                                <p>skabasbkjasdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsdbaksdbasjkdbkj </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input name="message" cols="" placeholder="Enviar Observacion" rows="2" required />
+                    <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                    <mat-icon >send</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="mat-raised-button" style="background-color: #082330; color: white;" (click)="save()">Guardar</button>
+</mat-dialog-actions>

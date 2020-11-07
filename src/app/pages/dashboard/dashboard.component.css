@@ -52,7 +52,7 @@
 }
 
 .container2 {
-    width: 70%;
+    width: 100%;
     padding: 10px;
 }
 
@@ -260,4 +260,21 @@ h4 {
 
 mat-divider {
     border-top-color: white;
+}
+
+.example-card {
+    max-width: 400px;
+}
+
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+.content {
+    padding: 14px;
+}
+
+.content>mat-card {
+    width: 400px;
 }

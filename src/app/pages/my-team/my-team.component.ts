@@ -24,6 +24,10 @@ export class MyTeamComponent implements OnInit {
   teams: Team[] = [];
   delegates: User[] = [];
 
+  managers: User[] = [];
+  partners: User[] = [];
+  partnersAll: User[] = [];
+
   userGugo: User = {
     displayName: '',
     email: '',
@@ -47,12 +51,12 @@ export class MyTeamComponent implements OnInit {
 
   post = true;
 
-  // Variables Auxiliares
+  teamUsersDelegate: User[] = [];
   teamsAux: Team[] = [];
   teamsAux1: Team[] = [];
   delegatesAux: User[] = [];
   delegatesAux1: User[] = [];
-  managers: string[] = [];
+  // managers: string[] = [];
   managerAux: User = {
       displayName: '',
       email: '',
@@ -137,9 +141,6 @@ removeDelegate(delegate) {
     if ( item.email === delegate.email ) { this.delegatesAux1.splice(index, 1); }
   });
 }
-
-
-// Metodo para agregar usuarios al equipo
 updateTeam() {
   if ( this.selectedUsersPlus.length > 0) {
     this.teamService.addDelegates(this.teamGugo, this.selectedUsersPlus);
@@ -154,39 +155,62 @@ updateTeam() {
   this.post = !this.post;
 }
 
-
-
   ngOnInit() {
-
-     // this.getTeam();
-      this.getLocalCompany();
+    this.userGugo = this.authService.userAuth;
+    if (this.userGugo.manager) {
+        this.getLocalCompany();
+    } else {
+      this.getTeamDelegate();
+    }
   }
 
   getLocalCompany() {
-    // const user = localStorage.getItem('user');
-    // const userObj = JSON.parse(user);
-    // console.log(userObj.company.id);
     this.userGugo = this.authService.userAuth;
     this.teamService.getUsersCompany(this.userGugo.company.id).subscribe(users => {
      const usersGugoArray = _.reject(users, {uid: this.userGugo.uid});
-      // console.log(users);
-     console.log(this.authService.userAuth);
      this.teamService.getTeamByUser(this.userGugo).subscribe(teams => {
-       // console.log(_.head(teams));
        if (teams.length > 0) {
          const {id} = _.head(teams);
          this.teamId = id;
-         console.log(this.teamId);
          this.teamService.getDelegatesId(this.teamId).subscribe(delegates => {
-         console.log(delegates);
          this.usersGugo = _.xorBy(usersGugoArray, delegates, 'uid');
          this.teamGugo.delegates = delegates;
-         console.log(this.teamGugo.delegates);
-         console.log('result', this.usersGugo);
         });
        } else {
          this.usersGugo = usersGugoArray;
        }
+    });
+    });
+  }
+
+  getTeamDelegate() {
+    this.authService.getUser(this.authService.userAuth).subscribe(usr => {
+        this.userGugo = usr;
+        this.userGugo.teams.map(team => {
+      console.log(team);
+      this.teamService.getTeam(team).subscribe(tm => {
+        console.log(tm);
+        const user: User = {
+          uid: tm.manager,
+          email: tm.email,
+          displayName: tm.displayName,
+          employment: tm.employment,
+          phoneNumber: tm.phoneNumber,
+          photoURL: tm.photoURL
+        };
+        this.managers.push(user);
+        this.teamService.getDelegatesId(team).subscribe(del => {
+          console.log(del);
+          del.map(d => {
+            this.partners.push(d);
+          });
+          console.log(this.partners);
+          const uniq = _.uniqBy(this.partners, 'uid');
+          const withoutHost = _.reject(uniq, {uid: this.userGugo.uid});
+          this.partnersAll = withoutHost;
+        });
+      });
+      console.log(this.managers);
     });
     });
   }

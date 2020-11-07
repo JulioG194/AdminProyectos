@@ -107,15 +107,7 @@
         </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="
-              openEditActivities(
-                projectApp.id,
-                projectApp.startDate,
-                projectApp.endDate,
-                act.id,
-                act
-              )
-            ">
+                                <button mat-menu-item>
             <mat-icon>edit</mat-icon>
             <span>Editar actividad</span>
           </button>
@@ -127,13 +119,9 @@
                         </div>
 
                         <mat-accordion>
-                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [expanded]="act.id == newActivityId">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        <!-- <div class="position" style="text-transform: uppercase; font-weight: bold; color: rgb(68, 145, 84);">{{act.name}}</div>
-                            <div class="position1">{{allstartdates[i] | date : "dd/MM/y"}}</div>
-                            <div class="position1">{{allenddates[i] | date : "dd/MM//y"}}</div>
-                            <div class="position1">{{act.progress}}</div> -->
                                         <div class="state" [ngClass]="{
                   'badge-danger': act.status === 'Por Realizar',
                   'badge-info': act.status === 'Realizando',
@@ -161,19 +149,16 @@
                                     <h6>Tareas:</h6>
                                     <br />
                                     <table>
-                                        <!-- <tr class="title2">
-                                <h6 colspan="6" scope="rowgroup">Tareas</h6>
-                            </tr> -->
                                         <thead>
                                             <tr>
                                                 <th class="position21">Tarea</th>
-                                                <th class="position23">Encargado</th>
+                                                <th class="position23">Delegado</th>
                                                 <th class="position22">Fecha de inicio</th>
                                                 <th class="position22">Fecha de fin</th>
                                                 <th class="position23">% Avance</th>
                                                 <th class="position23"></th>
                                                 <th class="position24">
-                                                    <button (click)="openTask(act.id)" matTooltip="Agregar tarea">
+                                                    <button (click)="openNewTask(act.startDate, act.endDate, act.id)" matTooltip="Agregar tarea">
                       <mat-icon>add</mat-icon>
                     </button>
                                                 </th>
@@ -198,13 +183,18 @@
                                                 <td class="position22">
                                                     &nbsp; {{ task.endDate | date: 'dd/MM/y' }}
                                                 </td>
-                                                <td class="position23">{{ task.progress }}</td>
+                                                <td class="position23">
+                                                    <circle-progress [percent]="task.progress" [radius]="30" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Progreso'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'"
+                                                        [animation]="true" [animationDuration]="300">
+
+                                                    </circle-progress>
+                                                </td>
                                                 <td class="position23">
                                                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="btnTools2">
                       <mat-icon>build</mat-icon>
                     </button>
                                                     <mat-menu #menu="matMenu">
-                                                        <button mat-menu-item (click)="openEditTask(act.id, task.id, task)">
+                                                        <button mat-menu-item>
                         <mat-icon>edit</mat-icon>
                         <span>Editar tarea</span>
                       </button>
@@ -212,7 +202,7 @@
                         <mat-icon>delete</mat-icon>
                         <span>Eliminar tarea</span>
                       </button>
-                                                        <button mat-menu-item (click)="openEvidence(task)">
+                                                        <button mat-menu-item (click)="openEvidence()">
                         <mat-icon>folder_open</mat-icon>
                         <span>Evidencia</span>
                       </button>
@@ -236,7 +226,7 @@
                                         <br />
                                         <h6>Usted no tiene tareas dentro de esta actividad</h6>
                                         <br />
-                                        <button (click)="openNewTask(act.startDate, act.endDate)" matTooltip="Agregar tareas">
+                                        <button (click)="openNewTask(act.startDate, act.endDate, act.id)" matTooltip="Agregar tareas">
                                 <mat-icon>add</mat-icon>
                             </button>
                                         <br />

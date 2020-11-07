@@ -95,7 +95,49 @@ export class ProjectService {
           projectId,
           progress: 0,
           status: 'Por Realizar',
+          delegates: [],
       });
+    return id;
+  }
+
+   setTaskstoActivity(projectId: string, activityId: string, task: Task) {
+    const id = this.afs.createId();
+    const batch = this.afs.firestore.batch();
+
+    const taskRef = this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('activities')
+      .doc(activityId)
+      .collection('tasks')
+      .doc(id);
+
+    batch.set(taskRef.ref, {
+        ...task,
+          createdAt: this.serverTimeStamp,
+          id,
+          projectId,
+          progress: 0,
+          status: 'Por Realizar',
+    });
+
+    const activityRef = this.afs.collection('projects')
+      .doc(projectId)
+      .collection('activities')
+      .doc(activityId);
+
+    batch.update(activityRef.ref, {
+      delegates: firebase.firestore.FieldValue.arrayUnion(task.delegate)
+    });
+
+    const projectRef = this.afs.collection('projects')
+      .doc(projectId);
+
+    batch.update(projectRef.ref, {
+      delegates: firebase.firestore.FieldValue.arrayUnion(task.delegate)
+    });
+
+    return batch.commit();
   }
 
   deleteProject(projectId: string) {
@@ -237,10 +279,10 @@ export class ProjectService {
     return this.activityObservable;
   }
 
-  getActivities(project: Project) {
+  getActivities(projectId: string) {
     this.activities = this.afs
       .collection('projects')
-      .doc(project.id)
+      .doc(projectId)
       .collection('activities', (ref) => ref.orderBy('createdAt'))
       .snapshotChanges()
       .pipe(
@@ -297,26 +339,8 @@ export class ProjectService {
     return this.taskObs;
   }
 
- 
 
-  setTaskstoActivity(project: Project, activityId: string, task: Task) {
-    this.afs
-      .collection('projects')
-      .doc(project.id)
-      .collection('activities')
-      .doc(activityId)
-      .collection('tasks')
-      .add({
-        name: task.name,
-        progress: task.progress,
-        status: task.status,
-        startDate: task.startDate,
-        endDate: task.endDate,
-        createdAt: task.createdAt,
-        delegate: task.delegate,
-        idActivity: activityId,
-      });
-  }
+ 
 
   getProject(id: string) {
     this.projectDoc = this.afs.doc(`projects/${id}`);

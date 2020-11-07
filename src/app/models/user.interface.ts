@@ -14,4 +14,5 @@ export interface User {
   token?: string;
   company?: any;
   isActive?: boolean;
+  teams?: string[];
 }

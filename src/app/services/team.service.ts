@@ -225,6 +225,12 @@ export class TeamService {
     teamRef
       .set({
         manager: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        employment: user.employment,
+        phoneNumber: user.phoneNumber,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
       // .then((doc) => {
     const delegatesCollection = teamRef
@@ -234,6 +240,10 @@ export class TeamService {
 
     users.forEach((d) => {
           const ref = delegatesCollection.doc(d.uid);
+          const delegateRef = this.afs
+                        .collection('users')
+                        .doc(d.uid);
+
           batch.set(ref.ref, {
             displayName: d.displayName,
             email: d.email,
@@ -243,6 +253,10 @@ export class TeamService {
             phoneNumber: d.phoneNumber,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
+
+          batch.set(delegateRef.ref, {
+            teams: firebase.firestore.FieldValue.arrayUnion(user.uid)
+          }, {merge: true });
         });
 
     return batch.commit();
@@ -281,6 +295,9 @@ export class TeamService {
 
   deleteDelegate(teamId: string, delegateId: string) {
     this.afs.collection('teams').doc(teamId).collection('delegates').doc(delegateId).delete();
+    this.afs.collection('users').doc(delegateId).update({
+      teams: firebase.firestore.FieldValue.arrayRemove(teamId)
+    });
   }
 
 }

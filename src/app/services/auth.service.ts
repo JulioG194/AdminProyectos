@@ -215,7 +215,6 @@ export class AuthService {
   }
 
   saveUserOnStorage(user: User) {
-    // localStorage.clear();
     this.userAuth = user;
     localStorage.setItem('user', JSON.stringify(user));
   }

@@ -188,7 +188,7 @@ export class TaskComponent implements OnInit {
       });
       Swal.showLoading();
 
-      this._projectService.setTaskstoActivity(this.data.project, this.data.activity.id, this.task);
+      // this._projectService.setTaskstoActivity(this.data.project, this.data.activity.id, this.task);
 
       Swal.close();
 

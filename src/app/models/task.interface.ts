@@ -1,7 +1,7 @@
 import { User } from './user.interface';
 export interface Task {
     name: string;
-    status: string;
+    status?: string;
     delegate: User;
     startDate?: Date;
     endDate?: Date;
@@ -9,4 +9,5 @@ export interface Task {
     id?: string;
     createdAt?: any;
     idActivity?: string;
+    description?: string;
     }

@@ -237,7 +237,7 @@ aux7: number;
                                                                                                               this.delegates = delegates;
                                                                                                                         });
                   });
-                                                                                                            this._projectService.getActivities(this.projectApp).subscribe( activities => {
+                                                                                                            this._projectService.getActivities(this.projectApp.id).subscribe( activities => {
                                                                                                                   this.activitiesProject = activities;
                                                                                                                   this.allstartdates = [];
                                                                                                                   this.allenddates = [];
