@@ -47,14 +47,21 @@
 
 .container1 {
     width: 30%;
-    background: rgb(12, 27, 34);
+   /*  background: rgb(212, 212, 212); */
     padding: 10px;
+    height: 40%;
 }
 
 .container2 {
     width: 100%;
     padding: 10px;
 }
+
+.container3 {
+    
+    padding: 20px;
+}
+
 
 .container1 mat-divider {
     border-top-color: rgb(129, 129, 129);
@@ -263,7 +270,11 @@ mat-divider {
 }
 
 .example-card {
-    max-width: 400px;
+    padding: 2.5%;
+    margin: 0 auto;
+    height: 80%;
+    width: 85%;
+    /* background-color: rgb(212, 212, 212); */
 }
 
 .example-header-image {

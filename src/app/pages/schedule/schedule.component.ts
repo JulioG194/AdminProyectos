@@ -656,12 +656,19 @@ lables = [];
 
     questioner(question: string, img: string, progress: number) {
     // return `<div <h1>${question}</h1> </div>`;
-    return `<div class="card">
-  <img src="${img}" alt="John" style="width:25%">
-  <h1>${question}</h1>
-  <p class="title">CEO & Founder, Example</p>
-  <p>Porcentaje de avance</p>
-  <p>${progress}%</p>
+    return `<div class="card2" style="width:250px;height:300px;padding:10px; border-radius: 10px;">
+  <div style="display:flex; flex-direction: row; justify-content: space-between;">
+  <img src="${img}" alt="John" style="width:50px; height: 50px;border-radius: 30px;align=”middle”;">
+  <div style="display:flex; flex-direction: column">
+  <h1 style="font-size:20px;text-align:center;">${question}</h1>
+  <p class="title" style="font-size:15px;text-align:center">Employement</p>
+  </div>
+  </div>
+  <p style="font-size:15px">Avance: </p>
+  <p style="font-size:15px;font-weight: bold;">${progress}%</p>
+  <p style="font-size:15px;text-align:center">Fecha de inicio:</p>
+  <p style="font-size:15px;text-align:center">Fecha de fin:</p>
+  <p style="font-size:15px;text-align:center">Estado: </p>
   <a href="#"><i class="fa fa-dribbble"></i></a>
   <a href="#"><i class="fa fa-twitter"></i></a>
   <a href="#"><i class="fa fa-linkedin"></i></a>
