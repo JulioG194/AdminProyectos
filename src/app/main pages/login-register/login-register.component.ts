@@ -140,6 +140,7 @@ export class LoginRegisterComponent implements OnInit {
        }
     }  catch (error) {
       this.userRegister.manager = null;
+      console.log(error);
       Swal.close();
       Swal.fire({
         icon: 'error',
@@ -151,10 +152,13 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   async sucessRegister() {
+    try {
       const userReg = await this.authService.register(this.userRegister);
       const { uid } = userReg;
       delete this.userRegister.password;
       this.userRegister.uid = uid;
+      this.userRegister.tokens = [];
+      this.userRegister.assignedTasks = 0;
       this.authService.createUser(this.userRegister, uid);
       await this.authService.verifyEmail();
       Swal.fire({
@@ -167,6 +171,16 @@ export class LoginRegisterComponent implements OnInit {
       });
       this.registerForm.reset();
       this.section = true;
+    } catch (error) {
+      console.log(error);
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al autenticar',
+        text: this.modalError(error),
+        confirmButtonText: 'Listo!'
+      });
+    }
   }
 
   failedRegister() {
@@ -206,10 +220,30 @@ export class LoginRegisterComponent implements OnInit {
           const loginUser = userObs;
           this.authService.saveUserOnStorage(loginUser);
           const token = localStorage.getItem('fcm');
-          this.authService.setTokenUser(loginUser, token);
+          console.log(token);
+          if (token) {
+            this.authService.setTokensUser(loginUser, token);
+          }
         });
         Swal.close();
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+        });
+        setTimeout(() => {
         this.router.navigateByUrl('/dashboard');
+       }, 1200);
+        Toast.fire({
+        icon: 'success',
+        title: 'Ingreso Exitoso'
+        });
       } else {
         Swal.fire({
           icon: 'info',

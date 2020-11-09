@@ -117,7 +117,7 @@ export class ProjectComponent implements OnInit {
   activitiesProject: Activity[] = [];
   differenceTime: number;
   differenceDays: number;
-
+  exp: boolean;
   userApp: User = {
     displayName: '',
     email: '',
@@ -171,7 +171,7 @@ export class ProjectComponent implements OnInit {
       this.projectApp.endDate = new Date(
         this.projectApp.endDate['seconds'] * 1000
       );
-      this.panelOpenState = false;
+      // this.panelOpenState = false;
       this.isLoadingProject = false;
       this.projectService
         .getActivities(this.projectApp.id)
@@ -181,14 +181,15 @@ export class ProjectComponent implements OnInit {
                             activity.endDate = new Date(activity.endDate['seconds'] * 1000);
                           });
           this.activitiesProject = activities;
-          this.panelOpenState = false;
+          // this.panelOpenState = false;
+          // this.exp = true;
           console.log(this.activitiesProject);
           this.isLoadingActivities = false;
           for (let i = 0; i < this.activitiesProject.length; i++) {
             this.projectService
               .getTasks(this.projectApp.id, this.activitiesProject[i].id)
               .subscribe((tasks) => {
-                this.panelOpenState = false;
+                this.panelOpenState = true;
                 this.activitiesProject[i].tasks = tasks;
                 console.log(this.activitiesProject[i].tasks);
                 for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
@@ -198,12 +199,17 @@ export class ProjectComponent implements OnInit {
                   this.activitiesProject[i].tasks[j].endDate = new Date(
                     this.activitiesProject[i].tasks[j].endDate['seconds'] * 1000
                   ); }
-                this.panelOpenState = false;
+                // this.panelOpenState = true;
+                // this.exp = true;
               }
               );
           }
         });
     });
+  }
+
+  openPanel(activityId: string) {
+    this.newActivityId = activityId;
   }
 
     getDelegates() {

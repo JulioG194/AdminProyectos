@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
 import { ProjectService } from '../../services/project.service';
@@ -15,13 +15,15 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from '../projects/projects.component';
 import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
+import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   post = true;
   show = false;
@@ -48,6 +50,8 @@ export class DashboardComponent implements OnInit {
   barData: number[] = [];
   barDataTask: number[] = [];
 
+  subscriptionGetProjects: Subscription;
+  subscriptionGetActivities: Subscription;
   isLoading = true;
 
   constructor(
@@ -256,7 +260,7 @@ export class DashboardComponent implements OnInit {
 
    getProjects() {
     this.userGugo = this.authService.userAuth;
-    this.projectService.getProjectByOwner(this.userGugo)
+    this.subscriptionGetProjects = this.projectService.getProjectByOwner(this.userGugo).pipe(untilDestroyed(this))
                         .subscribe(projects => {
                           projects.map(project => {
                             project.startDate = new Date(project.startDate['seconds'] * 1000);
@@ -295,7 +299,7 @@ export class DashboardComponent implements OnInit {
                           this.isLoading = false;
 
                           this.projectsApp.map(proj => {
-                            this.projectService.getActivities(proj.id).subscribe(acts => {
+                            this.subscriptionGetActivities = this.projectService.getActivities(proj.id).pipe(untilDestroyed(this)).subscribe(acts => {
                               this.activitiesNumber += acts.length;
                               acts.map(act => {
                                 this.activitiesStatistics.push(act);
@@ -309,7 +313,7 @@ export class DashboardComponent implements OnInit {
                                     } else if (act.progress === 0) {
                                     activitiesOut++;
                                     }
-                                this.projectService.getTasks(proj.id, act.id).subscribe(tsks => {
+                                this.projectService.getTasks(proj.id, act.id).pipe(untilDestroyed(this)).subscribe(tsks => {
                                   this.tasksNumber += tsks.length;
                                   tsks.map(tsk => {
                                     this.tasksStatistics.push(tsk);
@@ -351,7 +355,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getActivities(projectId: string) {
-  this.projectService.getActivities(projectId).subscribe(activities => {
+  this.projectService.getActivities(projectId).pipe(untilDestroyed(this)).subscribe(activities => {
                           activities.map(activity => {
                             activity.startDate = new Date(activity.startDate['seconds'] * 1000);
                             activity.endDate = new Date(activity.endDate['seconds'] * 1000);
@@ -369,7 +373,7 @@ export class DashboardComponent implements OnInit {
 
 
   getTasks(projectId: string, activityId: string) {
-  this.projectService.getTasks(projectId, activityId).subscribe(tasks => {
+  this.projectService.getTasks(projectId, activityId).pipe(untilDestroyed(this)).subscribe(tasks => {
                           tasks.map(task => {
                             task.startDate = new Date(task.startDate['seconds'] * 1000);
                             task.endDate = new Date(task.endDate['seconds'] * 1000);
@@ -387,6 +391,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+  }
+
+  ngOnDestroy() {
+      // this.subscriptionGetProjects.unsubscribe();
+      // this.subscriptionGetActivities.unsubscribe();
   }
 
 

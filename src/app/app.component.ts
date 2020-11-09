@@ -26,15 +26,5 @@ export class AppComponent implements OnInit {
       const { body, title } = notification;
       this.snackBar.open(body, 'OK', { duration: 2000 });
     });
-    // this.msgService.receiveMessage();
-    // this.message = this.msgService.currentMessage;
-    // if (this.message) {
-    //   console.log(true);
-    // }
-    // if (this.message) {
-    //   this.snackBar.open(this.message, {
-
-    //   })
-    // }
   }
 }

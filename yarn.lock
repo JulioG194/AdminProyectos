@@ -1356,6 +1356,11 @@
   dependencies:
     mkdirp "^1.0.4"
 
+"@orchestrator/ngx-until-destroyed@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@orchestrator/ngx-until-destroyed/-/ngx-until-destroyed-1.1.1.tgz#4dc7c7011a0527985606b4cd98186ab582cfddd8"
+  integrity sha512-h7CrjOTo4OoNOpanEb+BoALu3NbMnIfi+/cA9PNmJNGuMAUU10vVuiohjEM+Q7PIa0ZSf5Aq91EWbSunxjqNDg==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"

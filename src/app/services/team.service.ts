@@ -13,6 +13,7 @@ import { User } from '../models/user.interface';
 // tslint:disable-next-line:import-spacing
 import Swal from 'sweetalert2';
 import * as firebase from 'firebase/app';
+import { Task } from '../models/task.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,7 @@ export class TeamService {
   usersToChoose: User[];
   usersToChooseS: string[];
   usersCompany: Observable<User[]>;
+  tasksDelegate: Observable<Task[]>;
 
   constructor(
     private http: HttpClient,
@@ -165,25 +167,7 @@ export class TeamService {
   }
 
   addDelegates(team: Team, users: User[]) {
-    /* let userAux: User = {
-      displayName: '',
-      uid: '',
-      email: '',
-      photoURL: '',
-      employment: '',
-      createdAt: null,
-      phoneNumber:  ''
-    }; */
     users.forEach((user) => {
-      /* userAux = {
-          name: user.name,
-          id: user.id,
-          email: user.email,
-          photo: user.photo,
-          employment: user.employment,
-          createdAt: user.createdAt,
-          phone_number: user.phone_number
-      }; */
       this.afs
         .collection('teams')
         .doc(team.id)
@@ -254,27 +238,12 @@ export class TeamService {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
 
-          batch.set(delegateRef.ref, {
+          batch.update(delegateRef.ref, {
             teams: firebase.firestore.FieldValue.arrayUnion(user.uid)
-          }, {merge: true });
+          });
         });
 
     return batch.commit();
-      // })
-      // .then((result) => {
-      //   Swal.fire({
-      //     allowOutsideClick: false,
-      //     icon: 'success',
-      //     title: 'Guardado con exito',
-      //   });
-      // })
-      // .catch((err) => {
-      //   Swal.fire({
-      //     icon: 'error',
-      //     title: 'Error al guardar',
-      //     text: err,
-      //   });
-      // });
   }
 
   getUsersCompany(id: string) {
@@ -298,6 +267,25 @@ export class TeamService {
     this.afs.collection('users').doc(delegateId).update({
       teams: firebase.firestore.FieldValue.arrayRemove(teamId)
     });
+  }
+
+  getDelegateInTask(uid: string, projectId: string, activityId: string) {
+    this.tasksDelegate = this.afs.collection('projects')
+                          .doc(projectId)
+                          .collection('activities')
+                          .doc(activityId)
+                          .collection('tasks', (ref) => ref.where('delegate.uid', '==', uid))
+    .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as Task;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.tasksDelegate;
   }
 
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
 
@@ -35,12 +35,13 @@ export class AuthService {
   windowRef: any;
 
   verificationCode: string;
+  user$: Observable<User>;
 
   constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
     this.loadUsers(afs);
-    this.users.subscribe((users) => {
-      this.usersAuth = users;
-    });
+    // this.users.subscribe((users) => {
+    //   this.usersAuth = users;
+    // });
     this.loadStorage();
   }
 
@@ -165,6 +166,13 @@ export class AuthService {
     return this.user;
   }
 
+  getUserOnce(uid: string) {
+    return this.user$ = this.afs.doc<User>(`users/${uid}`)
+  .valueChanges().pipe(
+    take(1) // Here you can limit to only emit once, using the take operator
+  );
+}
+
   getUserById(uid: string) {
     this.userDoc = this.afs.collection('users').doc(uid);
     this.user = this.userDoc.snapshotChanges().pipe(
@@ -191,10 +199,10 @@ export class AuthService {
       photoURL: user.photoURL,
     });
   }
-  setTokenUser(user: User, token: string) {
+  setTokensUser(user: User, token: string) {
     const { uid } = user;
     this.afs.collection('users').doc(uid).update({
-      token,
+      tokens: firebase.firestore.FieldValue.arrayUnion(token),
     });
   }
 

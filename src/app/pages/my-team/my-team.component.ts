@@ -8,6 +8,9 @@ import Swal from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import * as _ from 'lodash';
+import { last, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { TasksComponent } from '../tasks/tasks.component';
 
 @Component({
   selector: 'app-my-team',
@@ -27,6 +30,8 @@ export class MyTeamComponent implements OnInit {
   managers: User[] = [];
   partners: User[] = [];
   partnersAll: User[] = [];
+  projectsTeam: Project[] = [];
+  numbersTasks = 0;
 
   userGugo: User = {
     displayName: '',
@@ -72,8 +77,11 @@ delegateAux1: User = {
   email: '',
   uid: ''
 };
+subscrp: Subscription;
 
 teamId: string;
+getDelTsk: Subscription;
+numberT: number;
 
 
   constructor( private teamService: TeamService,
@@ -155,10 +163,12 @@ updateTeam() {
   this.post = !this.post;
 }
 
+
   ngOnInit() {
     this.userGugo = this.authService.userAuth;
     if (this.userGugo.manager) {
         this.getLocalCompany();
+        this.getProjectsTeam();
     } else {
       this.getTeamDelegate();
     }
@@ -180,6 +190,14 @@ updateTeam() {
          this.usersGugo = usersGugoArray;
        }
     });
+    });
+  }
+
+  getProjectsTeam() {
+    this.userGugo = this.authService.userAuth;
+    this.projectService.getProjectByOwner(this.userGugo).subscribe(projs => {
+      console.log(projs);
+      this.projectsTeam = projs;
     });
   }
 
@@ -215,6 +233,23 @@ updateTeam() {
     });
   }
 
+  canIDeleteDelegate(delegateUid: string) {
+   this.getDelTsk = this.projectService.getProjectByOwner(this.userGugo)
+        .subscribe(projs => {
+          projs.map(proj => {
+            this.projectService.getActivities(proj.id).subscribe(acts => {
+              acts.map(act => {
+               this.teamService.getDelegateInTask(delegateUid, proj.id, act.id).subscribe(tasks => {
+                  if (tasks.length > 0) {
+                      this.numbersTasks++;
+                  }
+                });
+              });
+            });
+          });
+        });
+  }
+
   removeDelegates(delegateId: string) {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -228,8 +263,20 @@ updateTeam() {
       showCloseButton: true,
     }).then((result) => {
       if (result.value) {
-        this.teamService.deleteDelegate(this.teamId, delegateId);
-        Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+       this.authService.getUserOnce(delegateId).pipe(take(1)).
+        subscribe(user => {
+          console.log(user);
+          if (user.assignedTasks > 0) {
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'warning',
+            text: 'No se puede borrar al delegado, tiene tareas en proceso asignadas'
+            });
+          } else {
+            this.teamService.deleteDelegate(this.teamId, delegateId);
+            Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+          }
+        });
       }
     });
   }
