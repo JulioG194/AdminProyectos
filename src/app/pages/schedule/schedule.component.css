@@ -82,3 +82,16 @@ tr:nth-child(even) {
 #chartDiv text {
     fill: red !important;
 }
+
+
+.gantt {
+    width: 100%;
+    background: white;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.card2 {
+    width: 250px;
+    height: 250px;
+}

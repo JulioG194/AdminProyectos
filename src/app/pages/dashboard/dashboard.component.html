@@ -16,14 +16,12 @@
                     <div class="view1">
                         <div>
                             <mat-card class="example-card">
-                                <mat-card-header>
-                                    <div mat-card-avatar class="example-header-image"></div>
-                                </mat-card-header>
+                                
                                 <mat-card-content>
-                                    <p style="font-size: 30px; text-align: center;">
+                                    <p style="font-size: 20px; text-align: center;">
                                         Total Proyectos
                                     </p>
-                                    <p style="font-size: 50px; text-align: center;">
+                                    <p style="font-size: 30px; text-align: center;">
                                         {{projectsApp.length}}
                                     </p>
                                 </mat-card-content>
@@ -33,14 +31,12 @@
                     <div class="view1">
                         <div>
                             <mat-card class="example-card">
-                                <mat-card-header>
-                                    <div mat-card-avatar class="example-header-image"></div>
-                                </mat-card-header>
+                                
                                 <mat-card-content>
-                                    <p style="font-size: 30px; text-align: center;">
+                                    <p style="font-size: 20px; text-align: center;">
                                         Total Actividades
                                     </p>
-                                    <p style="font-size: 50px; text-align: center;">
+                                    <p style="font-size: 30px; text-align: center;">
                                         {{activitiesNumber}}
                                     </p>
                                 </mat-card-content>
@@ -50,14 +46,12 @@
                     <div class="view1">
                         <div>
                             <mat-card class="example-card">
-                                <mat-card-header>
-                                    <div mat-card-avatar class="example-header-image"></div>
-                                </mat-card-header>
+                                
                                 <mat-card-content>
-                                    <p style="font-size: 30px; text-align: center;">
+                                    <p style="font-size: 20px; text-align: center;">
                                         Total Tareas
                                     </p>
-                                    <p style="font-size: 50px; text-align: center;">
+                                    <p style="font-size: 30px; text-align: center;">
                                         {{tasksNumber}}
                                     </p>
                                 </mat-card-content>
@@ -124,18 +118,12 @@
                 <br>
                 <div class="align2">
                     <div class="container1">
-                        <h6>Ultimos movimientos</h6>
+                        <!-- <h6>Proyecto</h6>
                         <mat-divider></mat-divider>
-                        <br>
-                        <mat-form-field style="background-color: white;width:300px;">
-                            <mat-select placeholder="Seleccione el proyecto" (selectionChange)="projectsChangeAction(project)" name="project" [(ngModel)]="project">
+                        <br> -->
+                        <mat-form-field style="background-color: floralwhite; padding: 10px; width: 100%;">
+                            <mat-select placeholder="Seleccione un proyecto"  (selectionChange)="projectsChangeAction(project)" name="project" [(ngModel)]="project">
                                 <mat-option *ngFor="let project of projectsApp" [matTooltip]="project.name" [value]="project.id">{{ project.name }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field style="background-color: white; width:300px;">
-                            <mat-select placeholder="Seleccione la actividad" (selectionChange)="activitiesChangeAction(activity)" name="activity" [(ngModel)]="activity">
-                                <mat-option *ngFor="let activity of activitiesProjectsApp" [value]="activity.id">{{ activity.name }}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -149,9 +137,15 @@
                 </div>
                 <br>
                 <div class="align2">
-                    <div class="container1" style="width: 430px;">
-                        <h6>Ultimos movimientos</h6>
+                    <div class="container1">
+                        <!-- <h6>Actividades</h6>
                         <mat-divider></mat-divider>
+                        <br> -->
+                        <mat-form-field style="background-color: floralwhite; padding: 10px; width: 100%;">
+                            <mat-select placeholder="Seleccione la actividad" (selectionChange)="activitiesChangeAction(activity)" name="activity" [(ngModel)]="activity">
+                                <mat-option *ngFor="let activity of activitiesProjectsApp" [value]="activity.id">{{ activity.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <br>
                     </div> &nbsp;&nbsp;
 

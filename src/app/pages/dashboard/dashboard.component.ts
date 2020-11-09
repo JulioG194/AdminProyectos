@@ -87,9 +87,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public pieChartColors = [
     {
       backgroundColor: [
-        'rgba(255,0,0,0.8)',
-        'rgba(0,255,0,0.8)',
-        'rgba(0,0,255,0.8)',
+        'rgb(255, 0, 0)',
+        'rgb(50, 205, 50)',
+        'rgb(128, 128, 128)',
       ],
     },
   ];
@@ -122,9 +122,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public pieChartColorsAct = [
     {
       backgroundColor: [
-        'rgba(255,0,0,0.8)',
-        'rgba(0,255,0,0.8)',
-        'rgba(0,0,255,0.8)',
+        'rgb(255, 0, 0)',
+        'rgb(50, 205, 50)',
+        'rgb(128, 128, 128)',
       ],
     },
   ];
@@ -157,9 +157,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public pieChartColorsTsk = [
     {
       backgroundColor: [
-        'rgba(255,0,0,0.8)',
-        'rgba(0,255,0,0.8)',
-        'rgba(0,0,255,0.8)',
+        'rgb(255, 0, 0)',
+        'rgb(50, 205, 50)',
+        'rgb(128, 128, 128)',
       ],
     },
   ];
@@ -204,8 +204,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public barChartColors: Color[] = [
     {
       backgroundColor: [
-        'yellow', 'purple', 'grey', 'black', 'blue', 'green', 'red', 'magenta',
-        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'black', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
+        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'white', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
+        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'white', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
       ],
     },
   ];
@@ -251,8 +254,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public barChartColorsTask: Color[] = [
     {
       backgroundColor: [
-        'yellow', 'purple', 'grey', 'black', 'blue', 'green', 'red', 'magenta',
-        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'black', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
+        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'white', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
+        'blue', 'green', 'red', 'yellow', 'purple', 'grey', 'white', 'magenta',
+        'yellow', 'purple', 'grey', 'white', 'blue', 'green', 'red', 'magenta',
       ],
     },
   ];
