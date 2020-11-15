@@ -55,7 +55,6 @@ export class EvidenceService {
   uploadFilesFirebase(files: Evidence[], uid: User, tid: string) {
     const storageRef = firebase.storage().ref();
     let url: string;
-
     for (const item of files) {
       item.isUploading = true;
       if (item.progress >= 100) {

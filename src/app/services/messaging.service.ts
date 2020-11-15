@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
 import { mergeMapTo } from 'rxjs/operators';
 
@@ -9,10 +10,27 @@ import { mergeMapTo } from 'rxjs/operators';
 export class MessagingService {
   currentMessage = new BehaviorSubject(null);
   notif: any;
-  constructor(private afMessaging: AngularFireMessaging) {
+  constructor(private afMessaging: AngularFireMessaging,
+              public snackBar: MatSnackBar ) {
     // this.afMessaging.messaging.subscribe((msging) => {
     //   msging.onMessage = msging.onMessage.bind(msging);
     // });
+  }
+
+  config: MatSnackBarConfig = {
+    duration: 3000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top'
+  }
+
+  success(msg: string) {
+    this.config['panelClass'] = ['success', 'notification']
+    this.snackBar.open(msg, '', this.config );
+  }
+
+  error(msg: string) {
+    this.config['panelClass'] = ['error', 'notification']
+    this.snackBar.open(msg, '', this.config );
   }
 
   requestPermission() {
@@ -20,7 +38,6 @@ export class MessagingService {
       .pipe(mergeMapTo(this.afMessaging.tokenChanges))
       .subscribe(
         (token) => {
-          console.log('Permission granted! Save to the server!', token);
           localStorage.setItem('fcm', token);
         },
         (error) => {

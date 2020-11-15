@@ -6,8 +6,9 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
 
@@ -36,12 +37,13 @@ export class AuthService {
 
   verificationCode: string;
   user$: Observable<User>;
+  // profileUrl: Observable<string | null>;
+  profileUrl: string;
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
+  constructor(private afs: AngularFirestore,
+              private auth: AngularFireAuth,
+              private storage: AngularFireStorage) {
     this.loadUsers(afs);
-    // this.users.subscribe((users) => {
-    //   this.usersAuth = users;
-    // });
     this.loadStorage();
   }
 
@@ -99,7 +101,7 @@ export class AuthService {
 
   async resetPassword(emailPasswd: any) {
     const actionCodeSettings = {
-      url: `http://localhost:4200/#/?email=${emailPasswd}`,
+      url: `http://localhost:4200/?email=${emailPasswd}`,
       handleCodeInApp: true,
     };
     try {
@@ -289,5 +291,17 @@ export class AuthService {
         })
       );
     return this.managers;
+  }
+
+  uploadProfile(file: any, uid: string, ) {
+    const filePath = `users/${uid}`;
+    const fileRef = this.storage.ref(filePath);
+    this.storage.upload(filePath, file);
+    const downloadURL = fileRef.getDownloadURL();
+    // fileRef.getDownloadURL().subscribe(
+    //   url => this.profileUrl = url
+    // );
+    // return this.profileUrl;
+    return downloadURL;
   }
 }

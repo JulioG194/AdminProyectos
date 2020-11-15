@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.interface';
@@ -25,6 +25,9 @@ import { MatFormField, MatInput } from '@angular/material';
 import { NewActivityModalComponent } from '../../components/newActivity/newActivity-modal.component';
 import { NewTaskModalComponent } from '../../components/newTask/newTask-modal.component';
 import { OpenEvidenceModalComponent } from '../../components/openEvidence/openEvidence-modal.component';
+import { EditActivityModalComponent } from '../../components/editActivity/editActivity-modal.component';
+import { EditTaskModalComponent } from '../../components/editTask/editTask-modal.component';
+import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
 
 export interface DialogData1 {
   project: Project;
@@ -54,7 +57,7 @@ export interface DialogData2 {
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css'],
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
   post = true;
   post1 = true;
@@ -77,8 +80,6 @@ export class ProjectComponent implements OnInit {
   validate = true;
 
   panelOpenState = false;
-
-  // delegates: string[]=['Boots', 'Yeye','Pedro', 'Juli','Alexa'];
 
   projectApp: Project = {
     name: '',
@@ -161,8 +162,13 @@ export class ProjectComponent implements OnInit {
     this.getDelegates();
   }
 
+  ngOnDestroy() {
+      // this.subscriptionGetProjects.unsubscribe();
+      // this.subscriptionGetActivities.unsubscribe();
+  }
+
   getProject(projectId: string) {
-      this.projectService.getProject(projectId).subscribe((project) => {
+      this.projectService.getProject(projectId).pipe(untilDestroyed(this)).subscribe((project) => {
       this.isLoading = false;
       this.projectApp = project;
       this.projectApp.startDate = new Date(
@@ -175,23 +181,21 @@ export class ProjectComponent implements OnInit {
       this.isLoadingProject = false;
       this.projectService
         .getActivities(this.projectApp.id)
+        .pipe(untilDestroyed(this))
         .subscribe((activities) => {
           activities.map(activity => {
                             activity.startDate = new Date(activity.startDate['seconds'] * 1000);
                             activity.endDate = new Date(activity.endDate['seconds'] * 1000);
                           });
           this.activitiesProject = activities;
-          // this.panelOpenState = false;
-          // this.exp = true;
-          console.log(this.activitiesProject);
           this.isLoadingActivities = false;
           for (let i = 0; i < this.activitiesProject.length; i++) {
             this.projectService
               .getTasks(this.projectApp.id, this.activitiesProject[i].id)
+              .pipe(untilDestroyed(this))
               .subscribe((tasks) => {
                 this.panelOpenState = true;
                 this.activitiesProject[i].tasks = tasks;
-                console.log(this.activitiesProject[i].tasks);
                 for (let j = 0; j < this.activitiesProject[i].tasks.length; j++) {
                   this.activitiesProject[i].tasks[j].startDate = new Date(
                     this.activitiesProject[i].tasks[j].startDate['seconds'] * 1000
@@ -212,11 +216,10 @@ export class ProjectComponent implements OnInit {
     this.newActivityId = activityId;
   }
 
-    getDelegates() {
+  getDelegates() {
     const {uid} = this.authService.userAuth;
-    this.teamService.getDelegatesId(uid).subscribe(delegates => {
+    this.teamService.getDelegatesId(uid).pipe(untilDestroyed(this)).subscribe(delegates => {
       this.delegates = delegates;
-      console.log(this.delegates);
     });
   }
 
@@ -256,6 +259,83 @@ export class ProjectComponent implements OnInit {
         });
   }
 
+  openEditActivity(activity: Activity) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    activity,
+    startDate: this.projectApp.startDate,
+    endDate: this.projectApp.endDate,
+  };
+
+  const dialogRef = this.dialog.open(EditActivityModalComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(
+        data => {
+          console.log('Dialog output:', data);
+          // const newProject: Project = {
+          //   name: data.name as string,
+          //   client: data.client as string,
+          //   description: data.description as string,
+          //   startDate: data.startDate as Date,
+          //   endDate: data.endDate as Date,
+          //   type: data.typeProj as string,
+          //   ownerId: this.authService.userAuth.uid,
+          // };
+          // if (newProject.name) {
+          //   this.projectService.addProject(newProject);
+          //   Swal.fire({
+          //   allowOutsideClick: false,
+          //   icon: 'success',
+          //   title: 'Proyecto agregado con exito'
+          // });
+          // }
+        },
+  );
+  }
+
+  openEditTask(task: Task, startDateAct: Date, endDateAct: Date, activityId: string) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    task,
+    startDate: startDateAct,
+    endDate: endDateAct,
+    delegates: this.delegates
+  };
+
+  const dialogRef = this.dialog.open(EditTaskModalComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(
+        data => {
+          console.log('Dialog output:', data);
+          // const newProject: Project = {
+          //   name: data.name as string,
+          //   client: data.client as string,
+          //   description: data.description as string,
+          //   startDate: data.startDate as Date,
+          //   endDate: data.endDate as Date,
+          //   type: data.typeProj as string,
+          //   ownerId: this.authService.userAuth.uid,
+          // };
+          // if (newProject.name) {
+          //   this.projectService.addProject(newProject);
+          //   Swal.fire({
+          //   allowOutsideClick: false,
+          //   icon: 'success',
+          //   title: 'Proyecto agregado con exito'
+          // });
+          // }
+        },
+  );
+  }
+
   openNewTask(startDateAct: Date, endDateAct: Date, activityId: string) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
@@ -283,7 +363,7 @@ export class ProjectComponent implements OnInit {
           if (newTask.name) {
             await this.projectService.setTaskstoActivity(this.projectApp.id, activityId, newTask);
             this.newActivityId = activityId;
-            // this.panelOpenState = false;
+            // this.panelOpenState = fals
             Swal.fire({
               allowOutsideClick: false,
               text: 'Tarea Agregada con Exito...Recargando Tabla...' ,
@@ -345,8 +425,10 @@ export class ProjectComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar la actividad!',
     }).then((result) => {
       if (result.value) {
-        this.projectService.deleteActivity(this.projectApp.id, id);
-        Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
+        this.projectService.deleteActivityFn(this.projectApp.id, id).subscribe(data => {
+          console.log(data);
+          Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
+        });
       }
     });
   }
@@ -426,15 +508,15 @@ export class ProjectComponent implements OnInit {
       });
   }
 
-  getTask(id: string) {
-    this.post5 = false;
-    this.projectService
-      .getTask(this.projectApp, this.activityProject, id)
-      .subscribe((task) => {
-        this.taskActivity = task;
-        console.log(this.taskActivity);
-      });
-  }
+  // getTask(id: string) {
+  //   this.post5 = false;
+  //   this.projectService
+  //     .getTask(this.projectApp, this.activityProject, id)
+  //     .subscribe((task) => {
+  //       this.taskActivity = task;
+  //       console.log(this.taskActivity);
+  //     });
+  // }
 
   // openEvidence(taskAux: Task): void {
   //   // tslint:disable-next-line: no-use-before-declare

@@ -112,7 +112,7 @@ export class LoginRegisterComponent implements OnInit {
               address: snap.address,
               ref: snap.ref
             };
-              await this.sucessRegister();
+              await this.sucessRegister(role);
             } else {
               this.failedRegister();
             }
@@ -129,14 +129,14 @@ export class LoginRegisterComponent implements OnInit {
               address: snap.address,
               ref: snap.ref
             };
-            await this.sucessRegister();
+            await this.sucessRegister(role);
             } else {
               this.failedRegister();
             }
           });
        }
        if ( company === 'Personal' ) {
-           await this.sucessRegister();
+           await this.sucessRegister(role);
        }
     }  catch (error) {
       this.userRegister.manager = null;
@@ -151,14 +151,16 @@ export class LoginRegisterComponent implements OnInit {
     }
   }
 
-  async sucessRegister() {
+  async sucessRegister(role: any) {
     try {
       const userReg = await this.authService.register(this.userRegister);
       const { uid } = userReg;
       delete this.userRegister.password;
       this.userRegister.uid = uid;
       this.userRegister.tokens = [];
-      this.userRegister.assignedTasks = 0;
+      if (role === 'false') {
+        this.userRegister.assignedTasks = 0;
+      }
       this.authService.createUser(this.userRegister, uid);
       await this.authService.verifyEmail();
       Swal.fire({

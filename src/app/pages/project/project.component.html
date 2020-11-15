@@ -11,9 +11,9 @@
         <button class="btn btn-warning" (click)="backProjects()" matTooltip="Atrás">
       <mat-icon style="width: 20px; height: 10px">keyboard_backspace</mat-icon>
     </button>
-        <button class="btn btn-warning" (click)="editProject()" matTooltip="Editar">
+        <!-- <button class="btn btn-warning" (click)="editProject()" matTooltip="Editar">
       <mat-icon style="width: 20px; height: 10px">edit</mat-icon>
-    </button>
+    </button> -->
     </div>
 
     <div>
@@ -107,7 +107,7 @@
         </button>
 
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item>
+                                <button mat-menu-item (click)="openEditActivity(act)">
             <mat-icon>edit</mat-icon>
             <span>Editar actividad</span>
           </button>
@@ -194,7 +194,7 @@
                       <mat-icon>build</mat-icon>
                     </button>
                                                     <mat-menu #menu="matMenu">
-                                                        <button mat-menu-item>
+                                                        <button mat-menu-item (click)="openEditTask(task, act.startDate, act.endDate, act.id)">
                         <mat-icon>edit</mat-icon>
                         <span>Editar tarea</span>
                       </button>

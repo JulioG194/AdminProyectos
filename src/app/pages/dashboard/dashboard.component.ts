@@ -12,7 +12,6 @@ import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogData } from '../projects/projects.component';
 import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -423,8 +422,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 export class UserGuideModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<UserGuideModalComponent>,
-
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
   ngOnInit() {}

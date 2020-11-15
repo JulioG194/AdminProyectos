@@ -6,9 +6,9 @@
     <br />
     <img [src]="userApp.photoURL" alt="" />
     <div class="addPhoto">
-        <button class="badge-secondary">
-      <mat-icon>add_a_photo</mat-icon>
-    </button>
+        <input type="file" id="file" (change)="uploadFile($event)">
+        <div>{{ uploadPercent | async }}</div>
+        <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
     </div>
 </div>
 

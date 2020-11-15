@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   notification;
   constructor(
     private msgService: MessagingService,
-    private snackBar: MatSnackBar,
     private afMessaging: AngularFireMessaging
   ) {}
   title = 'AdminProyectos';
@@ -24,7 +23,8 @@ export class AppComponent implements OnInit {
       console.log('new message received. ', payload);
       const { notification } = payload;
       const { body, title } = notification;
-      this.snackBar.open(body, 'OK', { duration: 2000 });
+      // this.snackBar.open(body, 'OK', { duration: 2000 });
+      this.msgService.success(body);
     });
   }
 }

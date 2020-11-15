@@ -13,7 +13,14 @@ import { User } from '../models/user.interface';
 import { Activity } from '../models/activity.interface';
 import { Task } from '../models/task.interface';
 import * as firebase from 'firebase/app';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
+export interface TaskDelegate {
+  project?: any;
+  activity?: any;
+  manager?: any;
+  taskId?: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -36,6 +43,10 @@ export class ProjectService {
   activitiesObs: Observable<Activity[]>;
   activityObs: Observable<Activity>;
 
+  taskDelegateDoc: AngularFirestoreDocument<TaskDelegate>;
+  taskDelegatesObs: Observable<TaskDelegate[]>;
+  taskDelegateObs: Observable<TaskDelegate>;
+
   activities: Observable<Activity[]>;
   tasks: Observable<Task[]>;
   activityObservable: Observable<Activity[]>;
@@ -47,8 +58,10 @@ export class ProjectService {
   projectId: string;
 
   serverTimeStamp: any;
+  data$: Observable<any>;
+  dataDelete$: Observable<any>;
 
-  constructor(private http: HttpClient, private afs: AngularFirestore) {
+  constructor(private http: HttpClient, private afs: AngularFirestore, private fns: AngularFireFunctions) {
     this.loadProjects(afs);
     this.projectsObs.subscribe((projects) => {
       this.projects = projects;
@@ -163,6 +176,13 @@ export class ProjectService {
       .collection('activities')
       .doc(activityId)
       .delete();
+  }
+
+  deleteActivityFn(projectId: string, activityId: string) {
+    const callable = this.fns.httpsCallable('onDeleteActivity');
+    this.dataDelete$ = callable({ projectId, activityId });
+    // Imprimir el resultado que puedes enviar desde el functions
+    return this.dataDelete$;
   }
 
   deleteTask(projectId: string, activityId: string, taskId: string) {
@@ -317,14 +337,14 @@ export class ProjectService {
     return this.tasks;
   }
 
-  getTask(project: Project, activity: Activity, id: string) {
+  getTask(projectId: string, activityId: string, taskId: string) {
     this.taskDoc = this.afs
       .collection('projects')
-      .doc(project.id)
+      .doc(projectId)
       .collection('activities')
-      .doc(activity.id)
+      .doc(activityId)
       .collection('tasks')
-      .doc(id);
+      .doc(taskId);
     this.taskObs = this.taskDoc.snapshotChanges().pipe(
       map((actions) => {
         if (actions.payload.exists === false) {
@@ -340,7 +360,22 @@ export class ProjectService {
   }
 
 
- 
+ getTasksDelegates(uid: string, ) {
+    this.taskDelegatesObs = this.afs
+      .collection('users')
+      .doc(uid)
+      .collection('tasks')
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as TaskDelegate;
+            return data;
+          });
+        })
+      );
+    return this.taskDelegatesObs;
+ }
 
   getProject(id: string) {
     this.projectDoc = this.afs.doc(`projects/${id}`);
@@ -357,12 +392,13 @@ export class ProjectService {
     );
     return this.projectObs;
   }
+
+
   updateProject(project: Project) {
     this.afs.collection('projects').doc(project.id).update({
       name: project.name,
       client: project.client,
       type: project.type,
-      startDate: project.startDate,
       endDate: project.endDate,
       description: project.description,
     });
@@ -464,6 +500,16 @@ export class ProjectService {
       status: statusP,
     });
   }
+
+
+  updateTaskProgress(projectId: string, activityId: string, taskId: string, progress: number) {
+    const callable = this.fns.httpsCallable('updateTaskProg');
+    this.data$ = callable({ projectId, activityId, taskId, progress });
+    // Imprimir el resultado que puedes enviar desde el functions
+    return this.data$;
+    // this.data$.subscribe(data => console.log(data));
+  }
+
 
   checkTask(
     projectId: string,

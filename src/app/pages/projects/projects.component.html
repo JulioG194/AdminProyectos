@@ -46,9 +46,9 @@
                                 </circle-progress>
                             </td>
                             <td class="aling">
-                                <button class="btn btn-info" matTooltip="Detalles">
+                                <button class="btn btn-info" matTooltip="Detalles" (click)="openEditProject(project)">
               <mat-icon style="width: 17px; height: 7px"
-                >remove_red_eye</mat-icon
+                >edit</mat-icon
               >
             </button> &nbsp;
                                 <button class="btn btn-warning" [routerLink]="['/project', project.id]" matTooltip="Ver Actividades">
@@ -106,7 +106,7 @@
 </ng-template>
 
 <ng-template #projectsDelegate>
-    <div *ngIf="pats1?.length > 0; else NoTasks">
+    <div *ngIf="tskDelegates?.length > 0; else NoTasks">
         <table class="space">
             <thead>
                 <tr>
@@ -120,25 +120,25 @@
                     <td class="title position5"></td>
                 </tr>
             </thead>
-            <tr *ngFor="let pat of pats1; let i = index">
-                <td class="position1">{{ pat.task.name }}</td>
-                <td class="position2">{{ pat.startDate | date: 'dd/MM/y' }}</td>
-                <td class="position2">{{ pat.endDate | date: 'dd/MM/y' }}</td>
+            <tr *ngFor="let tsk of tskDelegates; let i = index">
+                <td class="position1">{{ tsk.tsk.name }}</td>
+                <td class="position2">{{ tsk.tsk.startDate | date: 'dd/MM/y' }}</td>
+                <td class="position2">{{ tsk.tsk.endDate | date: 'dd/MM/y' }}</td>
                 <td class="position5">
-                    <img matListAvatar [src]="pat.photoURL" style="width: 50px; height: 50px; border-radius: 150px" [matTooltip]="pat.manager_name" />
+                    <img matListAvatar [src]="tsk.manager.photoURL" style="width: 50px; height: 50px; border-radius: 150px" [matTooltip]="tsk.manager.name" />
                 </td>
-                <td class="position3">{{ pat.activity.name }}</td>
-                <td class="position4">{{ pat.project.name }}</td>
+                <td class="position3">{{ tsk.activity.name }}</td>
+                <td class="position4">{{ tsk.project.name }}</td>
                 <td class="position2">
                     <div class="align">
                         <input class="progress" type="number" placeholder="Ingrese % avance" #box (keyup.enter)="
-                onEnter(pat.project.id, pat.activity.id, pat.task.id, box.value)
+                updateTskProg(tsk.project.id, tsk.activity.id, tsk.tsk.id, box.value)
               " />
-                        <div>{{ pat.task.progress }}%</div>
+                        <div>{{ tsk.tsk.progress }}%</div>
                     </div>
                 </td>
                 <td class="position5">
-                    <button matTooltip="Subir evidencia" (click)="openEvidence(pat.task.id)">
+                    <button matTooltip="Subir evidencia">
             <mat-icon>folder</mat-icon>
           </button>
                 </td>

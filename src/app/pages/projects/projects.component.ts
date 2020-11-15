@@ -1,16 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user.interface';
-import { NgForm, FormGroup, FormControl } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig} from '@angular/material/dialog';
 import  Swal  from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
-import { Observable } from 'rxjs';
 import { TeamService } from '../../services/team.service';
 import { Team } from 'src/app/models/team.interface';
-import { map } from 'rxjs/operators';
-import { group } from '@angular/animations';
 import { Activity } from '../../models/activity.interface';
 import { Task } from '../../models/task.interface';
 import { Router } from '@angular/router';
@@ -18,54 +15,20 @@ import * as firebase from 'firebase/app';
 import { EvidenceService } from '../../services/evidence.service';
 import { Evidence } from '../../models/evidence.interface';
 import { NewProjectModalComponent } from '../../components/newProject/newProject-modal.component';
-
-export interface DialogData {
-  projectAppId: string;
-  minDate: Date;
-  maxDate: Date;
-  userApp: User;
-}
-
-export interface EvidenceData {
-  tid: string;
-  user: User;
-}
-
-export interface PAT {
-  project: Project;
-  activity: Activity;
-  task: Task;
-  startDate: Date;
-  endDate: Date;
-  photoURL?: string;
-  manager_name?: string;
-}
-
-/* export interface DialogDataActivities {
-  projectAppId: string;
-} */
-
-export interface StringDate {
-  name: string;
-  delegate: string;
-  chores: string; // tareas
-}
+import { EditProjectModalComponent } from '../../components/editProject/editProject-modal.component';
+import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, OnDestroy {
 
   constructor( public authService: AuthService,
                public projectService: ProjectService,
                public teamService: TeamService,
-               public dialog: MatDialog,
-               private router1: Router,
-               private router: Router
-               ) {
-
-    }
+               public dialog: MatDialog
+               ) { }
 
   team: string[] = [];
   userApp: User;
@@ -93,9 +56,11 @@ export class ProjectsComponent implements OnInit {
   minDate = new Date();
   name: string;
   delegate: string;
-  chores: string; // tareas
   allstartdates: Date[] = [];
   allenddates: Date[] = [];
+
+  tskDelegate: any;
+  tskDelegates: any[] = [];
 
   projectApp: Project = {
     name: '',
@@ -118,315 +83,22 @@ export class ProjectsComponent implements OnInit {
     manager: ''
   };
 
-  pats: PAT[] = [];
-  pats1: PAT[] = [];
-  pat: PAT = {
-    project: null,
-    activity: null,
-    task: null,
-    startDate: null,
-    endDate: null,
-    photoURL: ''
-  };
   value = '';
 
   ngOnInit() {
     this.userApp = this.authService.userAuth;
-    // this.authService.getUser(this.authService.userAuth).subscribe(user => {(this.userApp = user, this.idUser = user.uid);
-    //                                                                        if ( this.userApp.manager === true ) {
-    //                                                                             this.teamService.getTeamByUser(this.userApp).subscribe(team => {
-    //                                                                                 this.teamAux1 = team;
-    //                                                                               //  console.log(this.teamAux1);
-    //                                                                                 this.teamAux1.forEach(team => {
-    //                                                                                 this.teamAux = team;
-    //                                                                               //  console.log(this.teamAux);
-    //                                                                             });
-    //                                                                             });
-    //                                                                             /* if ( this.teamAux.manager !== null ) {
-    //                                                                             console.log('hola');
-    //                                                                             } */
-    //                                                                             this.projectService.getProjectByOwner(this.userApp)
-    //                                                                             .subscribe(projects => {
-    //                                                                               this.projectsApp = projects;
-    //                                                                               let projectsInprogress = 0;
-    //                                                                               let projectsOut = 0;
-    //                                                                               let projectsCompleted = 0;
-    //                                                                               let id: string;
-    //                                                                               let aux9: number;
-    //                                                                               // tslint:disable-next-line:prefer-for-of
-    //                                                                               for (let index = 0; index < this.projectsApp.length; index++) {
-    //                                                                                 // tslint:disable-next-line:no-unused-expression
-    //                                                                                 this.projectsApp[index].progress;
-    //                                                                                 this.activitiesProjectsApp = [];
-    //                                                                                 let numeroActs: number;
-    //                                                                                 let aux6: number;
-    //                                                                                 let aux7: number;
-    //                                                                                 let porcentajeActividad: number;
-    //                                                                                 let numeroTasks: number;
-    //                                                                                 let porcentajeTask: number;
-    //                                                                                 let aux3: number;
-    //                                                                                 let aux4: number;
-    //                                                                                 let aux5: number;
-    //                                                                                 let aux1: number;
-    //                                                                                 let status: string;
-    //                                                                                 let countRND = 0;
-    //                                                                                 let countRD = 0;
-    //                                                                                 let countPR = 0;
-    //                                                                                 let max = 0;
-    //                                                                                 let statusP: string;
-    //                                                                                 let countPRND = 0;
-    //                                                                                 let countPRD = 0;
-    //                                                                                 let countPPR = 0;
-    //                                                                                 this.projectService.getActivities(this.projectsApp[index]).subscribe(acts => {
-    //                                                                                     let aux8 = 0;
-    //                                                                                     countPRND = 0;
-    //                                                                                     countPRD = 0;
-    //                                                                                     countPPR = 0;
-    //                                                                                     this.activitiesProjectsApp = acts;
-    //                                                                                     numeroActs = this.activitiesProjectsApp.length;
-    //                                                                                     porcentajeActividad = 100 / numeroActs;
-    //                                                                                     aux6 = 100 / numeroActs;
-    //                                                                                     for (let activity of this.activitiesProjectsApp) {
-    //                                                                                       if (activity.status === 'Por Verificar') {
-    //                                                                                         statusP = 'Por Verificar';
-    //                                                                                         break;
-    //                                                                                       } else {
-    //                                                                                         statusP = '';
-    //                                                                                         if (activity.status === 'Realizando') {
-    //                                                                                           countPRND++;
-    //                                                                                         } else if (activity.status === 'Realizado') {
-    //                                                                                           countPRD++;
-    //                                                                                         } else if (activity.status === 'Por Realizar') {
-    //                                                                                          countPPR++;
-    //                                                                                       }
-    //                                                                                     }
-    //                                                                                       }
-    //                                                                                     if (statusP !== 'Por Verificar') {
-    //                                                                                       if ((countPRND >= countPRD) && (countPRND >=  countPPR)) {
-    //                                                                                         statusP = 'Realizando';
-    //                                                                                     } else if ((countPRD >= countPRND) && (countPRD >= countPPR)) {
-    //                                                                                       statusP = 'Realizado';
-    //                                                                                       } else {
-    //                                                                                         statusP = 'Por Realizar';
-    //                                                                                     }
-    //                                                                                     }
-
-    //                                                                                     // tslint:disable-next-line:prefer-for-of
-    //                                                                                     for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
-    //                                                                                       aux7 = this.activitiesProjectsApp[j].progress * aux6;
-    //                                                                                       aux8 += aux7;
-    //                                                                                       this.projectService.getTasks(this.activitiesProjectsApp[j].projectId, this.activitiesProjectsApp[j].id).subscribe(tasks => {
-    //                                                                                            let aux2 = 0;
-    //                                                                                            countRND = 0;
-    //                                                                                            countRD = 0;
-    //                                                                                            countPR = 0;
-    //                                                                                            this.tasksActivitiesApp = tasks;
-    //                                                                                            if ( this.tasksActivitiesApp.length === 0 ) {
-    //                                                                                             try {
-    //                                                                                               this.projectService.setActivityProgress(this.projectsApp[index].id, this.activitiesProjectsApp[j].id, 0 );
-    //                                                                                              } catch {}
-    //                                                                                            } else {
-    //                                                                                            numeroTasks = this.tasksActivitiesApp.length;
-    //                                                                                            porcentajeTask = 100 / numeroTasks;
-    //                                                                                            // tslint:disable-next-line:prefer-for-of
-    //                                                                                            for (let k = 0; k < this.tasksActivitiesApp.length; k++) {
-    //                                                                                              aux1 = this.tasksActivitiesApp[k].progress * porcentajeTask;
-    //                                                                                              aux2 += aux1;
-    //                                                                                              aux3 = aux2 / 100;
-    //                                                                                              aux4 = +(aux3.toFixed(2));
-    //                                                                                              id = this.tasksActivitiesApp[k].idActivity;
-    //                                                                                            }
-
-    //                                                                                            for (let task of this.tasksActivitiesApp) {
-    //                                                                                             if (task.status === 'Por Verificar') {
-    //                                                                                               status = 'Por Verificar';
-    //                                                                                               break;
-    //                                                                                             } else if ( task.status === 'Realizando' ) {
-    //                                                                                               status = 'Realizando';
-    //                                                                                               break;
-    //                                                                                             } else {
-    //                                                                                               status = '';
-    //                                                                                               if (task.status === 'Realizado') {
-    //                                                                                                 countRD++;
-    //                                                                                               } else if (task.status === 'Por Realizar') {
-    //                                                                                                countPR++;
-    //                                                                                             }
-    //                                                                                             }
-    //                                                                                             // status = '';
-    //                                                                                               /* if (task.status === 'Realizando') {
-    //                                                                                                 // countRND++;
-    //                                                                                                 status = 'Realizando';
-    //                                                                                                 break;
-    //                                                                                               } else 
-    //                                                                                           }
-
-    //                                                                                            if (status !== 'Por Verificar') {
-    //                                                                                            /*  if ((countRND >= countRD) && (countRND >=  countPR)) {
-    //                                                                                               status = 'Realizando';
-    //                                                                                           } else */ 
-    //                                                                                             if (/* (countRD >= countRND) && */ (countRD > countPR)) {
-    //                                                                                             status = 'Realizado';
-    //                                                                                             } else {
-    //                                                                                               status = 'Por Realizar';
-    //                                                                                           }
-    //                                                                                           }
-    //                                                                                            try {
-    //                                                                                               this.projectService.setActivityProgress(this.projectsApp[index].id, id, aux4 );
-    //                                                                                               this.projectService.setStatusActivity(this.projectsApp[index].id, id, status);
-    //                                                                                              } catch {}
-    //                                                                                            }
-    //                                                                                        });
-    //                                                                                     }
-    //                                                                                     aux9 = +((aux8 / 100).toFixed(2));
-    //                                                                                     try {
-    //                                                                                       this.projectService.setProjectProgress( this.projectsApp[index].id , aux9 );
-    //                                                                                       // this.projectService.setStatusProject(this.projectsApp[index].id, statusP);
-    //                                                                                      } catch {}
-    //                                                                                 });
-
-
-    //                                                                                 this.allstartdates = [];
-    //                                                                                 this.allenddates = [];
-    //                                                                                 this.projectsApp.forEach(project => {
-    //                                                                                 this.allstartdates.push(new Date(project.startDate['seconds'] * 1000));
-    //                                                                                 this.allenddates.push(new Date(project.endDate['seconds']* 1000));
-    //                                                                                 // console.log(this.allstartdates);
-    //                                                                                 // console.log(this.allenddates);
-    //                                                                                 this.activitiesProjectsApp = [];
-    //                                                                                 this.projectService.getActivities(project).subscribe(activities => {
-    //                                                                                   this.activitiesProjectsApp = activities;
-    //                                                                                   this.activitiesProjectsApp.forEach(activity => {
-    //                                                                                     this.tasksActivitiesApp = [];
-    //                                                                                     this.projectService.getTasks(project.id, activity.id).subscribe( tasks => {
-    //                                                                                       this.tasksActivitiesApp = tasks;
-    //                                                                                     //  console.log(this.tasksActivitiesApp);
-    //                                                                                     });
-    //                                                                                   });
-    //                                                                                 //  console.log(this.activitiesProjectsApp);
-    //                                                                                 });
-    //                                                                               });
-    //                                                                             //  console.log(this.projectsApp);
-    //                                                                             }});
-    //                                                                         } else {
-    //                                                                           console.log('ud es delegado');
-    //                                                                           this.teamGugo.delegates = [];
-    //                                                                           this.teamService.getTeams().subscribe(teams => {
-    //                                                                               this.teamsAux = teams;
-    //                                                                               this.teamsAux.forEach(team => {
-    //                                                                                   this.teamService.getDelegates(team).subscribe(delegates => {
-    //                                                                                          // tslint:disable-next-line:prefer-for-of
-    //                                                                                          team.delegates = delegates;
-    //                                                                                          team.delegates.forEach(delegate => {
-    //                                                                                              if ( delegate.email === this.userApp.email ) {
-    //                                                                                                  this.teamGugoAux = team;
-    //                                                                                                  console.log(this.teamGugoAux);
-    //                                                                                                  this.projectService.getProjectByTeam(this.teamGugoAux)
-    //                                                                                                  .subscribe(projects => {
-    //                                                                                                    this.projectsApp = projects;
-    //                                                                                                    console.log(this.projectsApp);
-    //                                                                                                    this.allstartdates = [];
-    //                                                                                                    this.allenddates = [];
-    //                                                                                                    this.projectsApp.forEach(project => {
-    //                                                                                                      this.allstartdates.push(new Date(project.startDate['seconds'] * 1000));
-    //                                                                                                      this.allenddates.push(new Date(project.endDate['seconds'] * 1000));
-    //                                                                                                      let userAux: User = {
-    //                                                                                                       displayName: '',
-    //                                                                                                       email: '',
-    //                                                                                                       photoURL: '',
-    //                                                                                                       uid: ''
-    //                                                                                                   };
-    //                                                                                                      this.authService.getUserById(project.ownerId).subscribe( user => {
-    //                                                                                                         userAux = user;
-    //                                                                                                      // console.log(this.allstartdates);
-    //                                                                                                      // console.log(this.allenddates);
-
-    //                                                                                                     // this.activitiesProjectsApp = [];
-    //                                                                                                         this.projectService.getActivities(project).subscribe(activities => {
-    //                                                                                                        this.activitiesProjectsApp = activities;
-    //                                                                                                        console.log(this.activitiesProjectsApp);
-    //                                                                                                        this.activitiesProjectsApp.forEach(activity => {
-    //                                                                                                         // this.tasksActivitiesApp = [];
-    //                                                                                                        //  this.activitiesDelegate = [];
-    //                                                                                                       //   this.projectsOfDelegate = [];
-    //                                                                                                          this.projectService.getTasks(project.id, activity.id).subscribe( tasks => {
-    //                                                                                                            console.log(tasks);
-    //                                                                                                            tasks.forEach(task => {
-
-    //                                                                                                              if ( task.delegate.email === this.userApp.email ) {
-    //                                                                                                               if ( task.idActivity === activity.id) {
-    //                                                                                                                 if ( activity.projectId === project.id ) {
-
-    //                                                                                                                   // tslint:disable-next-line:no-shadowed-variable
-
-    //                                                                                                                        this.pat = {
-    //                                                                                                                         project,
-    //                                                                                                                         activity,
-    //                                                                                                                         task,
-    //                                                                                                                         startDate: new Date(task.startDate['seconds'] * 1000),
-    //                                                                                                                         endDate: new Date(task.endDate['seconds'] * 1000),
-    //                                                                                                                         photoURL : userAux.photoURL,
-    //                                                                                                                         manager_name: userAux.displayName
-    //                                                                                                                       };
-    //                                                                                                                        this.pats.push(this.pat);
-
-    //                                                                                                                        console.log(this.pat);
-
-    //                                                                                                               }
-    //                                                                                                             }
-    //                                                                                                          }
-    //                                                                                                            });
-    //                                                                                                            this.tasksActivitiesApp1 = [];
-    //                                                                                                            this.activitiesDelegate1 = [];
-    //                                                                                                            this.projectsOfDelegate1 = [];
-    //                                                                                                            this.pats1 = [];
-    //                                                                                                            this.removeDuplicates();
-
-    //                                                                                                            console.log(this.pats1);
-    //                                                                                                            /* console.log(this.tasksActivitiesApp1);
-    //                                                                                                            console.log(this.activitiesDelegate1);
-    //                                                                                                            console.log(this.projectsOfDelegate1); */
-    //                                                                                                          });
-    //                                                                                                        });
-    //                                                                                                      //  console.log(this.activitiesProjectsApp);
-    //                                                                                                      });
-    //                                                                                                    });
-    //                                                                                                  //  console.log(this.projectsApp);
-    //                                                                                                 });
-    //                                                                                                  });
-    //                                                                                              }
-    //                                                                                          });
-    //                                                                               });
-    //                                                                           });
-    //                                                                           });
-    //                                                                         }
-
-    // });
-
-   // this.projectService.setActivitiestoProject(this.projectAux, this.activityAux);
     this.isLoading = true;
-    this.getProjects();
-    this.getDelegates();
-    console.log(this.delegates);
-  }
-
-  removeDuplicates() {
-    const uniqueObject = {};
-    // tslint:disable-next-line:forin
-    for (const i in this.pats) {
-        const objId = this.pats[i].task.id;
-        uniqueObject[objId] = this.pats[i];
+    if (this.userApp.manager === true) {
+        this.getProjects();
+        this.getDelegates();
     }
 
-    // tslint:disable-next-line:forin
-    for (const i in uniqueObject) {
-        this.pats1.push(uniqueObject[i]);
+    if (this.userApp.manager === false) {
+        this.getTasksDelegate();
     }
-    try {
-      this.pats1.sort((a, b) => a.task.createdAt.seconds - b.task.createdAt.seconds);
-      this.pats1.forEach(chat => {
-      });
-    } catch {}
   }
+
+  ngOnDestroy() {}
 
   onEnter(idP: string, idA: string, idT: string, value: string) {
     this.value = value;
@@ -470,10 +142,48 @@ export class ProjectsComponent implements OnInit {
   );
   }
 
+  openEditProject(project: Project) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.data = {
+    project
+  };
+
+  const dialogRef = this.dialog.open(EditProjectModalComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(
+        data => {
+          console.log('Dialog output:', data);
+          const newProject: Project = {
+            name: data.name as string,
+            client: data.client as string,
+            description: data.description as string,
+            endDate: data.endDate as Date,
+            type: data.typeProj as string,
+            id: project.id
+          };
+
+          if (newProject.name) {
+            this.projectService.updateProject(newProject);
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            title: 'actividad editada con exito'
+          });
+          }
+        },
+  );
+  }
+
+
 
   getProjects() {
     const user = this.authService.userAuth;
     this.projectService.getProjectByOwner(user)
+                        .pipe(untilDestroyed(this))
                         .subscribe(projects => {
                           projects.map(project => {
                             project.startDate = new Date(project.startDate['seconds'] * 1000);
@@ -486,41 +196,37 @@ export class ProjectsComponent implements OnInit {
 
   getDelegates() {
     const {uid} = this.authService.userAuth;
-    this.teamService.getDelegatesId(uid).subscribe(delegates => {
+    this.teamService.getDelegatesId(uid).pipe(untilDestroyed(this)).subscribe(delegates => {
       this.delegates = delegates;
       this.isLoadingTeam = false;
     });
   }
 
-  openEvidence( taskid: string  ): void {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open( EvidenceModalComponent, {
-      width: '800px',
-      data: { tid: taskid, user: this.userApp }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  getTasksDelegate() {
+    const {uid} = this.authService.userAuth;
+    this.projectService.getTasksDelegates(uid).pipe(untilDestroyed(this)).subscribe(resp => {
+      this.tskDelegates = [];
+      resp.map(r => {
+         const {project, activity, taskId} = r;
+         this.projectService.getTask(project.id, activity.id, taskId).subscribe(tsk => {
+             tsk.startDate =  new Date(tsk.startDate['seconds'] * 1000);
+             tsk.endDate =  new Date(tsk.endDate['seconds'] * 1000);
+             const obj = {
+              ...r,
+              tsk
+            };
+             this.tskDelegates.push(obj);
+         });
+      });
+      this.isLoading = false;
+      }
+      );
   }
 
-
-
-  /* openProject(): void {
-    this.router1.navigateByUrl('/project');
-  } */
-
-  openActivities( id: string, minDateF: Date, maxDateF: Date ): void {
-    // tslint:disable-next-line: no-use-before-declare
-    const dialogRef = this.dialog.open( ActivitiesModalComponent, {
-      width: '600px',
-      data: {  projectAppId: id, minDate: minDateF, maxDate: maxDateF  }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  updateTskProg(projectId: string, activityId: string, taskId: string, progress: number) {
+    this.projectService.updateTaskProgress(projectId, activityId, taskId, progress).subscribe(data => console.log(data));
   }
+
 
   onDeleteProject( projectId: string ) {
     Swal.fire({
@@ -530,6 +236,7 @@ export class ProjectsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, eliminar el proyecto!'
     }).then((result) => {
       if (result.value) {
@@ -541,158 +248,70 @@ export class ProjectsComponent implements OnInit {
         );
       }
     });
-
   }
   }
 
+// @Component({
+//     // tslint:disable-next-line:component-selector
+//     selector: 'evidence-modal',
+//     templateUrl: './evidence-modal.component.html',
+//     styleUrls: ['./evidence-modal.component.css']
+//   })
 
-@Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'activities-modal',
-    templateUrl: './activities-modal.component.html',
-    styleUrls: ['./activities-modal.component.css']
-  })
+//   export class EvidenceModalComponent implements OnInit {
 
-  export class ActivitiesModalComponent implements OnInit {
+//     tid: string;
+//     uid: User;
+//     fileToUpload: File = null;
+//     filesToUpload: File [] = [];
+//     fileToUploadFirebase: Evidence = {
+//         file: null,
+//         fileName: '',
+//         url: '',
+//         isUploading: false,
+//         progress: 0,
+//         type: '',
+//         size: 0
+//     };
+//     filesToUploadFirebase: Evidence [] = [];
+//     // archivo: FileItem = null;
+//     constructor(
+//       public dialogRef: MatDialogRef<EvidenceModalComponent>,
+//       @Inject(MAT_DIALOG_DATA) public data: EvidenceData,
+//       private evidenceService: EvidenceService) { }
 
-    task: Task = {
-      name: '',
-      status: 'Por realizar',
-      delegate: null
-      };
+//     ngOnInit() {
+//       this.tid = this.data.tid;
+//       this.uid = this.data.user;
+//       console.log(this.uid);
+//     }
 
+//     handleFileInput(files: FileList) {
 
-    id: string;
-    maxD: Date;
-    minD: Date;
-    startD: Date;
-    endD: Date;
+//         for (let index = 0; index < files.length; index++) {
+//           let evidence: Evidence = {
+//               file: files.item(index),
+//               fileName: files.item(index).name,
+//               size: files.item(index).size,
+//               type: files.item(index).type,
+//               tid: this.tid
+//           };
+//           this.filesToUploadFirebase.push(evidence);
+//           // this.filesToUpload.push(files.item(index));
+//         }
+//         // console.log(this.filesToUpload);
+//         console.log(this.filesToUploadFirebase);
+//        /*   */
+//   }
 
-    activityProject: Activity = {
-      name: '',
-      status: 'Por Realizar',
-      startDate: null,
-      endDate: null,
-      progress: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
+//   onUpdateFiles() {
+//     this.evidenceService.uploadFilesFirebase(this.filesToUploadFirebase, this.uid, this.tid);
+//   }
 
-    constructor(
-      public dialogRef: MatDialogRef<ActivitiesModalComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: DialogData,
-      private projectService: ProjectService) { }
-
-    ngOnInit() {
-        this.id = this.data.projectAppId;
-        this.maxD = this.data.maxDate;
-        this.minD = this.data.minDate;
-
-      }
-
-    inputEvent($event) {
-        this.startD = new Date($event.value);
-      }
-
-    inputEvent2($event) {
-        this.endD = new Date($event.value);
-      }
-
-    onSaveActivity( form: NgForm ) {
-      if ( form.invalid ) { return; }
-
-      if ( this.endD <= this.startD ) {
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Fechas fuera de rango',
-          });
-          return;
-      }
-
-      Swal.fire({
-        allowOutsideClick: false,
-        icon: 'info',
-        text: 'Espere por favor...'
-      });
-      Swal.showLoading();
-
-      this.projectService.setActivitiestoProject( this.id, this.activityProject );
-
-      Swal.close();
-      Swal.fire({
-          allowOutsideClick: false,
-          icon: 'success',
-          title: 'Actividad agregada con exito'
-        });
-
-      this.dialogRef.close();
-    }
-  }
-
-@Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'evidence-modal',
-    templateUrl: './evidence-modal.component.html',
-    styleUrls: ['./evidence-modal.component.css']
-  })
-
-  export class EvidenceModalComponent implements OnInit {
-
-    tid: string;
-    uid: User;
-    fileToUpload: File = null;
-    filesToUpload: File [] = [];
-    fileToUploadFirebase: Evidence = {
-        file: null,
-        fileName: '',
-        url: '',
-        isUploading: false,
-        progress: 0,
-        type: '',
-        size: 0
-    };
-    filesToUploadFirebase: Evidence [] = [];
-    // archivo: FileItem = null;
-    constructor(
-      public dialogRef: MatDialogRef<EvidenceModalComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: EvidenceData,
-      private evidenceService: EvidenceService) { }
-
-    ngOnInit() {
-      this.tid = this.data.tid;
-      this.uid = this.data.user;
-      console.log(this.uid);
-    }
-
-    handleFileInput(files: FileList) {
-
-        for (let index = 0; index < files.length; index++) {
-          let evidence: Evidence = {
-              file: files.item(index),
-              fileName: files.item(index).name,
-              size: files.item(index).size,
-              type: files.item(index).type,
-              tid: this.tid
-          };
-          this.filesToUploadFirebase.push(evidence);
-          // this.filesToUpload.push(files.item(index));
-        }
-        // console.log(this.filesToUpload);
-        console.log(this.filesToUploadFirebase);
-       /*   */
-  }
-
-  onUpdateFiles() {
-    this.evidenceService.uploadFilesFirebase(this.filesToUploadFirebase, this.uid, this.tid);
-  }
-
-  onClearFiles() {
-    this.filesToUploadFirebase = [];
-  }
-
-
-
-}
+//   onClearFiles() {
+//     this.filesToUploadFirebase = [];
+//   }
+// }
 
 
 
