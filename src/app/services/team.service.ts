@@ -262,6 +262,24 @@ export class TeamService {
 
   }
 
+  getDelegatesUncompany() {
+    this.usersCompany = this.afs.collection('users', (ref) => ref.where('manager', '==', false))
+    .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as User;
+            data.uid = action.payload.doc.id;
+            if (!data.company) {
+              return data;
+            }
+          });
+        })
+      );
+    return this.usersCompany;
+
+  }
+
   deleteDelegate(teamId: string, delegateId: string) {
     this.afs.collection('teams').doc(teamId).collection('delegates').doc(delegateId).delete();
     this.afs.collection('users').doc(delegateId).update({

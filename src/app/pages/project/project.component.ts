@@ -276,23 +276,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
   dialogRef.afterClosed().subscribe(
         data => {
           console.log('Dialog output:', data);
-          // const newProject: Project = {
-          //   name: data.name as string,
-          //   client: data.client as string,
-          //   description: data.description as string,
-          //   startDate: data.startDate as Date,
-          //   endDate: data.endDate as Date,
-          //   type: data.typeProj as string,
-          //   ownerId: this.authService.userAuth.uid,
-          // };
-          // if (newProject.name) {
-          //   this.projectService.addProject(newProject);
-          //   Swal.fire({
-          //   allowOutsideClick: false,
-          //   icon: 'success',
-          //   title: 'Proyecto agregado con exito'
-          // });
-          // }
+          const newActivity: Activity = {
+            name: data.name as string,
+            description: data.description as string,
+            startDate: data.startDate as Date,
+            endDate: data.endDate as Date,
+          };
+          if (newActivity.name) {
+            this.projectService.updateActivity(this.projectApp.id, activity.id, newActivity);
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            title: 'Actividad editada con exito'
+          });
+          }
         },
   );
   }
@@ -315,23 +312,21 @@ export class ProjectComponent implements OnInit, OnDestroy {
   dialogRef.afterClosed().subscribe(
         data => {
           console.log('Dialog output:', data);
-          // const newProject: Project = {
-          //   name: data.name as string,
-          //   client: data.client as string,
-          //   description: data.description as string,
-          //   startDate: data.startDate as Date,
-          //   endDate: data.endDate as Date,
-          //   type: data.typeProj as string,
-          //   ownerId: this.authService.userAuth.uid,
-          // };
-          // if (newProject.name) {
-          //   this.projectService.addProject(newProject);
-          //   Swal.fire({
-          //   allowOutsideClick: false,
-          //   icon: 'success',
-          //   title: 'Proyecto agregado con exito'
-          // });
-          // }
+          const newTask: Task = {
+            name: data.name as string,
+            description: data.description as string,
+            startDate: data.startDate as Date,
+            endDate: data.endDate as Date,
+            delegate: data.delegateTask as User
+          };
+          if (newTask.name) {
+            this.projectService.updateTask(this.projectApp.id, activityId, task.id, newTask);
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            title: 'Tarea editada con exito'
+          });
+          }
         },
   );
   }

@@ -2,7 +2,11 @@
 <mat-divider></mat-divider>
 <mat-tab-group mat-align-tabs="center">
     <mat-tab *ngIf="userGugo.manager == true" label="Seleccionar delegados para el equipo">
-        <div>
+        <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background:#082330; text-align: center;">
+            <mat-progress-spinner color="primary" mode="indeterminate" diameter="120">
+            </mat-progress-spinner>
+        </div>
+        <div *ngIf="!isLoading">
             <div *ngIf="userGugo.manager == true && usersGugo.length > 0; else NoDelegatesToChoose">
                 &nbsp;
                 <h5>Selecciona tu equipo de trabajo:</h5>
@@ -150,7 +154,10 @@
         </table>
         <br>
         <h5>Tus compañeros de proyectos:</h5>
-        <table class="space">
+        <div *ngIf="partnersAll.length == 0">
+            <p style="color: white;">Aún no tienes compañeros </p>
+        </div>
+        <table *ngIf="partnersAll.length > 0" class="space">
             <thead>
                 <tr>
                     <td></td>

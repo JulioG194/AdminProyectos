@@ -39,13 +39,14 @@ import { User } from '../../models/user.interface';
       this.form = this.fb.group({
         name: ['',  Validators.compose([Validators.required, this.validators.noWhitespaceValidator()])],
         description: ['', []],
-        startDate: [{value: this.task.startDate, disabled: true}, [Validators.required]],
+        startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
         delegateTask: ['', [Validators.required]]
       });
       this.form.patchValue({
         name: this.task.name,
         description: this.task.description,
+        startDate: this.task.startDate,
         endDate: this.task.endDate,
         delegateTask: this.task.delegate
       });
@@ -78,7 +79,9 @@ import { User } from '../../models/user.interface';
             !this.form.get('description').valid) {
             return;
         }
-        if (this.endD <= this.startD) {
+        const startDate = this.form.get('startDate').value;
+        const endDate = this.form.get('endDate').value;
+        if (endDate <= startDate) {
 
           Swal.fire({
             icon: 'error',

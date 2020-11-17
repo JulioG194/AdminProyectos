@@ -113,45 +113,7 @@ export class ProjectService {
     return id;
   }
 
-   setTaskstoActivity(projectId: string, activityId: string, task: Task) {
-    const id = this.afs.createId();
-    const batch = this.afs.firestore.batch();
 
-    const taskRef = this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(activityId)
-      .collection('tasks')
-      .doc(id);
-
-    batch.set(taskRef.ref, {
-        ...task,
-          createdAt: this.serverTimeStamp,
-          id,
-          projectId,
-          progress: 0,
-          status: 'Por Realizar',
-    });
-
-    const activityRef = this.afs.collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(activityId);
-
-    batch.update(activityRef.ref, {
-      delegates: firebase.firestore.FieldValue.arrayUnion(task.delegate)
-    });
-
-    const projectRef = this.afs.collection('projects')
-      .doc(projectId);
-
-    batch.update(projectRef.ref, {
-      delegates: firebase.firestore.FieldValue.arrayUnion(task.delegate)
-    });
-
-    return batch.commit();
-  }
 
   deleteProject(projectId: string) {
     this.projectCollection
@@ -403,32 +365,58 @@ export class ProjectService {
       description: project.description,
     });
   }
-  updateActivity(projectId: string, idActivity: string, activity: Activity) {
+  updateActivity(projectId: string, activityId: string, activity: Activity) {
     this.afs
       .collection('projects')
       .doc(projectId)
       .collection('activities')
-      .doc(idActivity)
+      .doc(activityId)
       .update({
         name: activity.name,
         startDate: activity.startDate,
         endDate: activity.endDate,
+        description: activity.description
       });
+  }
+
+  setTaskstoActivity(projectId: string, activityId: string, task: Task) {
+    const id = this.afs.createId();
+    const batch = this.afs.firestore.batch();
+
+    const taskRef = this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('activities')
+      .doc(activityId)
+      .collection('tasks')
+      .doc(id);
+
+    batch.set(taskRef.ref, {
+        ...task,
+          createdAt: this.serverTimeStamp,
+          id,
+          projectId,
+          progress: 0,
+          status: 'Por Realizar',
+    });
+
+    return batch.commit();
   }
 
   updateTask(
     projectId: string,
-    idActivity: string,
-    idTask: string,
+    activityId: string,
+    taskId: string,
     task: Task
   ) {
+
     this.afs
       .collection('projects')
       .doc(projectId)
       .collection('activities')
-      .doc(idActivity)
+      .doc(activityId)
       .collection('tasks')
-      .doc(idTask)
+      .doc(taskId)
       .update({
         name: task.name,
         startDate: task.startDate,

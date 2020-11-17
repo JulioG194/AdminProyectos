@@ -162,11 +162,11 @@ export class LoginRegisterComponent implements OnInit {
         this.userRegister.assignedTasks = 0;
       }
       this.authService.createUser(this.userRegister, uid);
-      await this.authService.verifyEmail();
+      // await this.authService.verifyEmail();
       Swal.fire({
         icon: 'success',
         title: 'Registrado con exito',
-        text: 'Por favor verifica tu cuenta para poder iniciar',
+        // text: 'Por favor verifica tu cuenta para poder iniciar',
         position: 'center',
         showCloseButton: true,
         confirmButtonText: 'Listo!'
@@ -217,8 +217,8 @@ export class LoginRegisterComponent implements OnInit {
     try {
       const user = await this.authService.login(this.userLogin);
       const { emailVerified } = user;
-      if (emailVerified) {
-        this.authService.getUser(user).subscribe((userObs) => {
+      //if (emailVerified) {
+      this.authService.getUser(user).subscribe((userObs) => {
           const loginUser = userObs;
           this.authService.saveUserOnStorage(loginUser);
           const token = localStorage.getItem('fcm');
@@ -227,8 +227,8 @@ export class LoginRegisterComponent implements OnInit {
             this.authService.setTokensUser(loginUser, token);
           }
         });
-        Swal.close();
-        const Toast = Swal.mixin({
+      Swal.close();
+      const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
@@ -239,22 +239,22 @@ export class LoginRegisterComponent implements OnInit {
         toast.addEventListener('mouseleave', Swal.resumeTimer);
         }
         });
-        setTimeout(() => {
+      setTimeout(() => {
         this.router.navigateByUrl('/dashboard');
        }, 1200);
-        Toast.fire({
+      Toast.fire({
         icon: 'success',
         title: 'Ingreso Exitoso'
         });
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'Verifique su cuenta',
-          text: 'Para iniciar sesion verifique su cuenta',
-          showCloseButton: true,
-          confirmButtonText: 'Listo!'
-        });
-      }
+      // } else {
+      //   Swal.fire({
+      //     icon: 'info',
+      //     title: 'Verifique su cuenta',
+      //     text: 'Para iniciar sesion verifique su cuenta',
+      //     showCloseButton: true,
+      //     confirmButtonText: 'Listo!'
+      //   });
+      // }
     } catch (error) {
       Swal.close();
       Swal.fire({
@@ -273,7 +273,7 @@ export class LoginRegisterComponent implements OnInit {
       this.userRegister.employment = 'Gestor de proyectos';
     } else {
       this.userRegister.manager = false;
-      this.userRegister.employment = 'Tecnico asistente';
+      this.userRegister.employment = 'Delegado en poyectos';
     }
   }
 

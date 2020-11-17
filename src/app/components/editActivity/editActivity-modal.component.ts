@@ -33,13 +33,14 @@ import Swal from 'sweetalert2';
       this.activity = this.data.activity;
       this.form = this.fb.group({
         name: ['',  Validators.compose([Validators.required, this.validators.noWhitespaceValidator()])],
-        startDate: [{value: this.activity.startDate, disabled: true}, [Validators.required]],
+        startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
         description: ['', []],
       });
       this.form.patchValue({
         name: this.activity.name,
         description: this.activity.description,
+        startDate: this.activity.startDate,
         endDate: this.activity.endDate,
       });
 
@@ -65,7 +66,9 @@ import Swal from 'sweetalert2';
             !this.form.get('description').valid) {
             return;
         }
-        if (this.endD <= this.startD) {
+        const startDate = this.form.get('startDate').value;
+        const endDate = this.form.get('endDate').value;
+        if (endDate <= startDate) {
 
           Swal.fire({
             icon: 'error',

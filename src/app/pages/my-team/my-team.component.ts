@@ -27,7 +27,7 @@ export class MyTeamComponent implements OnInit, OnDestroy {
   selectedUsersPlus: User[] = [];
   teams: Team[] = [];
   delegates: User[] = [];
-
+  isLoading: boolean;
   managers: User[] = [];
   partners: User[] = [];
   partnersAll: User[] = [];
@@ -123,30 +123,7 @@ async addNewTeam() {
     });
   }
 }
-getUniqueDelegates() {
-  this.delegatesAux1.filter((elem, pos) => this.delegatesAux1.indexOf(elem) === pos);
-  let element = 0;
-  let decrement = this.delegatesAux1.length - 1;
-  while (element < this.delegatesAux1.length) {
-                while (element < decrement) {
-                  if (this.delegatesAux1[element].email === this.delegatesAux1[decrement].email) {
-                      this.delegatesAux1.splice(decrement, 1);
-                      decrement--;
-                  } else {
-                      decrement--;
-                  }
-                }
-                decrement = this.delegatesAux1.length - 1;
-                element++;
-                                                          }
 
-}
-
-removeDelegate(delegate) {
-  this.delegatesAux1.forEach( (item, index) => {
-    if ( item.email === delegate.email ) { this.delegatesAux1.splice(index, 1); }
-  });
-}
 updateTeam() {
   if ( this.selectedUsersPlus.length > 0) {
     this.teamService.addDelegates(this.teamGugo, this.selectedUsersPlus);
@@ -162,12 +139,23 @@ updateTeam() {
 
 
   ngOnInit() {
+    this.isLoading = true;
     this.userGugo = this.authService.userAuth;
     if (this.userGugo.manager) {
-        this.getLocalCompany();
-        this.getProjectsTeam();
+        if (this.userGugo.company) {
+            this.getLocalCompany();
+            this.getProjectsTeam();
+        } else {
+            console.log('no pertence a una empresa');
+            this.getDelegatesUncompany();
+        }
     } else {
-      this.getTeamDelegate();
+      if (this.userGugo.company) {
+          this.getTeamDelegate();
+      } else {
+        console.log('no pertence a una empresa');
+        this.getTeamDelegate();
+      }
     }
   }
 
@@ -184,9 +172,11 @@ updateTeam() {
          this.teamService.getDelegatesId(this.teamId).pipe(untilDestroyed(this)).subscribe(delegates => {
          this.usersGugo = _.xorBy(usersGugoArray, delegates, 'uid');
          this.teamGugo.delegates = delegates;
+         this.isLoading = false;
         });
        } else {
          this.usersGugo = usersGugoArray;
+         this.isLoading = false;
        }
     });
     });
@@ -206,6 +196,8 @@ updateTeam() {
     this.authService.getUser(this.authService.userAuth).pipe(untilDestroyed(this)).subscribe(usr => {
         this.userGugo = usr;
         this.userGugo.teams.map(team => {
+      this.managers = [];
+      this.partners = [];
       this.teamService.getTeam(team).pipe(untilDestroyed(this)).subscribe(tm => {
         const user: User = {
           uid: tm.manager,
@@ -227,6 +219,33 @@ updateTeam() {
       });
     });
     });
+  }
+
+  getDelegatesUncompany() {
+      this.userGugo = this.authService.userAuth;
+      this.teamService.getDelegatesUncompany().pipe(untilDestroyed(this))
+                                              .subscribe(usrs => {
+              const arrayUsers = usrs.filter(usr => usr !== undefined);
+              console.log(arrayUsers);
+              this.teamService.getTeamByUser(this.userGugo)
+                                .pipe(untilDestroyed(this)).subscribe(teams => {
+                                      console.log(teams);
+                                      if (teams.length > 0) {
+                                       const {id} = _.head(teams);
+                                       this.teamId = id;
+                                       this.teamService.getDelegatesId(this.teamId)
+                                                           .pipe(untilDestroyed(this))
+                                                           .subscribe(delegates => {
+                                                             this.usersGugo = _.xorBy(arrayUsers, delegates, 'uid');
+                                                             this.teamGugo.delegates = delegates;
+                                                             this.isLoading = false;
+                                      });
+                                      } else {
+                                        this.usersGugo = arrayUsers;
+                                        this.isLoading = false;
+                                      }
+              });
+      });
   }
 
 
