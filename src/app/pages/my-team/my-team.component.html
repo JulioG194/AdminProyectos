@@ -50,8 +50,8 @@
                     <td> {{delegate.email}} </td>
                     <td> {{delegate.phoneNumber}} </td>
                     <td> {{delegate.employment}} </td>
-                    <td>
-                        <button mat-fab color="warn" matTooltip="Eliminar del equipo" (click)="removeDelegates(delegate.uid)">
+                    <td class="borrar">
+                        <button matTooltip="Eliminar" (click)="removeDelegates(delegate.uid)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>
@@ -170,17 +170,25 @@
 </ng-template>
 
 <ng-template #NoTeam>
-    <br>
-    <h2>No has sido asignado a ningun equipo</h2>
-    <mat-divider></mat-divider>
-    <br>
-    <h5>Muy pronto seras asignado a uno :)</h5>
+    <div class="empty">
+        <br>
+        <!-- <h2>No existe registro !!!</h2> -->
+        <br>
+        <h5>No has sido asignado a ningun equipo</h5>
+        <br>
+        <p>Muy pronto seras asignado a uno</p>
+        <br>
+    </div>
 </ng-template>
 
 <ng-template #NoDelegatesToChoose>
     <br>
-    <h2>No hay delegados para agregar al equipo</h2>
-    <mat-divider></mat-divider>
-    <br>
-    <h5>Espera muy pronto, para poder ampliar tu equipo</h5>
+    <div class="empty">
+        <!-- <h2>No existe registro !!!</h2> -->
+        <br>
+        <h5>No hay delegados para agregar al equipo</h5>
+        <br>
+        <p>Espera para poder ampliar tu equipo</p>
+        <br>
+    </div>
 </ng-template>

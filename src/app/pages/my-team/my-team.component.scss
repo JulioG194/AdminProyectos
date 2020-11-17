@@ -227,3 +227,21 @@ a.mat-stroked-button .mat-icon {
 //     color: white;
 //     background-color: #082330;
 // }
+
+.empty {
+    width: 70%;
+    text-align: center;
+    border: 1px solid black;
+    background-color: #0c1b22;
+    color: white;
+    margin: 0px auto;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.borrar button {
+    height: 40px;
+    width: 40px;
+    background: rgb(161, 2, 2);
+    color: white;
+}

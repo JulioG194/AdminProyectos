@@ -191,25 +191,25 @@
                                                 </td>
                                                 <td class="position23">
                                                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="btnTools2">
-                      <mat-icon>build</mat-icon>
-                    </button>
+                                                    <mat-icon>build</mat-icon>
+                                                    </button>
                                                     <mat-menu #menu="matMenu">
                                                         <button mat-menu-item>
-                        <mat-icon>edit</mat-icon>
-                        <span>Editar tarea</span>
-                      </button>
+                                                        <mat-icon>edit</mat-icon>
+                                                        <span>Editar tarea</span>
+                                                    </button>
                                                         <button mat-menu-item (click)="deleteTask(act.id, task.id)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Eliminar tarea</span>
-                      </button>
+                                                        <mat-icon>delete</mat-icon>
+                                                        <span>Eliminar tarea</span>
+                                                    </button>
                                                         <button mat-menu-item (click)="openEvidence()">
-                        <mat-icon>folder_open</mat-icon>
-                        <span>Evidencia</span>
-                      </button>
+                                                            <mat-icon>folder_open</mat-icon>
+                                                            <span>Evidencia</span>
+                                                        </button>
                                                         <button mat-menu-item (click)="checkTask(act.id, task.id, task.progress)">
-                        <mat-icon>done_outline</mat-icon>
-                        <span>Verificado</span>
-                      </button>
+                                                            <mat-icon>done_outline</mat-icon>
+                                                            <span>Verificado</span>
+                                                        </button>
                                                     </mat-menu>
                                                 </td>
                                                 <td class="position24"></td>
@@ -227,8 +227,8 @@
                                         <h6>Usted no tiene tareas dentro de esta actividad</h6>
                                         <br />
                                         <button (click)="openNewTask(act.startDate, act.endDate, act.id)" matTooltip="Agregar tareas">
-                                <mat-icon>add</mat-icon>
-                            </button>
+                                            <mat-icon>add</mat-icon>
+                                        </button>
                                         <br />
                                         <br />
                                     </div>
