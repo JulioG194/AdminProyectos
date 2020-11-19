@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ValidatorService } from 'src/app/services/validators.service';
 import Swal from 'sweetalert2';
 import { User } from '../../models/user.interface';
+import { ProjectService } from '../../services/project.service';
 
 
 @Component({
@@ -25,12 +26,17 @@ import { User } from '../../models/user.interface';
     endD: Date;
     minDate: Date;
     maxDate: Date;
+    projectId: string;
+    activityId: string;
+    taskId: string;
+    progress: number;
 
     constructor(
       private fb: FormBuilder,
       private dialogRef: MatDialogRef<OpenEvidenceModalComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private validators: ValidatorService) {
+      private validators: ValidatorService,
+      private projectService: ProjectService) {
       }
 
     ngOnInit() {
@@ -43,8 +49,13 @@ import { User } from '../../models/user.interface';
         delegateTask: ['', [Validators.required]]
       });
 
-      this.minDate = this.data.startDate;
-      this.maxDate = this.data.endDate;
+      // this.minDate = this.data.startDate;
+      // this.maxDate = this.data.endDate;
+      console.log(this.data);
+      this.projectId = this.data.projectId;
+      this.activityId = this.data.activity;
+      this.taskId = this.data.task;
+      this.progress = this.data.progressTask;
       this.delegates = this.data.delegates;
     }
 
@@ -61,6 +72,13 @@ import { User } from '../../models/user.interface';
       }
 
 
+        checkTask() {
+          this.projectService.checkTaskProgress(this.projectId, this.activityId, this.taskId, this.progress)
+                             .subscribe(data => {
+                                        console.log(data);
+                                        Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
+        });
+        }
        save() {
         if (this.form.invalid) {
             return;

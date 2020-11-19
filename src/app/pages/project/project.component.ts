@@ -370,16 +370,48 @@ export class ProjectComponent implements OnInit, OnDestroy {
         });
   }
 
-  openEvidence() {
+  openEvidence(taskId: string, activityId: string, progress: number) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = false;
   dialogConfig.width = '700px';
   dialogConfig.panelClass = 'custom-dialog';
   dialogConfig.data = {
-    delegates: this.delegates
+    delegates: this.delegates,
+    projectId: this.projectApp.id,
+    activity: activityId,
+    task: taskId,
+    progressTask: progress
   };
+
+
   this.dialog.open(OpenEvidenceModalComponent, dialogConfig);
+
+
+  // dialogRef.afterClosed().subscribe(
+  //       async (data) => {
+  //         const newTask: Task = {
+  //           name: data.name as string,
+  //           description: data.description as string,
+  //           startDate: data.startDate as Date,
+  //           endDate: data.endDate as Date,
+  //           delegate: data.delegateTask as User
+  //         };
+  //         if (newTask.name) {
+  //           await this.projectService.setTaskstoActivity(this.projectApp.id, activityId, newTask);
+  //           this.newActivityId = activityId;
+  //           // this.panelOpenState = fals
+  //           Swal.fire({
+  //             allowOutsideClick: false,
+  //             text: 'Tarea Agregada con Exito...Recargando Tabla...' ,
+  //             icon: 'success',
+  //             timer: 2000
+  //           });
+  //           Swal.showLoading();
+  //         }
+  //       });
+
+
   }
 
   editProject() {

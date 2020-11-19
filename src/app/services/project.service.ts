@@ -498,6 +498,14 @@ export class ProjectService {
     // this.data$.subscribe(data => console.log(data));
   }
 
+  checkTaskProgress(projectId: string, activityId: string, taskId: string, progress: number) {
+    const callable = this.fns.httpsCallable('checkTaskProg');
+    this.data$ = callable({ projectId, activityId, taskId, progress });
+    // Imprimir el resultado que puedes enviar desde el functions
+    return this.data$;
+    // this.data$.subscribe(data => console.log(data));
+  }
+
 
   checkTask(
     projectId: string,

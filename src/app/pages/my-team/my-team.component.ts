@@ -187,7 +187,19 @@ updateTeam() {
     this.projectService.getProjectByOwner(this.userGugo).pipe(untilDestroyed(this)).subscribe(projs => {
       this.projectsTeam = projs;
       this.projectsTeam.map(proj => {
-        proj.delegates = _.uniqBy(proj.delegates, 'uid');
+        // proj.delegates = _.uniqBy(proj.delegates, 'uid');
+        proj.delegates = [];
+        this.projectService.getActivities(proj.id).subscribe(acts => {
+          acts.map(act => {
+            this.projectService.getTasks(proj.id, act.id).subscribe(tsks => {
+              tsks.map(tsk => {
+                proj.delegates.push(tsk.delegate);
+                proj.delegates = _.uniqBy(proj.delegates, 'uid');
+              });
+            });
+          });
+        });
+        // proj.delegates = _.uniqBy(proj.delegates, 'uid');
       });
     });
   }
