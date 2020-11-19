@@ -1,0 +1,80 @@
+<button style="width: fit-content; background-color: white;" mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon style="margin-bottom: 15px; color: black;" class="close-icon" color="warn">close</mat-icon>
+</button>
+<h1 mat-dialog-title class="h1">Recursos</h1>
+
+<mat-dialog-content style="background: #0c1b22" [formGroup]="form" class="mat-dialog-content">
+    <mat-tab-group  mat-align-tabs="center">
+        <mat-tab label="Observaciones">
+            <br>
+            <div class="obs">
+                <div class="scroll2" style="height: 300px;">
+                    <div  *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12,6,7,8,9,10,45]">
+                        <div class="align photo">
+                            <div class="container space1">
+                                <div class="align3 user">
+                                    <p>Nombre</p>
+                                    <p>25/11/2020</p>
+                                </div>
+                                <div class="msgTx align">
+                                    <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
+                                    <p class="coment">skabasbkja dsdsd sd sdbdsjh  sjhbjabjdsbacd  hdjhdjcc sdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsd ba ksdb asjkdbkj </p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="align">
+                    <input style="background: white;" name="message" placeholder="Enviar Comentario" required />
+                    <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                        <mat-icon style="background: #0c1b22;">send</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Archivos">
+            
+            <div class="scroll" style="height: 700px;">
+                <br>
+                <div class="files align">
+                    <input style="color: white;" type="file" name="archivosubido" id="file"  multiple>
+                    <button>
+                        <mat-icon style="color: white;">check</mat-icon>
+                    </button>
+                    &nbsp;
+                    <button>
+                        <mat-icon style="color: white;">close</mat-icon>
+                    </button>
+                </div>
+                <div class="grid">
+                    <div *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,7,8,9,10,11,12]" class="archivo">
+                        <mat-card class="mat-elevation-z4">
+                            <div class="clear" style="margin: 0 auto;">
+                                <button><mat-icon style="color: white;">arrow_downward</mat-icon></button>
+                            </div>
+                            
+                            <mat-card-header>
+                                <mat-card-title style="font-size: 14px;">Evidencia de la tarea crear una estacion  {{num}}</mat-card-title>
+                            </mat-card-header>
+                            <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                            <!--<mat-card-content>
+                                <p>The Himalayas is a mountain range in Asia. </p>   
+                            </mat-card-content> -->
+                            <mat-card-actions>
+                                <!-- <button fxFlex="row" mat-button>LIKE</button>
+                                <button fxFlex="row" mat-button>SHARE</button> -->
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        
+        
+    </mat-tab-group>
+
+</mat-dialog-content>
+

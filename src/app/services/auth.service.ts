@@ -6,8 +6,9 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
 
@@ -35,12 +36,14 @@ export class AuthService {
   windowRef: any;
 
   verificationCode: string;
+  user$: Observable<User>;
+  // profileUrl: Observable<string | null>;
+  profileUrl: string;
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {
+  constructor(private afs: AngularFirestore,
+              private auth: AngularFireAuth,
+              private storage: AngularFireStorage) {
     this.loadUsers(afs);
-    this.users.subscribe((users) => {
-      this.usersAuth = users;
-    });
     this.loadStorage();
   }
 
@@ -98,7 +101,7 @@ export class AuthService {
 
   async resetPassword(emailPasswd: any) {
     const actionCodeSettings = {
-      url: `http://localhost:4200/#/?email=${emailPasswd}`,
+      url: `http://localhost:4200/?email=${emailPasswd}`,
       handleCodeInApp: true,
     };
     try {
@@ -165,6 +168,13 @@ export class AuthService {
     return this.user;
   }
 
+  getUserOnce(uid: string) {
+    return this.user$ = this.afs.doc<User>(`users/${uid}`)
+  .valueChanges().pipe(
+    take(1) // Here you can limit to only emit once, using the take operator
+  );
+}
+
   getUserById(uid: string) {
     this.userDoc = this.afs.collection('users').doc(uid);
     this.user = this.userDoc.snapshotChanges().pipe(
@@ -191,10 +201,10 @@ export class AuthService {
       photoURL: user.photoURL,
     });
   }
-  setTokenUser(user: User, token: string) {
+  setTokensUser(user: User, token: string) {
     const { uid } = user;
     this.afs.collection('users').doc(uid).update({
-      token,
+      tokens: firebase.firestore.FieldValue.arrayUnion(token),
     });
   }
 
@@ -281,5 +291,17 @@ export class AuthService {
         })
       );
     return this.managers;
+  }
+
+  uploadProfile(file: any, uid: string, ) {
+    const filePath = `users/${uid}`;
+    const fileRef = this.storage.ref(filePath);
+    this.storage.upload(filePath, file);
+    const downloadURL = fileRef.getDownloadURL();
+    // fileRef.getDownloadURL().subscribe(
+    //   url => this.profileUrl = url
+    // );
+    // return this.profileUrl;
+    return downloadURL;
   }
 }

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { User } from 'src/app/models/user.interface';
 import { NgForm } from '@angular/forms';
 
 // tslint:disable-next-line:import-spacing
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 // import { UserService } from '../../services/users.service';
 
 @Component({
@@ -31,8 +34,12 @@ export class UserProfileComponent implements OnInit {
 
   password1: '';
   password2: '';
+  fileToUpload: File = null;
+  uploadPercent: Observable<number>;
+  downloadURL: Observable<string>;
 
-  constructor(public _authService: AuthService) {
+  constructor(private _authService: AuthService,
+              private storageService: AngularFireStorage) {
     // this.userAux =  JSON.parse( localStorage.getItem('usuario'));
     this._authService.getUser(this._authService.userAuth).subscribe((user) => {
       (this.userApp = user),
@@ -115,4 +122,33 @@ export class UserProfileComponent implements OnInit {
   }
 
   inputEvent($event) {}
+
+  async uploadFile(event) {
+    const user = this._authService.userAuth;
+    const {uid} = user;
+    const file = event.target.files[0];
+    await this.setPhotoProfile(uid, file);
+  }
+
+  setPhotoProfile(uid: string, file: File) {
+    return new Promise((resolve, reject) => {
+      const filePath = `users/${uid}`;
+      const ref = this.storageService.ref(filePath);
+      const upload = ref.put(file);
+      const sub = upload.snapshotChanges().pipe(
+        finalize( async () => {
+          try {
+            const photoURL = await ref.getDownloadURL().toPromise();
+            console.log(photoURL);
+            resolve({ photoURL });
+          } catch (err) {
+            reject(err);
+          }
+          sub.unsubscribe();
+        })
+      ).subscribe((data) => {
+        console.log('storage: ', data);
+      });
+    });
+  }
 }

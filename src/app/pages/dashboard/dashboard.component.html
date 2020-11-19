@@ -2,7 +2,7 @@
     <h1>Bienvenid@ {{ userGugo.displayName }}</h1>
     <mat-divider class="space1"></mat-divider>
     <br>
-    <div *ngIf="userGugo.manager == false; else delegate">
+    <div *ngIf="userGugo.manager == true; else delegate">
         <div *ngIf="projectsApp?.length > 0; else userGuide">
             <div class="btn-GuiaUser">
                 <button (click)="openUserGuide()" matTooltip="Ver guia de usuario">

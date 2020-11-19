@@ -19,6 +19,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -53,8 +55,9 @@ import { WindowService } from './services/window.service';
     AngularFireAuthModule,
     NgOtpInputModule,
     AngularFireMessagingModule,
+    AngularFireStorageModule,
+    AngularFireFunctionsModule,
     FlexLayoutModule,
-    
   ],
   exports: [],
   providers: [WindowService],

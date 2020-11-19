@@ -1,45 +1,60 @@
 <button style="width: fit-content; background-color: white;" mat-icon-button class="close-button" [mat-dialog-close]="true">
   <mat-icon style="margin-bottom: 15px; color: black;" class="close-icon" color="warn">close</mat-icon>
 </button>
-
-<h1 mat-dialog-title>Panel de Evidencias</h1>
-
-<mat-dialog-content class="custom-dialog-container" [formGroup]="form">
+<h1 mat-dialog-title class="h1">Evidencia</h1>
+<mat-dialog-content  [formGroup]="form" class="mat-dialog-content">
     <mat-tab-group style="background-color: #082330;" mat-align-tabs="center">
-        <mat-tab label="Archivos">
-            <div style="overflow: hidden;" class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
-                <div fxFlex="25%" *ngFor="let num of [1,2]">
-                    <mat-card class="mat-elevation-z4">
-                        <mat-card-header>
-                            <mat-card-title style="font-size: 14px;">Evidencia {{num}}</mat-card-title>
-                        </mat-card-header>
-                        <img mat-card-image src="../../../assets/img/fondo1.jpg">
-                        <mat-card-content>
-                            <p>
-                                The Himalayas is a mountain range in Asia.
-                            </p>
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <!-- <button fxFlex="row" mat-button>LIKE</button>
-                            <button fxFlex="row" mat-button>SHARE</button> -->
-                        </mat-card-actions>
-                    </mat-card>
+        <mat-tab label="Archivos" >
+            <!-- <br> -->
+            <label style="color: white; padding: 10px;">Subido por Valentinito</label>
+            <br>
+            <div class="scroll" style="height: 600px;">
+                <div class="grid">
+                    <div *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12,13]" class="archivo">
+                        <mat-card class="mat-elevation-z4">
+                            <div class="clear" >
+                                <button><mat-icon style="color: white;">arrow_downward</mat-icon></button>
+                            </div>
+                            <!-- <button style="float: rigth;">D</button> -->
+                            <mat-card-header>
+                                <mat-card-title style="font-size: 14px;">Evidencia {{num}}</mat-card-title>
+                            </mat-card-header>
+                            <img mat-card-image src="../../../assets/img/fondo1.jpg">
+                            <mat-card-content>
+                                <p>
+                                    The Himalayas is a mountain range in Asia.
+                                </p>
+                                
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <!-- <button fxFlex="row" mat-button>LIKE</button>
+                                <button fxFlex="row" mat-button>SHARE</button> -->
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Comentarios">
-            <div style="overflow: hidden;" class="content" fxLayout="row wrap">
-                <div style="text-align: center;">
-                    <div class="align photo">
-                        <div class="container space1">
-                            <div class="msgTx align">
-                                <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
-                                <p>skabasbkjasdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsdbaksdbasjkdbkj </p>
+        <mat-tab label="Observaciones">
+            <div class="obs">
+                <div class="scroll2" style="height: 300px;">
+                    <div  *ngFor="let num of [1,2,3,4,5,6,7,8]">
+                        <div class="align photo">
+                            <div class="container space1">
+                                <div class="align3 user">
+                                    <p>Nombre</p>
+                                    <p>25/11/2020</p>
+                                </div>
+                                <div class="msgTx align">
+                                    <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
+                                    <p class="coment">skabasbkjasdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsd ba ksdb asjkdbkj </p>
+                                </div>
                             </div>
                         </div>
+                        <!-- <br> -->
                     </div>
                 </div>
-                <div>
+                <div class="align">
                     <input name="message" cols="" placeholder="Enviar Comentario" rows="2" required />
                     <button class="btn btn-light" matTooltip="Enviar" type="submit">
                     <mat-icon >send</mat-icon>
@@ -47,31 +62,29 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Observaciones de Tarea">
-
-            <div style="overflow: hidden;" class="content" fxLayout="row wrap">
-                <div style="text-align: center;">
-                    <div class="align photo">
-                        <div class="container space1">
-                            <div class="msgTx align">
-                                <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
-                                <p>skabasbkjasdbkjas ajskdbsajkdb sajkasdhaksbdjaksdh kajsdbaksdbasjkdbkj </p>
-                            </div>
-                        </div>
-                    </div>
+        <mat-tab label="Avance">
+            <br>
+            <div class="obs2 obs">
+                <circle-progress  [percent]=20 [radius]="60" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Progreso'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'"
+                                                        [animation]="true" [animationDuration]="300">
+                                                    </circle-progress>
+                <p>Evidencia correcta</p>
+                                    
+                <div class="accept">
+                        <button>Confirmar progreso</button>
+                   <!--  </div> -->
                 </div>
-                <div>
-                    <input name="message" cols="" placeholder="Enviar Observacion" rows="2" required />
+                <br>
+                <p>Corregir progreso</p>
+                <div class="align1 avance">
+                    <input style="background: white;" placeholder="Ingrese el progreso" required/>
                     <button class="btn btn-light" matTooltip="Enviar" type="submit">
-                    <mat-icon >send</mat-icon>
+                        <mat-icon>send</mat-icon>
                     </button>
                 </div>
             </div>
         </mat-tab>
     </mat-tab-group>
 
-
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button class="mat-raised-button" style="background-color: #082330; color: white;" (click)="save()">Guardar</button>
-</mat-dialog-actions>
+

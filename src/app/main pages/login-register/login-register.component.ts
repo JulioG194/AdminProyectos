@@ -112,7 +112,7 @@ export class LoginRegisterComponent implements OnInit {
               address: snap.address,
               ref: snap.ref
             };
-              await this.sucessRegister();
+              await this.sucessRegister(role);
             } else {
               this.failedRegister();
             }
@@ -129,17 +129,18 @@ export class LoginRegisterComponent implements OnInit {
               address: snap.address,
               ref: snap.ref
             };
-            await this.sucessRegister();
+            await this.sucessRegister(role);
             } else {
               this.failedRegister();
             }
           });
        }
        if ( company === 'Personal' ) {
-           await this.sucessRegister();
+           await this.sucessRegister(role);
        }
     }  catch (error) {
       this.userRegister.manager = null;
+      console.log(error);
       Swal.close();
       Swal.fire({
         icon: 'error',
@@ -150,23 +151,38 @@ export class LoginRegisterComponent implements OnInit {
     }
   }
 
-  async sucessRegister() {
+  async sucessRegister(role: any) {
+    try {
       const userReg = await this.authService.register(this.userRegister);
       const { uid } = userReg;
       delete this.userRegister.password;
       this.userRegister.uid = uid;
+      this.userRegister.tokens = [];
+      if (role === 'false') {
+        this.userRegister.assignedTasks = 0;
+      }
       this.authService.createUser(this.userRegister, uid);
-      await this.authService.verifyEmail();
+      // await this.authService.verifyEmail();
       Swal.fire({
         icon: 'success',
         title: 'Registrado con exito',
-        text: 'Por favor verifica tu cuenta para poder iniciar',
+        // text: 'Por favor verifica tu cuenta para poder iniciar',
         position: 'center',
         showCloseButton: true,
         confirmButtonText: 'Listo!'
       });
       this.registerForm.reset();
       this.section = true;
+    } catch (error) {
+      console.log(error);
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al autenticar',
+        text: this.modalError(error),
+        confirmButtonText: 'Listo!'
+      });
+    }
   }
 
   failedRegister() {
@@ -201,24 +217,44 @@ export class LoginRegisterComponent implements OnInit {
     try {
       const user = await this.authService.login(this.userLogin);
       const { emailVerified } = user;
-      if (emailVerified) {
-        this.authService.getUser(user).subscribe((userObs) => {
+      //if (emailVerified) {
+      this.authService.getUser(user).subscribe((userObs) => {
           const loginUser = userObs;
           this.authService.saveUserOnStorage(loginUser);
           const token = localStorage.getItem('fcm');
-          this.authService.setTokenUser(loginUser, token);
+          console.log(token);
+          if (token) {
+            this.authService.setTokensUser(loginUser, token);
+          }
         });
-        Swal.close();
+      Swal.close();
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+        });
+      setTimeout(() => {
         this.router.navigateByUrl('/dashboard');
-      } else {
-        Swal.fire({
-          icon: 'info',
-          title: 'Verifique su cuenta',
-          text: 'Para iniciar sesion verifique su cuenta',
-          showCloseButton: true,
-          confirmButtonText: 'Listo!'
+       }, 1200);
+      Toast.fire({
+        icon: 'success',
+        title: 'Ingreso Exitoso'
         });
-      }
+      // } else {
+      //   Swal.fire({
+      //     icon: 'info',
+      //     title: 'Verifique su cuenta',
+      //     text: 'Para iniciar sesion verifique su cuenta',
+      //     showCloseButton: true,
+      //     confirmButtonText: 'Listo!'
+      //   });
+      // }
     } catch (error) {
       Swal.close();
       Swal.fire({
@@ -237,7 +273,7 @@ export class LoginRegisterComponent implements OnInit {
       this.userRegister.employment = 'Gestor de proyectos';
     } else {
       this.userRegister.manager = false;
-      this.userRegister.employment = 'Tecnico asistente';
+      this.userRegister.employment = 'Delegado en poyectos';
     }
   }
 

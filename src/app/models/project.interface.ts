@@ -4,10 +4,10 @@ export interface Project {
     client: string;
     description: string;
     type: string;
-    startDate: Date;
+    startDate?: Date;
     endDate: Date;
     status?: string;
-    ownerId: string;
+    ownerId?: string;
     teamId?: string;
     id?: string;
     createdAt?: any;

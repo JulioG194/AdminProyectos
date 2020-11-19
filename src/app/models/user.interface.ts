@@ -11,8 +11,9 @@ export interface User {
   gender?: string;
   manager?: boolean;
   createdAt?: any;
-  token?: string;
+  tokens?: string[];
   company?: any;
   isActive?: boolean;
   teams?: string[];
+  assignedTasks?: number;
 }

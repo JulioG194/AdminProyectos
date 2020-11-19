@@ -32,6 +32,7 @@
         "@ngrx/store": "8.1.0",
         "@ngrx/store-devtools": "8.1.0",
         "@ngx-translate/core": "11.0.1",
+        "@orchestrator/ngx-until-destroyed": "^1.1.1",
         "@sweetalert2/theme-borderless": "^3.1.4",
         "@sweetalert2/theme-dark": "^4.0.0",
         "@swimlane/dragula": "3.8.0",

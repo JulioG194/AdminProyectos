@@ -14,8 +14,8 @@ import { ChatComponent } from './chat/chat.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import {
   ProjectsComponent,
-  ActivitiesModalComponent,
-  EvidenceModalComponent,
+  // ActivitiesModalComponent,
+  // EvidenceModalComponent,
 } from './projects/projects.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FormsModule } from '@angular/forms';
@@ -51,6 +51,11 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { NewActivityModalComponent } from '../components/newActivity/newActivity-modal.component';
 import { NewTaskModalComponent } from '../components/newTask/newTask-modal.component';
 import { OpenEvidenceModalComponent } from '../components/openEvidence/openEvidence-modal.component';
+import { EditProjectModalComponent } from '../components/editProject/editProject-modal.component';
+import { EditActivityModalComponent } from '../components/editActivity/editActivity-modal.component';
+import { EditTaskModalComponent } from '../components/editTask/editTask-modal.component';
+import {OpenEvidenceDelegateModalComponent} from '../components/openEvidenceDelegate/openEvidenceDelegate-modal.component';
+import {OpenResourceModalComponent} from '../components/openResource/openResource-modal.component'
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -62,21 +67,26 @@ registerLocaleData(localeEs);
     ScheduleComponent,
     ProjectsComponent,
     NewProjectModalComponent,
+    EditProjectModalComponent,
     NewActivityModalComponent,
+    EditActivityModalComponent,
     NewTaskModalComponent,
+    EditTaskModalComponent,
     UserProfileComponent,
     ActivitiesComponent,
     TaskComponent,
     KanbanComponent,
     ProjectComponent,
     TasksComponent,
-    ActivitiesModalComponent,
+    // ActivitiesModalComponent,
     NotificationsComponent,
-    EvidenceModalComponent,
+    // EvidenceModalComponent,
     EvidenceModalComponent1,
     GanttComponent,
     UserGuideModalComponent,
-    OpenEvidenceModalComponent
+    OpenEvidenceModalComponent,
+    OpenEvidenceDelegateModalComponent,
+    OpenResourceModalComponent
   ],
   imports: [
     CommonModule,
@@ -125,14 +135,19 @@ registerLocaleData(localeEs);
   entryComponents: [
     ProjectsComponent,
     NewProjectModalComponent,
+    EditProjectModalComponent,
     TaskComponent,
     EvidenceModalComponent1,
-    ActivitiesModalComponent,
-    EvidenceModalComponent,
+    // ActivitiesModalComponent,
+    // EvidenceModalComponent,
     UserGuideModalComponent,
     NewActivityModalComponent,
+    EditActivityModalComponent,
     NewTaskModalComponent,
-    OpenEvidenceModalComponent
+    EditTaskModalComponent,
+    OpenEvidenceModalComponent,
+    OpenEvidenceDelegateModalComponent,
+    OpenResourceModalComponent
   ],
 })
 export class PagesModule {}

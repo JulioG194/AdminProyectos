@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { User } from 'src/app/models/user.interface';
 import { AuthService } from '../../services/auth.service';
@@ -8,13 +8,19 @@ import Swal from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import * as _ from 'lodash';
+import { last, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { TasksComponent } from '../tasks/tasks.component';
+import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
+import { OpenResourceModalComponent } from 'src/app/components/openResource/openResource-modal.component';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-my-team',
   templateUrl: './my-team.component.html',
   styleUrls: ['./my-team.component.scss']
 })
-export class MyTeamComponent implements OnInit {
+export class MyTeamComponent implements OnInit, OnDestroy {
 
   usersApp: User[] ;
   usersAppFilter: User[] = [];
@@ -23,10 +29,12 @@ export class MyTeamComponent implements OnInit {
   selectedUsersPlus: User[] = [];
   teams: Team[] = [];
   delegates: User[] = [];
-
+  isLoading: boolean;
   managers: User[] = [];
   partners: User[] = [];
   partnersAll: User[] = [];
+  projectsTeam: Project[] = [];
+  numbersTasks = 0;
 
   userGugo: User = {
     displayName: '',
@@ -72,27 +80,29 @@ delegateAux1: User = {
   email: '',
   uid: ''
 };
+subscrp: Subscription;
 
 teamId: string;
+getDelTsk: Subscription;
+numberT: number;
+  //dialog: any;
 
 
   constructor( private teamService: TeamService,
                private authService: AuthService,
-               private projectService: ProjectService ) { }
+               private projectService: ProjectService,
+               public dialog: MatDialog ) { }
 
-// Evento para agregar personas y formar un equipo
 onGroupsChange(selectedUsers: User[]) {
   this.selectedUsers = selectedUsers;
 
 }
 
-// Evento para ampliar el equipo agregando mas personas
 onGroupsChangePlus(selectedUsersPlus: User[]) {
   this.selectedUsersPlus = selectedUsersPlus;
 
 }
 
-// Metodo para crear un equipo
 async addNewTeam() {
   if ( this.selectedUsers.length > 0) {
     try {
@@ -117,34 +127,10 @@ async addNewTeam() {
     });
   }
 }
-getUniqueDelegates() {
-  this.delegatesAux1.filter((elem, pos) => this.delegatesAux1.indexOf(elem) === pos);
-  let element = 0;
-  let decrement = this.delegatesAux1.length - 1;
-  while (element < this.delegatesAux1.length) {
-                while (element < decrement) {
-                  if (this.delegatesAux1[element].email === this.delegatesAux1[decrement].email) {
-                      this.delegatesAux1.splice(decrement, 1);
-                      decrement--;
-                  } else {
-                      decrement--;
-                  }
-                }
-                decrement = this.delegatesAux1.length - 1;
-                element++;
-                                                          }
 
-}
-
-removeDelegate(delegate) {
-  this.delegatesAux1.forEach( (item, index) => {
-    if ( item.email === delegate.email ) { this.delegatesAux1.splice(index, 1); }
-  });
-}
 updateTeam() {
   if ( this.selectedUsersPlus.length > 0) {
     this.teamService.addDelegates(this.teamGugo, this.selectedUsersPlus);
-    console.log(this.selectedUsersPlus);
   } else {
     Swal.fire({
       allowOutsideClick: false,
@@ -155,41 +141,68 @@ updateTeam() {
   this.post = !this.post;
 }
 
+
   ngOnInit() {
+    this.isLoading = true;
     this.userGugo = this.authService.userAuth;
     if (this.userGugo.manager) {
-        this.getLocalCompany();
+        if (this.userGugo.company) {
+            this.getLocalCompany();
+            this.getProjectsTeam();
+        } else {
+            console.log('no pertence a una empresa');
+            this.getDelegatesUncompany();
+        }
     } else {
-      this.getTeamDelegate();
+      if (this.userGugo.company) {
+          this.getTeamDelegate();
+      } else {
+        console.log('no pertence a una empresa');
+        this.getTeamDelegate();
+      }
     }
   }
 
+  ngOnDestroy() { }
+
   getLocalCompany() {
     this.userGugo = this.authService.userAuth;
-    this.teamService.getUsersCompany(this.userGugo.company.id).subscribe(users => {
+    this.teamService.getUsersCompany(this.userGugo.company.id).pipe(untilDestroyed(this)).subscribe(users => {
      const usersGugoArray = _.reject(users, {uid: this.userGugo.uid});
-     this.teamService.getTeamByUser(this.userGugo).subscribe(teams => {
+     this.teamService.getTeamByUser(this.userGugo).pipe(untilDestroyed(this)).subscribe(teams => {
        if (teams.length > 0) {
          const {id} = _.head(teams);
          this.teamId = id;
-         this.teamService.getDelegatesId(this.teamId).subscribe(delegates => {
+         this.teamService.getDelegatesId(this.teamId).pipe(untilDestroyed(this)).subscribe(delegates => {
          this.usersGugo = _.xorBy(usersGugoArray, delegates, 'uid');
          this.teamGugo.delegates = delegates;
+         this.isLoading = false;
         });
        } else {
          this.usersGugo = usersGugoArray;
+         this.isLoading = false;
        }
     });
     });
   }
 
+  getProjectsTeam() {
+    this.userGugo = this.authService.userAuth;
+    this.projectService.getProjectByOwner(this.userGugo).pipe(untilDestroyed(this)).subscribe(projs => {
+      this.projectsTeam = projs;
+      this.projectsTeam.map(proj => {
+        proj.delegates = _.uniqBy(proj.delegates, 'uid');
+      });
+    });
+  }
+
   getTeamDelegate() {
-    this.authService.getUser(this.authService.userAuth).subscribe(usr => {
+    this.authService.getUser(this.authService.userAuth).pipe(untilDestroyed(this)).subscribe(usr => {
         this.userGugo = usr;
         this.userGugo.teams.map(team => {
-      console.log(team);
-      this.teamService.getTeam(team).subscribe(tm => {
-        console.log(tm);
+      this.managers = [];
+      this.partners = [];
+      this.teamService.getTeam(team).pipe(untilDestroyed(this)).subscribe(tm => {
         const user: User = {
           uid: tm.manager,
           email: tm.email,
@@ -199,21 +212,46 @@ updateTeam() {
           photoURL: tm.photoURL
         };
         this.managers.push(user);
-        this.teamService.getDelegatesId(team).subscribe(del => {
-          console.log(del);
+        this.teamService.getDelegatesId(team).pipe(untilDestroyed(this)).subscribe(del => {
           del.map(d => {
             this.partners.push(d);
           });
-          console.log(this.partners);
           const uniq = _.uniqBy(this.partners, 'uid');
           const withoutHost = _.reject(uniq, {uid: this.userGugo.uid});
           this.partnersAll = withoutHost;
         });
       });
-      console.log(this.managers);
     });
     });
   }
+
+  getDelegatesUncompany() {
+      this.userGugo = this.authService.userAuth;
+      this.teamService.getDelegatesUncompany().pipe(untilDestroyed(this))
+                                              .subscribe(usrs => {
+              const arrayUsers = usrs.filter(usr => usr !== undefined);
+              console.log(arrayUsers);
+              this.teamService.getTeamByUser(this.userGugo)
+                                .pipe(untilDestroyed(this)).subscribe(teams => {
+                                      console.log(teams);
+                                      if (teams.length > 0) {
+                                       const {id} = _.head(teams);
+                                       this.teamId = id;
+                                       this.teamService.getDelegatesId(this.teamId)
+                                                           .pipe(untilDestroyed(this))
+                                                           .subscribe(delegates => {
+                                                             this.usersGugo = _.xorBy(arrayUsers, delegates, 'uid');
+                                                             this.teamGugo.delegates = delegates;
+                                                             this.isLoading = false;
+                                      });
+                                      } else {
+                                        this.usersGugo = arrayUsers;
+                                        this.isLoading = false;
+                                      }
+              });
+      });
+  }
+
 
   removeDelegates(delegateId: string) {
     Swal.fire({
@@ -228,85 +266,33 @@ updateTeam() {
       showCloseButton: true,
     }).then((result) => {
       if (result.value) {
-        this.teamService.deleteDelegate(this.teamId, delegateId);
-        Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+       this.authService.getUserOnce(delegateId).pipe(take(1)).
+        subscribe(user => {
+          if (user.assignedTasks > 0) {
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'warning',
+            text: 'No se puede borrar al delegado, tiene tareas en proceso asignadas'
+            });
+          } else {
+            this.teamService.deleteDelegate(this.teamId, delegateId);
+            Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+          }
+        });
       }
     });
   }
 
-  getTeam() {
-    this.authService.getUser(this.authService.userAuth)
-    .subscribe(user => {(this.userGugo = user);
-                        // Obtener todos los usuarios de la App
-                        this.authService.getUsers()
-                        .subscribe(users => {
-                                    this.usersApp = users;        // Lista de todos los usuarios
-                                    this.usersGugo = [];          // Lista de los usuarios excepto el usuario autenticado
-                                    // Obtener lista de usuarios excepto el usuario autenticado
-                                    this.usersApp.map( item => {
-                                    if ( item.uid !== this.userGugo.uid && item.manager === false ) {
-                                    this.usersGugo.push(item);
-                                    }
-                                    });
-                                    // Obtener el equipo segun el usuario autenticado
-                                    this.teamService.getTeamByUser(this.userGugo)
-                        .subscribe(team => {
-                                 this.teamsObservable = team;
-                                 this.teamsObservable.map(a =>
-                                 this.teamGugo = a);
-                                   // Obtener los delegados del equipo
-                                 if ( this.teamGugo.manager ) {
-                                   this.teamGugo.delegates = [];
-                                   this.teamService.getDelegates(this.teamGugo).subscribe(delegates => {
-                                   this.teamGugo.delegates = delegates;
-
-                                   // Obtener los correos de los usuarios para poder ampliar los miembros de un equipo
-                                   let emails;
-                                   emails = new Set(this.teamGugo.delegates.map(({ email }) => email));
-
-                                   // Establecer los usuarios que no pertencen al equipo
-                                   this.usersAppFilter = [];
-                                   this.usersAppFilter = this.usersGugo.filter(({ email }) => !emails.has(email));
-                                   });
-                                } else {
-                                    this.teamGugo.delegates = [];
-                                    this.teamService.getTeams().subscribe(teams => {
-                                        this.teamsAux = teams;
-                                        this.teamsAux.forEach(team => {
-                                            this.teamService.getDelegates(team).subscribe(delegates => {
-                                                   // tslint:disable-next-line:prefer-for-of
-                                                   team.delegates = delegates;
-                                                   team.delegates.forEach(delegate => {
-                                                       if ( delegate.email === this.userGugo.email ) {
-                                                           this.teamsAux1.push(team);
-                                                           this.teamsAux1.forEach(teamA => {
-                                                            this.authService.getUserById(teamA.manager).subscribe(manager => {
-                                                              if (manager != null) {
-                                                                if (!this.delegatesAux1.some(obj => obj.email === manager.email && obj.uid === manager.uid)) {
-                                                                  this.delegatesAux1.push(manager);
-                                                                }
-                                                              }
-                                                           });
-                                                });
-                                                           team.delegates.forEach(delegate => {
-                                                            if (delegate != null) {
-                                                            if (!this.delegatesAux1.some(obj => obj.email === delegate.email && obj.uid === delegate.uid)) {
-                                                              this.delegatesAux1.push(delegate);
-                                                            }
-                                                          }
-                                                           });
-                                                       }
-                                                       this.removeDelegate(this.userGugo);
-                                                       this.delegatesAux1 = this.delegatesAux1.sort();
-                                                       this.getUniqueDelegates();
-                                                   });
-                                        });
-                                    });
-                                    });
-                            }
-                        });
-                      });
-                    });
-  }
-
+  openResources() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.width = '650px';
+    //dialogConfig.height = '700px';
+    dialogConfig.panelClass = 'custom-dialog2';
+    dialogConfig.data = {
+      delegates: this.delegates
+    };
+    this.dialog.open(OpenResourceModalComponent, dialogConfig);
+    }
 }

@@ -3,40 +3,33 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ValidatorService } from 'src/app/services/validators.service';
 import Swal from 'sweetalert2';
+import { User } from '../../models/user.interface';
+
 
 @Component({
-    selector: 'app-new-project-modal',
-    templateUrl: './newProject-modal.component.html',
-    styleUrls: ['./newProject-modal.component.scss']
+    selector: 'app-open-resource-modal',
+    templateUrl: './openResource-modal.component.html',
+    styleUrls: ['./openResource-modal.component.scss']
   })
 
-  export class NewProjectModalComponent implements OnInit {
+  export class OpenResourceModalComponent implements OnInit {
 
     form: FormGroup;
     name: string;
-    client: string;
     description: string;
     startDate: Date;
     endDate: Date;
-    typeProj: string;
-
-    types: any = ['Proyecto de Investigación',
-                  'Proyecto de Inversión',
-                  'Proyecto de Infraestructura',
-                  'Proyecto de Informática',
-                  'Proyecto de Construcción',
-                  'Proyecto de Desarrollo de Productos y Servicios',
-                  'Proyecto de Desarrollo Sostenible',
-                  'Otro Tipo de Proyecto'];
-    type: any;
+    deleg: User;
+    delegates: User[] = [];
     startD: Date;
     endD: Date;
-    minDate = new Date();
+    minDate: Date;
+    maxDate: Date;
 
     constructor(
       private fb: FormBuilder,
-      private dialogRef: MatDialogRef<NewProjectModalComponent>,
-      @Inject(MAT_DIALOG_DATA) data,
+      private dialogRef: MatDialogRef<OpenResourceModalComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
       private validators: ValidatorService) {
       }
 
@@ -44,16 +37,18 @@ import Swal from 'sweetalert2';
 
       this.form = this.fb.group({
         name: ['',  Validators.compose([Validators.required, this.validators.noWhitespaceValidator()])],
-        client: ['', Validators.compose([Validators.required, this.validators.noWhitespaceValidator()])],
         description: ['', []],
         startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
-        typeProj: ['', [Validators.required]]
+        delegateTask: ['', [Validators.required]]
       });
 
+      this.minDate = this.data.startDate;
+      this.maxDate = this.data.endDate;
+      this.delegates = this.data.delegates;
     }
 
-    get projectFormControl() {
+    get taskFormControl() {
     return this.form.controls;
   }
 
@@ -78,7 +73,7 @@ import Swal from 'sweetalert2';
           });
           return;
         }
-        // console.log(this.form.value
+        console.log(this.form.value);
         this.dialogRef.close(this.form.value);
       }
   }
