@@ -28,6 +28,7 @@ import { OpenEvidenceModalComponent } from '../../components/openEvidence/openEv
 import { EditActivityModalComponent } from '../../components/editActivity/editActivity-modal.component';
 import { EditTaskModalComponent } from '../../components/editTask/editTask-modal.component';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
+import { OpenEvidenceDelegateModalComponent } from 'src/app/components/openEvidenceDelegate/openEvidenceDelegate-modal.component';
 
 export interface DialogData1 {
   project: Project;
@@ -374,8 +375,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = false;
-  dialogConfig.width = '700px';
-  dialogConfig.panelClass = 'custom-dialog';
+  dialogConfig.width = '650px';
+  dialogConfig.panelClass = 'custom-dialog2';
   dialogConfig.data = {
     delegates: this.delegates,
     projectId: this.projectApp.id,
@@ -413,6 +414,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
 
   }
+
+  
 
   editProject() {
     this.post1 = !this.post1;
@@ -557,14 +560,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  checkTask(idActivity: string, idTask: string, progressTask: number) {
-    this.projectService.checkTask(
-      this.projectApp.id,
-      idActivity,
-      idTask,
-      progressTask
-    );
-  }
+  // checkTask(idActivity: string, idTask: string, progressTask: number) {
+  //   this.projectService.checkTask(
+  //     this.projectApp.id,
+  //     idActivity,
+  //     idTask,
+  //     progressTask
+  //   );
+  // }
 }
 
 // @Component({

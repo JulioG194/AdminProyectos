@@ -60,6 +60,8 @@ export class ProjectService {
   serverTimeStamp: any;
   data$: Observable<any>;
   dataDelete$: Observable<any>;
+  comments: Observable<any>;
+  resources: Observable<any[]>;
 
   constructor(private http: HttpClient, private afs: AngularFirestore, private fns: AngularFireFunctions) {
     this.loadProjects(afs);
@@ -89,6 +91,8 @@ export class ProjectService {
               createdAt: this.serverTimeStamp,
               id,
               progress: 0,
+              comments: 0,
+              resources: 0,
               status: 'Por Realizar',
               delegates: [],
             });
@@ -425,71 +429,6 @@ export class ProjectService {
       });
   }
 
-  setTaskProgress(
-    projectId: string,
-    idActivity: string,
-    idTask: string,
-    prog: number
-  ) {
-    this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(idActivity)
-      .collection('tasks')
-      .doc(idTask)
-      .update({
-        progress: prog,
-        status: 'Por Verificar',
-      });
-    this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(idActivity)
-      .update({
-        status: 'Por Verificar',
-      });
-    this.afs.collection('projects').doc(projectId).update({
-      status: 'Por Verificar',
-    });
-  }
-
-  setActivityProgress(projectId: string, idActivity: string, percent: number) {
-    this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(idActivity)
-      .update({
-        progress: percent,
-      });
-  }
-
-  setStatusActivity(projectId: string, idActivity: string, statusA: string) {
-    this.afs
-      .collection('projects')
-      .doc(projectId)
-      .collection('activities')
-      .doc(idActivity)
-      .update({
-        status: statusA,
-      });
-  }
-
-  setProjectProgress(projectId: string, percent: number) {
-    this.afs.collection('projects').doc(projectId).update({
-      progress: percent,
-    });
-  }
-
-  setStatusProject(projectId: string, statusP: string) {
-    this.afs.collection('projects').doc(projectId).update({
-      status: statusP,
-    });
-  }
-
-
   updateTaskProgress(projectId: string, activityId: string, taskId: string, progress: number) {
     const callable = this.fns.httpsCallable('updateTaskProg');
     this.data$ = callable({ projectId, activityId, taskId, progress });
@@ -506,43 +445,51 @@ export class ProjectService {
     // this.data$.subscribe(data => console.log(data));
   }
 
+  createComment(projectId: string, user: User, comment: string, createdAt: any) {
+    const id = this.afs.createId();
+    this.afs.collection('projects')
+            .doc(projectId)
+            .collection('comments')
+            .doc(id).set({
+                  user,
+                  createdAt,
+                  comment
+            });
+  }
 
-  checkTask(
-    projectId: string,
-    activityId: string,
-    taskId: string,
-    progressTask: number
-  ) {
-    if (progressTask > 0 && progressTask < 100) {
-      this.projectCollection
-        .doc(projectId)
-        .collection('activities')
-        .doc(activityId)
-        .collection('tasks')
-        .doc(taskId)
-        .update({
-          status: 'Realizando',
-        });
-    } else if (progressTask === 100) {
-      this.projectCollection
-        .doc(projectId)
-        .collection('activities')
-        .doc(activityId)
-        .collection('tasks')
-        .doc(taskId)
-        .update({
-          status: 'Realizado',
-        });
-    } else {
-      this.projectCollection
-        .doc(projectId)
-        .collection('activities')
-        .doc(activityId)
-        .collection('tasks')
-        .doc(taskId)
-        .update({
-          status: 'Por Realizar',
-        });
-    }
+  getComments(projectId: string) {
+    this.comments = this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('comments', (ref) => ref.orderBy('createdAt'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.comments;
+  }
+
+  getResources(projectId: string) {
+    this.resources = this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('resources', (ref) => ref.orderBy('createdAt'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.resources;
   }
 }

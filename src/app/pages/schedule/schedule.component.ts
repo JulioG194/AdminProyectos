@@ -12,7 +12,7 @@ import { Team } from 'src/app/models/team.interface';
 import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import format from 'date-fns/format';
-import {GoogleChartInterface} from 'ng2-google-charts/ng2-google-charts'
+import {GoogleChartInterface} from 'ng2-google-charts/ng2-google-charts';
 // import { GoogleChartInterface } from 'ng2-google-charts';
 
 const colors: any = {
@@ -45,16 +45,9 @@ declare let google: any;
 })
 export class ScheduleComponent implements OnInit {
 
-  activityProject: Activity = {
-    name: '',
-    status: '',
-    activity_time: 0
-};
 public orgChart: GoogleChartInterface = {
     chartType: 'Timeline',
-    
     dataTable: [
-     
     ],
     options: {
       allowHtml: true,
@@ -62,11 +55,6 @@ public orgChart: GoogleChartInterface = {
     }
   };
 
-taskActivity: Task = {
-    name: '',
-    status: '',
-    delegate: null
-};
 
 team: Team;
 delegates: User[] = [];
@@ -102,8 +90,6 @@ projectApp: Project = {
       ownerId: '',
       status: 'To Do'
 };
-
-// idUser: String;
 teamsObservable: any;
 projectsAux: Project[];
 teamAux: Team = {
@@ -123,7 +109,7 @@ public timelineChartData: any =  {
   chartType: 'Timeline',
   dataTable: this.dataC,
   options: {
-            'title': 'Tasks',
+            title: 'Tasks',
             // width: 700,
             // height: 500,
             orientation: 'vertical',
@@ -242,15 +228,15 @@ lables = [];
       } */
     ];
 
-    activeDayIsOpen: boolean = false;
+    activeDayIsOpen = false;
   colNames: any[] = [];
   roles: { role: string; type: string; index: number; p: { html: boolean; }; }[];
   test = [['Task', 'Hours per Day', {role: 'tooltip', p: {html: true}}],
     ['Work', 11, '2'],
-    ['Eat', 2,'2'],
-    ['Commute', 2,'4'],
-    ['Watch TV', 2,'6'],
-    ['Sleep', 7,'7']];
+    ['Eat', 2, '2'],
+    ['Commute', 2, '4'],
+    ['Watch TV', 2, '6'],
+    ['Sleep', 7, '7']];
 
   test2 = [['Task ID', 'Task Name', 'Resource', 'Start Date', 'End Date', 'Duration', 'Percent Complete', 'Dependencies', {role: 'tooltip', p: {html: true}}],
         ['2014Spring', 'Spring 2014', 'spring', new Date(2014, 2, 22), new Date(2014, 5, 20), 0, 50, null, 'toot'],
@@ -269,7 +255,7 @@ lables = [];
         ['2015Winter', 'Winter 2015', 'winter',
          new Date(2015, 11, 21), new Date(2016, 2, 21), 8, 0, null, 'toot'],
         ['Football', 'Football Season', 'sports',
-         new Date(2014, 8, 4), new Date(2015, 1, 1), 9, 100, null,'toot'],
+         new Date(2014, 8, 4), new Date(2015, 1, 1), 9, 100, null, 'toot'],
         ['Baseball', 'Baseball Season', 'sports',
          new Date(2015, 2, 31), new Date(2015, 9, 20), 10, 14, null, 'toot'],
         ['Basketball', 'Basketball Season', 'sports',
@@ -279,15 +265,15 @@ lables = [];
       ];
 
   test3 = [['Room', 'Name',  {role: 'tooltip', p: {html: true}}, 'Start', 'End'],
-      [ 'Magnolia Room',  'CSS Fundamentals',   '<h1>hola</h1>', new Date(0,0,0,12,0,0),  new Date(0,0,0,14,0,0),  ],
-      [ 'Magnolia Room',  'Intro JavaScript', 'kk',    new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,0), ],
-      [ 'Magnolia Room',  'Advanced JavaScript', 'kl', new Date(0,0,0,16,30,0), new Date(0,0,0,19,0,0),  ],
-      [ 'Gladiolus Room', 'Intermediate Perl',  'kq' , new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0), ],
-      [ 'Gladiolus Room', 'Advanced Perl',  'kq' ,     new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,0) ],
-      [ 'Gladiolus Room', 'Applied Perl',     'kq' ,   new Date(0,0,0,16,30,0), new Date(0,0,0,18,0,0), ],
-      [ 'Petunia Room',   'Google Charts',   'kq' ,    new Date(0,0,0,12,30,0), new Date(0,0,0,14,0,0),  ],
-      [ 'Petunia Room',   'Closure',     'kq' ,        new Date(0,0,0,14,30,0), new Date(0,0,0,16,0,0),  ],
-      [ 'Petunia Room',   'App Engine',   'kq' ,       new Date(0,0,0,16,30,0), new Date(0,0,0,18,30,0),  ]];
+      [ 'Magnolia Room',  'CSS Fundamentals',   '<h1>hola</h1>', new Date(0, 0, 0, 12, 0, 0),  new Date(0, 0, 0, 14, 0, 0),  ],
+      [ 'Magnolia Room',  'Intro JavaScript', 'kk',    new Date(0, 0, 0, 14, 30, 0), new Date(0, 0, 0, 16, 0, 0), ],
+      [ 'Magnolia Room',  'Advanced JavaScript', 'kl', new Date(0, 0, 0, 16, 30, 0), new Date(0, 0, 0, 19, 0, 0),  ],
+      [ 'Gladiolus Room', 'Intermediate Perl',  'kq' , new Date(0, 0, 0, 12, 30, 0), new Date(0, 0, 0, 14, 0, 0), ],
+      [ 'Gladiolus Room', 'Advanced Perl',  'kq' ,     new Date(0, 0, 0, 14, 30, 0), new Date(0, 0, 0, 16, 0, 0) ],
+      [ 'Gladiolus Room', 'Applied Perl',     'kq' ,   new Date(0, 0, 0, 16, 30, 0), new Date(0, 0, 0, 18, 0, 0), ],
+      [ 'Petunia Room',   'Google Charts',   'kq' ,    new Date(0, 0, 0, 12, 30, 0), new Date(0, 0, 0, 14, 0, 0),  ],
+      [ 'Petunia Room',   'Closure',     'kq' ,        new Date(0, 0, 0, 14, 30, 0), new Date(0, 0, 0, 16, 0, 0),  ],
+      [ 'Petunia Room',   'App Engine',   'kq' ,       new Date(0, 0, 0, 16, 30, 0), new Date(0, 0, 0, 18, 30, 0),  ]];
 
     constructor( private modal: NgbModal,
                  private _projectService: ProjectService,
@@ -348,7 +334,7 @@ lables = [];
 
     function drawChart() {
 
-      var data = google.visualization.arrayToDataTable([
+      let data = google.visualization.arrayToDataTable([
         ['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General',
          'Western', 'Literature', { role: 'annotation' } ],
         ['2010', 10, 24, 20, 32, 18, 5, ''],
@@ -373,7 +359,7 @@ lables = [];
 
       chart.draw(data, google.charts.Bar.convertOptions(options));
     }
-    google.charts.load('current', {'packages': ['bar']});
+    google.charts.load('current', {packages: ['bar']});
     google.charts.setOnLoadCallback(drawChart);
   }
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -465,187 +451,13 @@ lables = [];
     }
 
 
-    ngOnInit() {
-  //     setTimeout(() => {
-  //     google.charts.load('current', { 'packages': ['corechart'] });
-  //     google.charts.setOnLoadCallback(this.drawChart2);
-  //  }, 1000);
-      
-      // this.drawChart();
-      this._authService.getUser(this._authService.userAuth)
-      .subscribe(user => {(this.userApp = user, this.idUser = user.uid);
-                          this._projectService.getProjectByOwner(this.userApp)
-                                              .subscribe(projects => {
-                                                                    this.projectsAux = projects;
-                                                                    this.difDyas = [];
-                                                                    this.allenddates = [];
-                                                                    let projectsInprogress = 0;
-                                                                    let projectsOut = 0;
-                                                                    let projectsCompleted = 0;
-                                                                    let id: string;
-                                                                    let aux9: number;
-          // tslint:disable-next-line:prefer-for-of
-                                                                    for (let index = 0; index < this.projectsAux.length; index++) {
-            // tslint:disable-next-line:no-unused-expression
-            this.projectsAux[index].progress;
-            this.activitiesProjectsApp = [];
-            let numeroActs: number;
-            let aux6: number;
-            let aux7: number;
-            let porcentajeActividad: number;
-            let numeroTasks: number;
-            let porcentajeTask: number;
-            let aux3: number;
-            let aux4: number;
-            let aux5: number;
-            let aux1: number;
-            this._projectService.getActivities(this.projectsAux[index].id).subscribe(acts => {
-                let aux8 = 0;
-                this.activitiesProjectsApp = acts;
-                numeroActs = this.activitiesProjectsApp.length;
-                porcentajeActividad = 100 / numeroActs;
-                aux6 = 100 / numeroActs;
-                // tslint:disable-next-line:prefer-for-of
-                for (let j = 0; j < this.activitiesProjectsApp.length; j++) {
-                  aux7 = this.activitiesProjectsApp[j].progress * aux6;
-                  aux8 += aux7;
-                  this._projectService.getTasks(this.activitiesProjectsApp[j].projectId, this.activitiesProjectsApp[j].id).subscribe(tasks => {
-                       let aux2 = 0;
-                       this.tasksActivitiesApp = tasks;
-                       if ( this.tasksActivitiesApp.length === 0 ) {
-                        try {
-                          this._projectService.setActivityProgress(this.projectsAux[index].id, this.activitiesProjectsApp[j].id, 0 );
-                         } catch {}
-                       } else {
-                       numeroTasks = this.tasksActivitiesApp.length;
-                       porcentajeTask = 100 / numeroTasks;
-                       // tslint:disable-next-line:prefer-for-of
-                       for (let k = 0; k < this.tasksActivitiesApp.length; k++) {
-                         aux1 = this.tasksActivitiesApp[k].progress * porcentajeTask;
-                         aux2 += aux1;
-                         aux3 = aux2 / 100;
-                         aux4 = +(aux3.toFixed(2));
-                         id = this.tasksActivitiesApp[k].idActivity;
-                       }
-                       try {
-                          this._projectService.setActivityProgress(this.projectsAux[index].id, id, aux4 );
-                         } catch {}
-                       }
-                   });
-                }
-                aux9 = +((aux8 / 100).toFixed(2));
-                try {
-                  this._projectService.setProjectProgress( this.projectsAux[index].id , aux9 );
-                 } catch {}
-            });
+    ngOnInit() { }
 
-                                                                    // console.log(this.projectsAux);
-            this.projectsAux.forEach(project => {
-                                                                      this.startD = new Date();
-                                                                      this.endD = new Date(project.endDate['seconds'] * 1000);
-                                                                      this.allenddates.push(this.endD);
-                                                                      this.differenceTime = this.endD.getTime() - this.startD.getTime();
-                                                                      this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
-                                                                      // console.log(this.differenceDays);
-                                                                      this.difDyas.push(this.differenceDays);
-                                                                      // console.log(this.difDyas);
-                                                                      this.event.start = startOfDay(this.startD);
-                                                                      this.event.end = startOfDay(this.endD);
-                                                                      this.event.title = project.name;
-                                                                      this.event.color = colors.green;
-                                                                      this.event.allDay = true;
-                                                                      this.event.resizable.beforeStart = false;
-                                                                      this.event.resizable.afterEnd = false;
-                                                                      this.event.draggable = false;
-                                                                      this.events.push(this.newObj(this.event));
-                                                                    });
-            this.refresh.next();
-                                              }});
-      });
-    }
-
-    createChart() {
-      const that = this;
-      this.chartData = {
-        // labels: this.data.map(t => t.task),
-        labels: this.lables,
-        datasets: [
-          {
-            data: this.data.map(t => {
-              return this.dateDiffInDays(new Date(this.plantingDays), new Date(t.startDate));
-            }),
-            datalabels: {
-              color: '#025ced',
-              formatter(value, context) {
-                return '';
-              }
-            },
-            backgroundColor: 'rgba(63,103,126,0)',
-            hoverBackgroundColor: 'rgba(50,90,100,0)',
-          },
-          {
-            data: this.data.map(t => {
-              return this.dateDiffInDays(new Date(t.startDate), new Date(t.endDate));
-            }),
-            datalabels: {
-              color: '#025ced',
-              formatter(value, context) {
-                return '';
-              }
-            },
-          },
-        ],
-      };
-  
-      this.options = {
-        maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: 'Diagrama Gantt',
-        },
-        legend: { display: false },
-        tooltips: {
-          mode: 'index',
-          callbacks: {
-            label(tooltipItem, d) {
-              let label = d.datasets[tooltipItem.datasetIndex].label || '';
-              const date = new Date(that.plantingDays);
-              if (tooltipItem.datasetIndex === 0) {
-                const diff = that.dateDiffInDays(date, new Date(that.data[tooltipItem.index].startDate));
-                date.setDate(diff + 1);
-                label += 'Fecha Inicio: ' + that.getDate(date);
-              } else if (tooltipItem.datasetIndex === 1) {
-                const diff = that.dateDiffInDays(date, new Date(that.data[tooltipItem.index].endDate));
-                date.setDate(diff + 1);
-                label += 'Fecha Fin: ' + that.getDate(date);
-              }
-              return label;
-            },
-          },
-        },
-        scales: {
-          xAxes: [{
-            stacked: true,
-            ticks: {
-              callback(value, index, values) {
-                const date = new Date(that.plantingDays);
-                date.setDate(value);
-                return that.getDate(date);
-              },
-            },
-          }],
-          yAxes: [{
-            stacked: true,
-          }],
-        },
-      };
-    }
-  
     getDate(date: Date) {
       return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2)
         + '-' + ('0' + (date.getDate())).substr(-2);
     }
-  
+
     dateDiffInDays(a: Date, b: Date) {
       // Discard the time and time-zone information.
       const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
@@ -673,18 +485,11 @@ lables = [];
   <a href="#"><i class="fa fa-twitter"></i></a>
   <a href="#"><i class="fa fa-linkedin"></i></a>
   <a href="#"><i class="fa fa-facebook"></i></a>
-  <p><button mat-button>Contact</button></p>
-</div>`
-    }
-
-    createToolTip = () => {
-      '<p>holaaa</p>';
+</div>`;
     }
 
     mostrar(projectId: string) {
       this.post = false;
-      // google.charts.load('current', { 'packages': ['corechart'] });
-      // google.charts.setOnLoadCallback(this.drawChart2);
       this._authService.getUser(this._authService.userAuth).subscribe(user => {(this.userApp = user); });
       this._projectService.getProject(projectId).subscribe(project => {
                                                                                                               this.projectApp = project;
@@ -717,16 +522,15 @@ lables = [];
                                                                                                                                    // this.colNames = ['Date', 'Low', 'Open', 'Close', 'Tooltip'];
                                                                                                                                    this.dataC.push(data);
                                                                                                                                   }
-                                                                                                                               // this.colNames = ['Date', 'Low', 'Open', 'Close', 'Tool']
-                                                                                                                                  //   };
+
                                                                                                                       });
                                                                                                                       }
 
                     });
                   });
       {
-                    setTimeout(() => { this.post = true; google.charts.load('current', {'packages':['timeline'], 'language': 'es'});
-      google.charts.setOnLoadCallback(this.drawChart4); }, 2000);
+                    setTimeout(() => { this.post = true; google.charts.load('current', {packages: ['timeline'], language: 'es'});
+                                       google.charts.setOnLoadCallback(this.drawChart4); }, 2000);
                   }
   }
 

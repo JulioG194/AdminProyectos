@@ -13,4 +13,6 @@ export interface Project {
     createdAt?: any;
     progress?: number;
     delegates?: User[];
+    comments?: number;
+    resources?: number;
 }

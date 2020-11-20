@@ -8,6 +8,7 @@ export interface Evidence {
     size?: number;
     id?: string;
     tid?: string;
+    projectId?: string;
     userPhoto?: string;
     userId?: string;
     userName?: string;

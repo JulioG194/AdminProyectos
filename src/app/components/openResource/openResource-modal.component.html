@@ -1,0 +1,80 @@
+<button style="width: fit-content; background-color: white;" mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon style="margin-bottom: 15px; color: black;" class="close-icon" color="warn">close</mat-icon>
+</button>
+<h1 mat-dialog-title class="h1">Recursos</h1>
+
+<mat-dialog-content style="background: #0c1b22" [formGroup]="form" class="mat-dialog-content">
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Observaciones">
+            <br>
+            <div class="obs">
+                <div id="app-mensajes" class="scroll2" style="height: 300px;">
+                    <div *ngFor="let comm of comments">
+                        <div class="align photo">
+                            <div class="container space1">
+                                <div class="align3 user">
+                                    <p>{{comm.user.displayName}}</p>
+                                    <p>{{comm.createdAt | date: 'dd/MM/y HH:mm' }}</p>
+                                </div>
+                                <div class="msgTx align">
+                                    <img [src]="comm.user.photoURL" alt="" /> &nbsp;
+                                    <p class="coment">{{comm.comment}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+
+                </div>
+                <br>
+                <span *ngIf="resourceFormControl.comment.touched && resourceFormControl.comment.errors?.whitespace" style="color: red; font-size: 10px;">
+                        No se admiten campos con espacios en blanco</span>
+                <div class="align">
+                    <input style="background: white;" name="message" placeholder="Enviar comentario al Equipo" type="text" formControlName="comment" required />
+                    <button class="btn btn-light" matTooltip="Enviar" (click)="sendComment()">
+                        <mat-icon style="background: #0c1b22;">send</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Archivos">
+
+            <div class="scroll" style="height: 700px;">
+                <br>
+                <div class="files align">
+                    <input type="file" formControlName="file" id="file" style="color: white;" (change)="handleFileInput($event.target.files)" multiple>
+                    <button (click)="onUpdateFiles()">
+                        <mat-icon style="color: white;">check</mat-icon>
+                    </button> &nbsp;
+                    <button (click)="onClearFiles()">
+                        <mat-icon style="color: white;">close</mat-icon>
+                    </button>
+                </div>
+                <div class="grid">
+                    <div *ngFor="let res of resources" class="archivo">
+                        <mat-card class="mat-elevation-z4">
+                            <div class="clear" style="margin: 0 auto;">
+                                <button (click)="downloadFile(res.url)"><mat-icon style="color: white;">arrow_downward</mat-icon></button>
+                            </div>
+
+                            <mat-card-header>
+                                <mat-card-title style="font-size: 14px;">{{res.fileName}}</mat-card-title>
+                            </mat-card-header>
+                            <img mat-card-image [src]="res.url">
+                            <!--<mat-card-content>
+                                <p>The Himalayas is a mountain range in Asia. </p>   
+                            </mat-card-content> -->
+                            <mat-card-actions>
+                                <!-- <button fxFlex="row" mat-button>LIKE</button>
+                                <button fxFlex="row" mat-button>SHARE</button> -->
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+
+    </mat-tab-group>
+
+</mat-dialog-content>

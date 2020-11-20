@@ -171,14 +171,66 @@
 <ng-template #delegate>
     <div *ngIf="projectsApp?.length> 0; else userGuide">
         <div class="btn-GuiaUser">
-            <button (click)="post = !post">Ver guia de usuario</button>
+            <button (click)="post = !post" matTooltip="Ver guia de usuario">
+                <mat-icon>library_books</mat-icon>
+        </button>
         </div>
-        <div>
+        <!-- <div>
             <div>
                 <div class="chart">
                     <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
                     </canvas>
                 </div>
+            </div>
+        </div> -->
+        <div class="view1 view4">
+                        <div>
+                            <mat-card class="example-card">
+                                <mat-card-content>
+                                    <p style="font-size: 20px; text-align: center;">
+                                        Total Tareas
+                                    </p>
+                                    <p style="font-size: 30px; text-align: center;">
+                                        {{tasksNumber}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <br>
+        <div class="view1 view3" style="text-align: center;">
+            <h6>Estadisticas Tareas</h6>
+            <mat-divider></mat-divider>
+            <br>
+            <div style="text-align: center;">
+                <canvas baseChart [data]="pieChartDataTsk" [labels]="pieChartLabelsTsk" [chartType]="pieChartTypeTsk" [options]="pieChartOptionsTsk" [plugins]="pieChartPluginsTsk" [colors]="pieChartColorsTsk" [legend]="pieChartLegendTsk"></canvas>
+            </div>
+        </div>
+        <br>
+        <div class="align2">
+            <br>
+            <div class="view2 container2">
+                <h6>Porcentaje de proyecto</h6>
+                <mat-divider></mat-divider>
+                <br>
+
+                <div class="content" fxLayout="row wrap" fxLayoutGap="2px">
+                    <!-- <div > -->
+                    <mat-card *ngFor="let project of projectsApp" class="mat-elevation-z4 " style="background-color:#082330; ">
+                        <mat-card-content style="text-align: center; ">
+                            <circle-progress [percent]="project.progress" [radius]="50" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Avance'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'"
+                                [animation]="true" [animationDuration]="300">
+
+                            </circle-progress>
+                            <p style="font-size: 12px; color: white;">{{project.name}}</p>
+                        </mat-card-content>
+                        <mat-card-actions>
+
+                        </mat-card-actions>
+                    </mat-card>
+                    <!-- </div> -->
+                </div>
+
             </div>
         </div>
         <br>

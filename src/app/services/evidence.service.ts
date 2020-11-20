@@ -29,14 +29,14 @@ export class EvidenceService {
   files: Evidence[];
   evidences: Observable<Evidence[]>;
 
-  private PHOTOS_FOLDER = 'photos';
+  private RESOURCES_FOLDER = 'resources';
   private FILES_FOLDER = 'files';
 
   constructor(private http: HttpClient, private afs: AngularFirestore) {
-    this.loadFiles(afs);
-    this.evidencesObs.subscribe((files) => {
-      this.files = files;
-    });
+    // this.loadFiles(afs);
+    // this.evidencesObs.subscribe((files) => {
+    //   this.files = files;
+    // });
   }
 
   loadFiles(afs: AngularFirestore) {
@@ -54,7 +54,7 @@ export class EvidenceService {
 
   uploadFilesFirebase(files: Evidence[], uid: User, tid: string) {
     const storageRef = firebase.storage().ref();
-    let url: string;
+    // let url: string;
     for (const item of files) {
       item.isUploading = true;
       if (item.progress >= 100) {
@@ -99,7 +99,7 @@ export class EvidenceService {
   }
 
   private onSavePhoto(photo: Evidence, uid: User) {
-    let id = this.afs.createId();
+    const id = this.afs.createId();
     this.afs.collection('evidences').doc(photo.tid).set({
       tid: photo.tid,
     });
@@ -115,6 +115,57 @@ export class EvidenceService {
         userPhoto: uid.photoURL,
         userId: uid.uid,
         userName: uid.displayName,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  }
+
+  uploadResourcesFirebase(files: Evidence[], user: User, projectId: string) {
+    const storageRef = firebase.storage().ref();
+    for (const item of files) {
+      item.isUploading = true;
+      if (item.progress >= 100) {
+        continue;
+      }
+      const uploadTask: firebase.storage.UploadTask = storageRef
+        .child(`${this.RESOURCES_FOLDER}/${projectId}/ ${item.fileName}`)
+        .put(item.file);
+
+      uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot: firebase.storage.UploadTaskSnapshot) =>
+          (item.progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100),
+        (error) => console.error('Error al subir', error),
+        () => {
+          console.log('Imagen cargada correctamente');
+          uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then((downloadURL) => {
+              console.log('File available at', downloadURL);
+              item.url = this.getString(downloadURL);
+            })
+            .then(() => {
+              item.isUploading = false;
+              item.projectId = projectId;
+              this.onSaveResource(item, user, projectId);
+            });
+        }
+      );
+    }
+  }
+
+  private onSaveResource(photo: Evidence, user: User, projectId: string) {
+    const id = this.afs.createId();
+    this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('resources')
+      .doc(id)
+      .set({
+        fileName: photo.fileName,
+        url: photo.url,
+        type: photo.file.type,
+        user,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
   }

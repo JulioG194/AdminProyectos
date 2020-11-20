@@ -27,11 +27,11 @@
                             <td flex>{{ project.name }}</td>
                             <td>{{ project.client }}</td>
                             <td class="badge" [ngStyle]="{'margin-left': '50px', 'margin-top': '30px'}" [ngClass]="{
-              ' badge-danger': project.status === 'Por Realizar',
-              'badge-info': project.status === 'Realizando',
-              'badge-success': project.status === 'Realizado',
-              'badge-warning': project.status === 'Por Verificar'
-            }">
+                                ' badge-danger': project.status === 'Por Realizar',
+                                'badge-info': project.status === 'Realizando',
+                                'badge-success': project.status === 'Realizado',
+                                'badge-warning': project.status === 'Por Verificar'
+                                }">
                                 <div style="text-align: center; ">
                                     {{ project.status }}
                                 </div>
@@ -130,15 +130,15 @@
                 <td class="position3">{{ tsk.activity.name }}</td>
                 <td class="position4">{{ tsk.project.name }}</td>
                 <td class="position2">
-                    <div class="align">
+                    <!-- <div class="align">
                         <input class="progress" type="number" placeholder="Ingrese % avance" #box (keyup.enter)="
                 updateTskProg(tsk.project.id, tsk.activity.id, tsk.tsk.id, box.value)
-              " />
+              " /> -->
                         <div>{{ tsk.tsk.progress }}%</div>
-                    </div>
+                    <!-- </div> -->
                 </td>
                 <td class="position5">
-                    <button matTooltip="Subir evidencia">
+                    <button (click)= "openEvidenceDelegate()" matTooltip="Subir evidencia">
             <mat-icon>folder</mat-icon>
           </button>
                 </td>

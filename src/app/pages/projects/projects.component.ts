@@ -17,6 +17,7 @@ import { Evidence } from '../../models/evidence.interface';
 import { NewProjectModalComponent } from '../../components/newProject/newProject-modal.component';
 import { EditProjectModalComponent } from '../../components/editProject/editProject-modal.component';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
+import { OpenEvidenceDelegateModalComponent } from 'src/app/components/openEvidenceDelegate/openEvidenceDelegate-modal.component';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -100,14 +101,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  onEnter(idP: string, idA: string, idT: string, value: string) {
-    this.value = value;
-    if ( +this.value > 0 && +this.value <= 100) {
-      this.projectService.setTaskProgress(idP, idA, idT, +(this.value));
-    } else {
-      console.log('numero ingresado incorrecto');
-    }
-  }
 
   openNewProject() {
   const dialogConfig = new MatDialogConfig();
@@ -249,6 +242,19 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  openEvidenceDelegate() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.width = '650px';
+    dialogConfig.panelClass = 'custom-dialog2';
+    dialogConfig.data = {
+      delegates: this.delegates
+    };
+    this.dialog.open(OpenEvidenceDelegateModalComponent, dialogConfig);
+    }
+    
   }
 
 // @Component({

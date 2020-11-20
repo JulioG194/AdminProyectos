@@ -54,6 +54,8 @@ import { OpenEvidenceModalComponent } from '../components/openEvidence/openEvide
 import { EditProjectModalComponent } from '../components/editProject/editProject-modal.component';
 import { EditActivityModalComponent } from '../components/editActivity/editActivity-modal.component';
 import { EditTaskModalComponent } from '../components/editTask/editTask-modal.component';
+import {OpenEvidenceDelegateModalComponent} from '../components/openEvidenceDelegate/openEvidenceDelegate-modal.component';
+import {OpenResourceModalComponent} from '../components/openResource/openResource-modal.component'
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -82,7 +84,9 @@ registerLocaleData(localeEs);
     EvidenceModalComponent1,
     GanttComponent,
     UserGuideModalComponent,
-    OpenEvidenceModalComponent
+    OpenEvidenceModalComponent,
+    OpenEvidenceDelegateModalComponent,
+    OpenResourceModalComponent
   ],
   imports: [
     CommonModule,
@@ -141,7 +145,9 @@ registerLocaleData(localeEs);
     EditActivityModalComponent,
     NewTaskModalComponent,
     EditTaskModalComponent,
-    OpenEvidenceModalComponent
+    OpenEvidenceModalComponent,
+    OpenEvidenceDelegateModalComponent,
+    OpenResourceModalComponent
   ],
 })
 export class PagesModule {}

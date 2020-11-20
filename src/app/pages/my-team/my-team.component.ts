@@ -12,6 +12,8 @@ import { last, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { TasksComponent } from '../tasks/tasks.component';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
+import { OpenResourceModalComponent } from 'src/app/components/openResource/openResource-modal.component';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Component({
   selector: 'app-my-team',
@@ -83,11 +85,13 @@ subscrp: Subscription;
 teamId: string;
 getDelTsk: Subscription;
 numberT: number;
+  //dialog: any;
 
 
   constructor( private teamService: TeamService,
                private authService: AuthService,
-               private projectService: ProjectService ) { }
+               private projectService: ProjectService,
+               public dialog: MatDialog ) { }
 
 onGroupsChange(selectedUsers: User[]) {
   this.selectedUsers = selectedUsers;
@@ -291,4 +295,18 @@ updateTeam() {
     });
   }
 
+  openResources(projectId: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.width = '650px';
+    // dialogConfig.height = '700px';
+    dialogConfig.panelClass = 'custom-dialog2';
+    dialogConfig.data = {
+      // delegates: this.delegates
+      user: this.userGugo,
+      projectId
+    };
+    this.dialog.open(OpenResourceModalComponent, dialogConfig);
+    }
 }
