@@ -375,7 +375,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = false;
-  dialogConfig.width = '650px';
+  dialogConfig.width = '750px';
   dialogConfig.panelClass = 'custom-dialog2';
   dialogConfig.data = {
     delegates: this.delegates

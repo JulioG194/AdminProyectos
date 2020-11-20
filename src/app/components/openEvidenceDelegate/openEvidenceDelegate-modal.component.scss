@@ -73,6 +73,9 @@ mat-icon {
     //padding-right: 1%;
     /* background: rgb(71, 65, 65); */
     background: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
 }
 
 
@@ -109,9 +112,9 @@ mat-icon {
 .grid {
     display: grid;
     grid-template-columns: 30% 30% 30%;
-    grid-template-rows: 300px 300px 300px;
+    grid-template-rows: 350px 350px 350px 350px 350px;
     grid-column-gap: 4%;
-    grid-row-gap: 20px;
+    grid-row-gap: 25px;
     text-align: center;
     padding: 2%;
     margin: 0 auto;
@@ -236,3 +239,11 @@ mat-icon {
     color: rgb(190, 190, 190);
     font-size: 12px;
    }
+
+.coment2 {
+    color: black;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bolder;
+    
+}
