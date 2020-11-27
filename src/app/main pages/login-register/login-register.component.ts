@@ -10,6 +10,8 @@ import Swal from 'sweetalert2/src/sweetalert2.js';
 import * as firebase from 'firebase/app';
 import { ValidatorService } from '../../services/validators.service';
 import { Subscription } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ContactFormModalComponent } from '../../components/contactForm/contactForm-modal.component';
 
 @Component({
   selector: 'app-login-register',
@@ -56,7 +58,8 @@ export class LoginRegisterComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private fb: FormBuilder,
-              private validators: ValidatorService) {}
+              private validators: ValidatorService,
+              public dialog: MatDialog) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -86,6 +89,22 @@ export class LoginRegisterComponent implements OnInit {
 
   get registerFormControl() {
     return this.registerForm.controls;
+  }
+
+  openContactForm() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = false;
+  dialogConfig.width = '700px';
+  dialogConfig.panelClass = 'custom-dialog';
+
+  const dialogRef = this.dialog.open(ContactFormModalComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(
+        data => {
+          console.log('Dialog output:', data);
+        },
+  );
   }
 
   async onRegister() {
@@ -279,12 +298,12 @@ export class LoginRegisterComponent implements OnInit {
 
      async openResetPassword() {
     const { value: email } = await Swal.fire({
-      title: 'Olvide mi contraseña',
+      title: 'Recuperar mi contraseña',
       input: 'email',
       inputPlaceholder: 'Ingrese el correo electrónico',
       showCloseButton: true,
       validationMessage: 'Correo electrónico inválido',
-      confirmButtonText: 'Listo!'
+      confirmButtonText: 'Listo'
     });
 
     if (email) {
@@ -297,7 +316,9 @@ export class LoginRegisterComponent implements OnInit {
     try {
       const value = await this.openResetPassword();
       const email: any = value;
-      await this.authService.resetPassword(email);
+      if (email) {
+        await this.authService.resetPassword(email);
+      }
     } catch (error) {
       Swal.close();
       Swal.fire({

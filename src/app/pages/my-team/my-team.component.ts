@@ -299,7 +299,7 @@ updateTeam() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
-    dialogConfig.width = '650px';
+    dialogConfig.width = '750px';
     // dialogConfig.height = '700px';
     dialogConfig.panelClass = 'custom-dialog2';
     dialogConfig.data = {

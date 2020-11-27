@@ -26,6 +26,7 @@ import { Evidence } from 'src/app/models/evidence.interface';
     projectId: string;
     filesToUploadFirebase: Evidence [] = [];
     userApp: User;
+    isLoading: boolean;
 
     constructor(
       private fb: FormBuilder,
@@ -79,7 +80,7 @@ import { Evidence } from 'src/app/models/evidence.interface';
          this.projectService.createComment(projectId, newUser, comment, this.serverTimeStamp);
         // this.dialogRef.close(this.form.value);
         // this.getComments(projectId);
-
+         this.form.get('comment').reset();
       }
 
       getComments(projectId: string) {
@@ -128,6 +129,7 @@ import { Evidence } from 'src/app/models/evidence.interface';
             photoURL: this.userApp.photoURL
          };
     this.evidenceService.uploadResourcesFirebase(this.filesToUploadFirebase, newUser, this.projectId);
+    this.onClearFiles();
   }
 
   onClearFiles() {

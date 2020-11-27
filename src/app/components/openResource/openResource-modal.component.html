@@ -3,11 +3,11 @@
 </button>
 <h1 mat-dialog-title class="h1">Recursos</h1>
 
-<mat-dialog-content style="background: #0c1b22" [formGroup]="form" class="mat-dialog-content">
-    <mat-tab-group mat-align-tabs="center">
+<mat-dialog-content [formGroup]="form" class="mat-dialog-content">
+    <mat-tab-group style="background: #0c1b22" mat-align-tabs="center">
         <mat-tab label="Observaciones">
             <br>
-            <div class="obs">
+            <div *ngIf="!isLoading" class="obs">
                 <div id="app-mensajes" class="scroll2" style="height: 300px;">
                     <div *ngFor="let comm of comments">
                         <div class="align photo">
@@ -16,7 +16,7 @@
                                     <p>{{comm.user.displayName}}</p>
                                     <p>{{comm.createdAt | date: 'dd/MM/y HH:mm' }}</p>
                                 </div>
-                                <div class="msgTx align">
+                                <div class="msgTx">
                                     <img [src]="comm.user.photoURL" alt="" /> &nbsp;
                                     <p class="coment">{{comm.comment}}</p>
                                 </div>
@@ -51,23 +51,23 @@
                     </button>
                 </div>
                 <div class="grid">
-                    <div *ngFor="let res of resources" class="archivo">
+                    <div *ngFor="let res of resources; let i = index" class="archivo">
                         <mat-card class="mat-elevation-z4">
                             <div class="clear" style="margin: 0 auto;">
                                 <button (click)="downloadFile(res.url)"><mat-icon style="color: white;">arrow_downward</mat-icon></button>
                             </div>
 
                             <mat-card-header>
-                                <mat-card-title style="font-size: 14px;">{{res.fileName}}</mat-card-title>
+                                <mat-card-title style="font-size: 14px;">Recurso {{i + 1}}</mat-card-title>
                             </mat-card-header>
                             <img mat-card-image [src]="res.url">
-                            <!--<mat-card-content>
-                                <p>The Himalayas is a mountain range in Asia. </p>   
-                            </mat-card-content> -->
-                            <mat-card-actions>
-                                <!-- <button fxFlex="row" mat-button>LIKE</button>
-                                <button fxFlex="row" mat-button>SHARE</button> -->
-                            </mat-card-actions>
+                            <mat-card-content>
+                                <p class="coment2">{{res.fileName}}</p>
+                                <div class="photo align">
+                                    <img [src]="res.user.photoURL" alt="" /> &nbsp;&nbsp;
+                                    <p class="coment2">{{res.createdAt | date: 'dd/MM/y HH:mm' }}</p>
+                                </div>
+                            </mat-card-content>
                         </mat-card>
                     </div>
                 </div>

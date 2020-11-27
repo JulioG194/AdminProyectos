@@ -207,13 +207,11 @@ export class ChatComponent implements OnInit {
     this.coworker.photoURL = photo;
 
     this.chatService.getChats(this.userGugo.uid).subscribe(chats => {
+      this.allChats = [];
       this.allChats = chats;
-      // console.log(this.allChats);
+      console.log(this.allChats);
       try {
         this.allChats.sort((a, b) => a.createdAt['seconds'] - b.createdAt['seconds']);
-        this.allChats.forEach(chat => {
-          // console.log(chat.createdAt);
-        });
       } catch {}
       setTimeout(() => {
         this.elemento.scrollTop = this.elemento.scrollHeight;

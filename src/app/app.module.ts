@@ -31,6 +31,7 @@ import { environment } from 'src/environments/environment';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { WindowService } from './services/window.service';
+import { ContactFormModalComponent } from './components/contactForm/contactForm-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { WindowService } from './services/window.service';
     HomepageComponent,
     LoginRegisterComponent,
     PagesComponent,
+    ContactFormModalComponent
   ],
   imports: [
     BrowserModule,
@@ -62,5 +64,8 @@ import { WindowService } from './services/window.service';
   exports: [],
   providers: [WindowService],
   bootstrap: [AppComponent],
+  entryComponents: [
+    ContactFormModalComponent
+  ]
 })
 export class AppModule {}
