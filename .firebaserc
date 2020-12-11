@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "epn-gugo"
+  },
+  "targets": {
+    "epn-gugo": {
+      "hosting": {
+        "web": [
+          "epn-gugo"
+        ]
+      }
+    }
+  }
+}

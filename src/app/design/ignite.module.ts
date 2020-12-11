@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-//import { BrowserModule } from '@angular/platform-browser';
 
 import {IgxButtonModule,
         IgxIconModule,
         IgxLayoutModule,
+        IgxBadgeModule,
+        IgxAvatarModule,
         IgxNavigationDrawerModule,
         IgxRadioModule, IgxRippleModule,
         IgxSwitchModule, IgxToggleModule,
@@ -15,12 +16,12 @@ import {IgxButtonModule,
 
 @NgModule({
   imports: [
-    //BrowserModule,
-  //  BrowserAnimationsModule,
     FormsModule,
     IgxButtonModule,
     IgxIconModule,
     IgxLayoutModule,
+    IgxBadgeModule,
+    IgxAvatarModule,
     IgxNavigationDrawerModule,
     IgxRadioModule,
     IgxRippleModule,
@@ -44,7 +45,9 @@ import {IgxButtonModule,
     IgxToggleModule,
     IgxTooltipModule,
     IgxDropDownModule,
-    IgxNavbarModule
+    IgxNavbarModule,
+    IgxBadgeModule,
+    IgxAvatarModule,
   ]
 })
 export class IgniteModule {}

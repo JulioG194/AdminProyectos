@@ -10,7 +10,6 @@ import { map } from 'rxjs/operators';
 import { Team } from '../models/team.interface';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.interface';
-// tslint:disable-next-line:import-spacing
 import Swal from 'sweetalert2';
 import * as firebase from 'firebase/app';
 

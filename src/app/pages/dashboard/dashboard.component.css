@@ -50,13 +50,14 @@
     width: 30%;
 }
 
+
 /* .chart1 {
     align-items: center;
 } */
 
 .container1 {
     width: 30%;
-   /*  background: rgb(212, 212, 212); */
+    /*  background: rgb(212, 212, 212); */
     padding: 10px;
     height: 40%;
 }
@@ -67,10 +68,8 @@
 }
 
 .container3 {
-    
     padding: 20px;
 }
-
 
 .container1 mat-divider {
     border-top-color: rgb(129, 129, 129);
@@ -292,9 +291,9 @@ mat-divider {
 }
 
 .content {
-    padding: 14px;
+    padding: 40px;
 }
 
 .content>mat-card {
-    width: 400px;
+    width: 280px;
 }

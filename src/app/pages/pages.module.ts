@@ -108,7 +108,6 @@ registerLocaleData(localeEs);
     ChartModule,
     FlexLayoutModule,
     NgCircleProgressModule.forRoot({
-      // set defaults here
       radius: 100,
       outerStrokeWidth: 16,
       innerStrokeWidth: 8,

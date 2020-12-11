@@ -5,10 +5,11 @@
     <h5>{{ userApp.displayName }}</h5>
     <br />
     <img [src]="userApp.photoURL" alt="" />
+    <br>
+    <br>
     <div class="addPhoto">
-        <input type="file" id="file" (change)="uploadFile($event)">
-        <div>{{ uploadPercent | async }}</div>
-        <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
+        <input #file [hidden]="true" type="file" id="file" (change)="uploadFile($event)">
+        <button class="btn btn-warning" matTooltip="Subir Foto" #upload (click)="file.click()"><mat-icon style="width: 17px; height: 7px">add_a_photo</mat-icon></button>
     </div>
 </div>
 

@@ -23,7 +23,7 @@ import { ContactFormModalComponent } from '../../components/contactForm/contactF
 })
 export class LoginRegisterComponent implements OnInit {
   storagePhoto =
-    'https://firebasestorage.googleapis.com/v0/b/tesis-adminproyectos.appspot.com/o/login.png?alt=media&token=ce8a16cb-009c-4d41-b9c0-c493bd8a355b';
+    'https://firebasestorage.googleapis.com/v0/b/epn-gugo.appspot.com/o/iconfinder-3-avatar-2754579_120516.png?alt=media&token=ca4223d0-47c4-44c9-a84d-3486af99ae74';
   serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp();
   userRegister: User = {
     uid: '',
@@ -181,14 +181,12 @@ export class LoginRegisterComponent implements OnInit {
         this.userRegister.assignedTasks = 0;
       }
       this.authService.createUser(this.userRegister, uid);
-      // await this.authService.verifyEmail();
       Swal.fire({
         icon: 'success',
         title: 'Registrado con exito',
-        // text: 'Por favor verifica tu cuenta para poder iniciar',
         position: 'center',
         showCloseButton: true,
-        confirmButtonText: 'Listo!'
+        confirmButtonText: 'Listo'
       });
       this.registerForm.reset();
       this.section = true;
@@ -199,7 +197,7 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'error',
         title: 'Error al autenticar',
         text: this.modalError(error),
-        confirmButtonText: 'Listo!'
+        confirmButtonText: 'Listo'
       });
     }
   }
@@ -235,8 +233,6 @@ export class LoginRegisterComponent implements OnInit {
 
     try {
       const user = await this.authService.login(this.userLogin);
-      const { emailVerified } = user;
-      //if (emailVerified) {
       this.authService.getUser(user).subscribe((userObs) => {
           const loginUser = userObs;
           this.authService.saveUserOnStorage(loginUser);
@@ -265,15 +261,6 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'success',
         title: 'Ingreso Exitoso'
         });
-      // } else {
-      //   Swal.fire({
-      //     icon: 'info',
-      //     title: 'Verifique su cuenta',
-      //     text: 'Para iniciar sesion verifique su cuenta',
-      //     showCloseButton: true,
-      //     confirmButtonText: 'Listo!'
-      //   });
-      // }
     } catch (error) {
       Swal.close();
       Swal.fire({
@@ -326,7 +313,7 @@ export class LoginRegisterComponent implements OnInit {
         title: 'Error al recuperar contraseña',
         text: this.modalError(error),
         showCloseButton: true,
-        confirmButtonText: 'Listo!'
+        confirmButtonText: 'Listo'
       });
     }
   }

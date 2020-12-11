@@ -24,38 +24,26 @@
 
     <div class="rigth">
         <mat-toolbar class="header2">
-            <!-- <div class="image">
-                <img [src]="coworker.photoURL" alt="" />
-            </div> -->
             {{ coworker.displayName }}
         </mat-toolbar>
 
         <div class="scroll-chat" id="app-mensajes">
             <div *ngFor="let chat of allChats">
                 <div class="align photo">
-                    <!-- <div class="align" *ngIf="chat.coworkerEmail == coworker.email"> -->
                     <div class="container space1">
                         <div class="msgTx align" *ngIf="chat.coworkerEmail == coworker.email">
                             <img [src]="userGugo.photoURL" alt="" /> &nbsp;
                             <p>{{ chat.message }}</p>
                         </div>
                     </div>
-                    <!--  </div> -->
-                    <!--   <img src="../../../assets/img/gg.jpg" alt=""> -->
                 </div>
-                <!-- &nbsp; -->
                 <div class="align photo space2">
-                    <!-- <div class="container1"> -->
-                    <!-- &nbsp; &nbsp; -->
-                    <div class="msgRx align" *ngIf="
-              chat.coworkerEmail == userGugo.email &&
-              chat.senderEmail == coworker.email
-            ">
+                    &nbsp; &nbsp;
+                    <div class="msgRx align" *ngIf="chat.coworkerEmail == userGugo.email && chat.senderEmail == coworker.email">
                         <img [src]="coworker.photoURL" alt="" /> &nbsp;
                         <p> {{ chat.message }} </p>
                         &nbsp;&nbsp;
                     </div>
-                    <!-- </div> -->
                 </div>
             </div>
             <br />

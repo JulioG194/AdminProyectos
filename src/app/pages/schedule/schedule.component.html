@@ -1,30 +1,28 @@
 <h2>Cronograma</h2>
 <mat-divider></mat-divider>
-<div *ngIf="userApp.manager == true && projectsAux?.length > 0; else NoProjects ">
+<div *ngIf="userApp.manager == true && projectsApp?.length > 0; else NoProjects ">
     <br>
     <table>
         <thead>
             <tr>
                 <th>Proyecto</th>
-                <th>Fecha de entrega</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de fin</th>
                 <th>Dias restantes</th>
-                <th>Porcentaje de avance</th>
-                <th>Vistas</th>
+                <th>Dias de atraso</th>
+                <th>Herramientas</th>
             </tr>
         </thead>
 
         <tbody>
-            <tr *ngFor="let item of projectsAux; let i = index">
+            <tr *ngFor="let item of projectsApp; let i = index">
                 <td>{{item.name}}</td>
-                <td>{{allenddates[i] | date : "dd/MM/y"}}</td>
-                <td>{{difDyas[i]}}</td>
+                <td>{{item.startDate | date : "dd/MM/y"}}</td>
+                <td>{{item.endDate | date : "dd/MM/y"}}</td>
+                <td>2</td>
+                <td>0</td>
                 <td>
-                    {{item.progress}}%
-                    <!-- <progress max="100" value="{{item.progress}}">  </progress> -->
-                    <mat-progress-bar style="height: 20px;border-radius: 5px;" [appProgressBarColor]="item.progress < 40 ? 'red' : (item.progress >= 40 && item.progress <= 70) ? 'orange' : 'green'" mode="determinate" value="{{item.progress}}"></mat-progress-bar>
-                </td>
-                <td>
-                    <button (click)="mostrar(item.id)">
+                    <button matTooltip="Ver Calendario" (click)="mostrar(item.id)">
                         <mat-icon>notes</mat-icon>
                     </button>
                 </td>
@@ -35,10 +33,9 @@
     <br><br>
     <br>
 
-    <div #chartDiv class="gantt"></div>
+
     <div *ngIf="post == true">
-        <!-- <google-chart class="view1" [data]="dataTable" [type]="chartType" [options]="optionsC" [columns]="colNames"></google-chart> -->
-        <!-- <google-chart [data]="orgChart"></google-chart> -->
+        <div #chartDiv class="gantt"></div>
     </div>
 
 </div>
@@ -47,4 +44,3 @@
     <br>
     <h5>No olvides crear proyectos lo mas pronto :)</h5>
 </ng-template>
-
