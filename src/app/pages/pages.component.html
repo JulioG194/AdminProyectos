@@ -7,6 +7,9 @@
                 <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
                 <igx-icon   fontSet="material">{{ item.name }}</igx-icon>
                 <span >{{ item.text }}</span>
+                <p>
+                    <span *ngIf="item.text == 'Chat'" matBadge="25" matBadgeOverlap="false"></span>
+                </p>
                 </span>
             </nav>
         </ng-template>
