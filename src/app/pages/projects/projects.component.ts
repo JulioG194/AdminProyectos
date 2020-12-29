@@ -17,6 +17,7 @@ import { Evidence } from '../../models/evidence.interface';
 import { NewProjectModalComponent } from '../../components/newProject/newProject-modal.component';
 import { EditProjectModalComponent } from '../../components/editProject/editProject-modal.component';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
+import * as _ from 'lodash';
 import { OpenEvidenceDelegateModalComponent } from 'src/app/components/openEvidenceDelegate/openEvidenceDelegate-modal.component';
 @Component({
   selector: 'app-projects',
@@ -208,7 +209,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               ...r,
               tsk
             };
-             this.tskDelegates.push(obj);
+             this.tskDelegates.unshift(obj);
+             // this.tskDelegates.push(obj);
+             console.log(obj);
+             this.tskDelegates = _.uniqBy(this.tskDelegates, 'taskId');
          });
       });
       this.isLoading = false;

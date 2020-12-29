@@ -62,6 +62,7 @@ export class ProjectService {
   dataDelete$: Observable<any>;
   comments: Observable<any>;
   resources: Observable<any[]>;
+  tasksPrjs: Observable<any[]>;
 
   constructor(private http: HttpClient, private afs: AngularFirestore, private fns: AngularFireFunctions) {
     this.loadProjects(afs);
@@ -491,5 +492,24 @@ export class ProjectService {
         })
       );
     return this.resources;
+  }
+
+
+  getProjectsbyTasks(user: User) {
+    this.tasksPrjs = this.afs
+      .collection('users')
+      .doc(user.uid)
+      .collection('tasks')
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.tasksPrjs;
   }
 }

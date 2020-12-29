@@ -1,7 +1,7 @@
 <h2>Mi equipo</h2>
 <mat-divider></mat-divider>
 <mat-tab-group mat-align-tabs="center">
-    <mat-tab *ngIf="userGugo.manager == true" label="Seleccionar delegados para el equipo">
+    <mat-tab *ngIf="userGugo.manager == true" label="Seleccionar Equipo">
         <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background:#082330; text-align: center;">
             <mat-progress-spinner color="primary" mode="indeterminate" diameter="120">
             </mat-progress-spinner>
@@ -34,7 +34,7 @@
         </div>
     </mat-tab>
 
-    <mat-tab label="Vista general del equipo">
+    <mat-tab label="Ver Equipo">
         <div *ngIf="userGugo.manager; else delegate">
             <div *ngIf="teamGugo.delegates?.length > 0; else NoFormedTeam">
                 <h5>Delegados de tu Equipo</h5>
@@ -67,7 +67,7 @@
     </mat-tab>
 
 
-    <mat-tab label="Lista de equipos por proyecto">
+    <mat-tab label="Ver equipo por proyecto">
         <div class="content" fxLayout="row wrap" fxLayoutGap="16px grid">
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let proj of projectsTeam; let i = index">
                 <mat-card class="mat-elevation-z4">

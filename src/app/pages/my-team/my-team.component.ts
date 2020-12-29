@@ -152,10 +152,12 @@ updateTeam() {
         } else {
             console.log('no pertence a una empresa');
             this.getDelegatesUncompany();
+            this.getProjectsTeam();
         }
     } else {
       if (this.userGugo.company) {
           this.getTeamDelegate();
+          this.getProjectsTasks();
       } else {
         console.log('no pertence a una empresa');
         this.getTeamDelegate();
@@ -203,9 +205,40 @@ updateTeam() {
             });
           });
         });
-        // proj.delegates = _.uniqBy(proj.delegates, 'uid');
       });
     });
+  }
+
+  getProjectsTasks() {
+    this.userGugo = this.authService.userAuth;
+    this.projectService.getProjectsbyTasks(this.userGugo)
+                        .pipe(untilDestroyed(this))
+                        .subscribe(tsks => {
+                           const taskes = _.uniqBy(tsks, 'project.id');
+                           const projects: Project[] = [];
+                           taskes.map(task => {
+                             this.projectService
+                                         .getProject(task.project.id)
+                                         .subscribe(prj => {
+                                            projects.unshift(prj);
+                                            this.projectsTeam = _.uniqBy(projects, 'id');
+                                            this.projectsTeam.map(proj => {
+        // proj.delegates = _.uniqBy(proj.delegates, 'uid');
+        proj.delegates = [];
+        this.projectService.getActivities(proj.id).subscribe(acts => {
+          acts.map(act => {
+            this.projectService.getTasks(proj.id, act.id).subscribe(tskz => {
+              tskz.map(tsk => {
+                proj.delegates.push(tsk.delegate);
+                proj.delegates = _.uniqBy(proj.delegates, 'uid');
+              });
+            });
+          });
+        });
+      });
+                                         });
+                           });
+                        });
   }
 
   getTeamDelegate() {

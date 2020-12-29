@@ -8,6 +8,7 @@
                 <th>Proyecto</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de fin</th>
+                <th>Duracion</th>
                 <th>Dias restantes</th>
                 <th>Dias de atraso</th>
                 <th>Herramientas</th>
@@ -16,9 +17,10 @@
 
         <tbody>
             <tr *ngFor="let item of projectsApp; let i = index">
-                <td>{{item.name}}</td>
+                <td flex>{{item.name}}</td>
                 <td>{{item.startDate | date : "dd/MM/y"}}</td>
                 <td>{{item.endDate | date : "dd/MM/y"}}</td>
+                <td>25</td>
                 <td>2</td>
                 <td>0</td>
                 <td>
@@ -34,8 +36,8 @@
     <br>
 
 
-    <div *ngIf="post == true">
-        <div #chartDiv class="gantt"></div>
+    <div>
+        <div *ngIf="post == true" #chartDiv class="gantt"></div>
     </div>
 
 </div>
