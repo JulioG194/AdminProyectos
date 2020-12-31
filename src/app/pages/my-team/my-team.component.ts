@@ -85,8 +85,6 @@ subscrp: Subscription;
 teamId: string;
 getDelTsk: Subscription;
 numberT: number;
-  //dialog: any;
-
 
   constructor( private teamService: TeamService,
                private authService: AuthService,

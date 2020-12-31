@@ -113,6 +113,9 @@ export class LoginRegisterComponent implements OnInit {
        if (!this.registerForm.valid) {
         return;
       }
+       if (!this.registerForm.value.role) {
+        return;
+      }
        const role = this.registerForm.value.role;
        const company = this.selected;
        const email = this.registerForm.value.email;
@@ -158,7 +161,6 @@ export class LoginRegisterComponent implements OnInit {
            await this.sucessRegister(role);
        }
     }  catch (error) {
-      this.userRegister.manager = null;
       console.log(error);
       Swal.close();
       Swal.fire({
@@ -167,6 +169,7 @@ export class LoginRegisterComponent implements OnInit {
         text: this.modalError(error),
         confirmButtonText: 'Listo!'
       });
+      this.userRegister.manager = null;
     }
   }
 
@@ -192,12 +195,13 @@ export class LoginRegisterComponent implements OnInit {
       this.section = true;
     } catch (error) {
       console.log(error);
+      this.userRegister.manager = null;
       Swal.close();
       Swal.fire({
         icon: 'error',
-        title: 'Error al autenticar',
+        title: 'Error al registrar',
         text: this.modalError(error),
-        confirmButtonText: 'Listo'
+        confirmButtonText: 'Listo!'
       });
     }
   }
@@ -205,8 +209,8 @@ export class LoginRegisterComponent implements OnInit {
   failedRegister() {
       Swal.fire({
               icon: 'error',
-              title: 'Usuario no encontrado',
-              text: 'Por favor verifique su correo, rol o comuniquese con la empresa a la que pertenece',
+              title: 'Error uso empresarial',
+              text: 'No existe registro del usuario o su rol no coincide',
               position: 'center',
               showCloseButton: true,
               confirmButtonText: 'Listo!'
@@ -328,7 +332,7 @@ export class LoginRegisterComponent implements OnInit {
       case 'auth/invalid-email':
         return 'Correo electrónico no válido';
       case 'auth/email-already-in-use':
-        return 'Usuario ya existente';
+        return 'Usuario existente';
       case 'auth/weak-password':
         return 'Contraseña muy debil intente ingresando otra';
       case 'auth/user-not-found':
