@@ -5,28 +5,53 @@
 <mat-dialog-content [formGroup]="form" class="mat-dialog-content">
     <mat-tab-group style="background-color: #082330;" mat-align-tabs="center">
         <mat-tab label="Archivos">
-            <!-- <br> -->
-            <label style="color: white; padding: 10px;">Subido por Valentinito</label>
+            <label style="color: white; padding: 10px;">Subido por: {{deleg.displayName}}</label>
             <br>
             <div class="scroll" style="height: 600px;">
                 <div class="grid">
-                    <div *ngFor="let num of [1,2,3,4,5]" class="archivo">
+                    <div *ngFor="let evd of evidences; let i = index" class="archivo">
                         <mat-card class="mat-elevation-z4">
                             <div class="clear">
                                 <button><mat-icon style="color: white;">arrow_downward</mat-icon></button>
                             </div>
-                            <!-- <button style="float: rigth;">D</button> -->
                             <mat-card-header>
-                                <mat-card-title style="font-size: 14px;">Evidencia {{num}}</mat-card-title>
+                                <mat-card-title style="font-size: 14px;">Evidencia {{i + 1}}</mat-card-title>
                             </mat-card-header>
-                            <img mat-card-image src="../../../assets/img/pdf.png">
+                            <img *ngIf="
+                  evd.type == 'image/jpeg' ||
+                  evd.type == 'image/png' ||
+                  evd.type == 'image/gif' ||
+                  evd.type == 'image/bmp'
+                " [src]="evd.url" style="width: 100px; height: 100px;" alt="img" />
+                            <img *ngIf="evd.type == 'application/pdf'" style="width: 100px; height: 100px;" src="../../../assets/img/pdf.png" alt="pdf" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                  evd.type == 'application/msword' ||
+                  evd.type == 'application/vnd.oasis.opendocument.text'
+                " src="../../../assets/img/word.png" style="width: 100px; height: 100px;" alt="word" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                  evd.type == 'application/vnd.ms-excel' ||
+                  evd.type == 'application/vnd.oasis.opendocument.spreadsheet'
+                " src="../../../assets/img/excel.jpg" style="width: 100px; height: 100px;" alt="excel" />
+                            <img *ngIf="evd.type == 'text/plain'" style="width: 100px; height: 100px;" src="../../../assets/img/txt.png" alt="" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.oasis.opendocument.presentation' ||
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.presentationml.presentation' ||
+                  evd.type == 'application/vnd.ms-powerpoint'
+                " src="../../../assets/img/pp.jpg" style="width: 100px; height: 100px;" alt="ppt" />
                             <mat-card-content>
-                                <p class="coment2">Documento Evidencia</p>
-                                <p class="coment2">19/11/2020 - 19:51</p>
+                                <p class="coment2">{{evd.fileName}}</p>
+                                <div class="photo align">
+                                    <img [src]="evd.userPhoto" alt="photURL" [matTooltip]="evd.userName" /> &nbsp;&nbsp;
+                                    <p class="coment2">{{evd.createdAt | date: 'dd/MM/y HH:mm' }}</p>
+                                </div>
                             </mat-card-content>
                             <mat-card-actions>
-                                <!-- <button fxFlex="row" mat-button>LIKE</button>
-                                <button fxFlex="row" mat-button>SHARE</button> -->
                             </mat-card-actions>
                         </mat-card>
                     </div>
@@ -36,25 +61,25 @@
         <mat-tab label="Observaciones">
             <div class="obs">
                 <div class="scroll2" style="height: 300px;">
-                    <div *ngFor="let num of [1]">
+                    <div *ngFor="let obs of observations">
                         <div class="align photo">
                             <div class="container space1">
                                 <div class="align3 user">
-                                    <p>Alexandra Gualotuña</p>
-                                    <p>25/11/2020</p>
+                                    <p>{{obs.user.displayName}}</p>
+                                    <p>{{obs.createdAt | date: 'dd/MM/y HH:mm' }}</p>
                                 </div>
                                 <div class="msgTx">
-                                    <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
-                                    <p class="coment">La evidencia no esta muy clara, porfavor podrias cambiarla </p>
+                                    <img [src]="obs.user.photoURL" alt="photo" [matTooltip]="obs.user.displayName" /> &nbsp;
+                                    <p class="coment">{{obs.observation}}</p>
                                 </div>
                             </div>
                         </div>
                         <br>
                     </div>
                 </div>
-                <div class="align">
-                    <input name="message" cols="" placeholder="Enviar Comentario" rows="2" required />
-                    <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                <div class="align" (keyup.enter)="sendComment()">
+                    <input name="message" cols="" placeholder="Enviar Observacion" rows="2" type="text" formControlName="comment" required />
+                    <button class="btn btn-light" matTooltip="Enviar" (click)="sendComment()">
                     <mat-icon >send</mat-icon>
                     </button>
                 </div>
@@ -63,20 +88,19 @@
         <mat-tab label="Avance">
             <br>
             <div class="obs2 obs">
-                <circle-progress [percent]=100 [radius]="60" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Progreso'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'" [animation]="true"
-                    [animationDuration]="300">
+                <circle-progress [percent]="task?.progress" [radius]="60" [outerStrokeWidth]="5" [innerStrokeWidth]="2" [titleColor]="'#ffffff'" [titleFontSize]="'18'" [subtitle]="'Progreso'" [unitsColor]="'#ffffff'" [outerStrokeColor]="'#17A2B8'" [innerStrokeColor]="'#C7E596'"
+                    [animation]="true" [animationDuration]="300">
                 </circle-progress>
                 <p>Evidencia correcta</p>
 
                 <div class="accept">
-                    <button>Confirmar progreso</button>
-                    <!--  </div> -->
+                    <button (click)="checkTask()">Confirmar progreso</button>
                 </div>
                 <br>
                 <p>Corregir progreso</p>
                 <div class="align1 avance">
-                    <input style="background: white;" placeholder="Ingrese el progreso" required/>
-                    <button class="btn btn-light" matTooltip="Enviar" type="submit">
+                    <input style="background: white;" type="number" placeholder="Ingrese el progreso corregido" min="0" max="100" formControlName="progress" required/>
+                    <button class="btn btn-light" matTooltip="Enviar" (click)="getValueProgress()">
                         <mat-icon>send</mat-icon>
                     </button>
                 </div>

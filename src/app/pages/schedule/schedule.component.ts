@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ElementRef, AfterViewInit } from '@angular/core';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import { TeamService } from '../../services/team.service';
@@ -8,7 +8,7 @@ import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
 import {GoogleChartInterface} from 'ng2-google-charts/ng2-google-charts';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
-
+import Swal from 'sweetalert2';
 declare let google: any;
 @Component({
   selector: 'app-schedule',
@@ -31,7 +31,11 @@ tasksActivity: Task[][];
 projectsApp: Project[] = [];
 activitiesProject: Activity[] = [];
 differenceTime: number;
+differenceTime2: number;
+differenceTime3: number;
 differenceDays: number;
+restDays: number;
+delayedD: number;
 difDyas: number[] = [];
 post = false;
 projects: Project[] = [];
@@ -75,6 +79,10 @@ optionsC: any;
 automaticClose = false;
 data = [];
 lables = [];
+durations: number[] = [];
+rests: number[] = [];
+delayed: number[] = [];
+
 
     @ViewChild('chartDiv', { static: false }) pieChart: ElementRef;
 
@@ -115,7 +123,7 @@ lables = [];
     }
     getProjects() {
     const user = this.authService.userAuth;
-    this.projectService.getProjectByOwner(user)
+    this.projectService.getProjectByOwnerDate(user)
                         .pipe(untilDestroyed(this))
                         .subscribe(projects => {
                           projects.map(project => {
@@ -123,6 +131,27 @@ lables = [];
                             project.endDate = new Date(project.endDate['seconds'] * 1000);
                           });
                           this.projectsApp = projects;
+                          this.durations = [];
+                          this.rests = [];
+                          this.projectsApp.map(prj => {
+                            // prj.startDate = new Date(prj.startDate['seconds'] * 1000);
+                            // prj.endDate = new Date(prj.endDate['seconds'] * 1000);
+                            this.differenceTime = Math.abs(prj.endDate.getTime() - prj.startDate.getTime());
+                            this.differenceTime2 = prj.endDate.getTime() - new Date().getTime();
+                            this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
+                            this.restDays = Math.ceil(this.differenceTime2 / (1000 * 3600 * 24));
+                            console.log(this.restDays);
+                            if (this.restDays < 0) {
+                                 const day = Math.abs(this.restDays);
+                                 this.rests.push(0);
+                                 this.delayed.push(day);
+                            } else {
+                               const day = Math.abs(this.restDays);
+                               this.rests.push(day);
+                               this.delayed.push(0);
+                            }
+                            this.durations.push(this.differenceDays);
+                          });
                           this.isLoading = false;
                         });
   }
@@ -157,14 +186,16 @@ lables = [];
   }
 
 
-    questioner(displayName: string, img: string, progress: number, startDate: Date, endDate: Date, status: string, employment: string) {
+    questioner(name: string, displayName: string, img: string, progress: number, startDate: Date, endDate: Date, status: string, employment: string) {
         const dateStartD = startDate.getDate();
-        const monthStartD = startDate.getMonth();
+        const monthStartD = startDate.getMonth() + 1;
         const yearStartD = startDate.getFullYear();
         const dateEndD = endDate.getDate();
-        const monthEndD = endDate.getMonth();
+        const monthEndD = endDate.getMonth() + 1;
         const yearEndD = endDate.getFullYear();
-        return `<div class="card2" style="width:250px;height:300px;padding:10px; border-radius: 10px;">
+        const color = this.colorStatus(status);
+        return `<p style="font-size:17px; text-transform: uppercase; text-align:center; color:#082330; font-weight: bold;">${name}</p>
+                <div class="card2" style="width:250px;height:300px;padding:10px; border-radius: 10px;">
                 <div style="display:flex; flex-direction: row; justify-content: space-between;">
                 <img src="${img}" alt="John" style="width:50px; height: 50px;border-radius: 30px;align=”middle”;">
                 <div style="display:flex; flex-direction: column">
@@ -172,15 +203,29 @@ lables = [];
                 <p class="title" style="font-size:15px;text-align:center">${employment}</p>
                 </div>
                 </div>
-                <p style="font-size:15px;font-weight: bold;">Avance: ${progress} </p>
+                <p style="font-size:15px;font-weight: bold;">Avance: ${progress} % </p>
                 <p style="font-size:15px;text-align:center">Fecha de inicio: ${dateStartD}/${monthStartD}/${yearStartD}</p>
                 <p style="font-size:15px;text-align:center">Fecha de fin: ${dateEndD}/${monthEndD}/${yearEndD}</p>
-                <p style="font-size:15px;text-align:center">Estado: ${status} </p>
+                <p style="font-size:15px;text-align:center" class="badge ${color}">Estado: ${status} </p>
                 <a href="#"><i class="fa fa-dribbble"></i></a>
                 <a href="#"><i class="fa fa-twitter"></i></a>
                 <a href="#"><i class="fa fa-linkedin"></i></a>
                 <a href="#"><i class="fa fa-facebook"></i></a>
               </div>`;
+    }
+
+    colorStatus(status: string) {
+      let color = '';
+      if (status === 'Por Realizar') {
+        color = 'badge-danger';
+      } else if (status === 'Realizando') {
+        color = 'badge-info';
+      } else if (status === 'Realizado') {
+        color = 'badge-success';
+      } else if (status === 'Por Verificar') {
+        color = 'badge-warning';
+      }
+      return color;
     }
 
     mostrar(projectId: string) {
@@ -191,11 +236,6 @@ lables = [];
           .getProject(projectId)
           .subscribe(project => {
               this.projectApp = project;
-              this.projectApp.startDate = new Date(this.projectApp.startDate['seconds'] * 1000);
-              this.projectApp.endDate = new Date(this.projectApp.endDate['seconds'] * 1000);
-              this.differenceTime = Math.abs(this.projectApp.endDate.getTime() - this.projectApp.startDate.getTime());
-              this.differenceDays = Math.ceil(this.differenceTime / (1000 * 3600 * 24));
-              console.log(this.differenceDays);
               this.projectService
               .getActivities(this.projectApp.id)
               .subscribe( activities => {
@@ -213,7 +253,7 @@ lables = [];
                                               let data: any[] = [];
                                               data = [this.activitiesProject[i].name,
                                               this.activitiesProject[i].tasks[j].name,
-                                              this.questioner(this.activitiesProject[i].tasks[j].delegate.displayName,
+                                              this.questioner(this.activitiesProject[i].tasks[j].name, this.activitiesProject[i].tasks[j].delegate.displayName,
                                               this.activitiesProject[i].tasks[j].delegate.photoURL,
                                               this.activitiesProject[i].tasks[j].progress,
                                               this.activitiesProject[i].tasks[j].startDate,
@@ -230,8 +270,15 @@ lables = [];
                   });
       { setTimeout(() => {
         this.post = true;
+        Swal.fire({
+              allowOutsideClick: false,
+              text: 'Por favor, espere...',
+              timer: 2000,
+              icon: 'info',
+            });
         google.charts.load('current', {packages: ['timeline'], language: 'es'});
         google.charts.setOnLoadCallback(this.drawChart4);
+        Swal.showLoading();
       },
       2000);
     }

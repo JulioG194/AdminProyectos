@@ -2,11 +2,6 @@
 @import url("https://unpkg.com/@fortawesome/fontawesome-free-webfonts@^1.0.9/css/fa-regular.css");
 @import url("https://unpkg.com/@fortawesome/fontawesome-free-webfonts@^1.0.9/css/fa-solid.css");
 @import '~igniteui-angular/lib/core/styles/themes/index';
-
-/* * {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-} */
-
 .customIcon {
     vertical-align: middle;
     font-size: 50px;
@@ -18,13 +13,9 @@
     font-size: 35px;
     width: 35px;
     height: 35px;
-    /* letter-spacing: 25px; */
 }
 
 $dark-navbar: igx-navbar-theme( $text-color: white,
-
-/* $background: linear-gradient( to bottom, rgb(34 , 145, 126), black), */
-
 $background: linear-gradient( to bottom,
 rgb(34,
 189,
@@ -47,5 +38,4 @@ $hover-icon-color: rgb(0,
 
 .btn {
     border: 0px solid transparent;
-    /* this was 1px earlier */
 }

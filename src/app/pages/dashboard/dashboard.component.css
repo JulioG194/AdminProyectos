@@ -10,7 +10,6 @@
 .align {
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
 }
 
 .align2 {
@@ -25,7 +24,6 @@
     border: 1px solid black;
     padding: 10px;
     background: rgb(12, 27, 34);
-    /* background: rgb(212,212,212); */
     align-items: center;
     color: white;
 }
@@ -50,14 +48,8 @@
     width: 30%;
 }
 
-
-/* .chart1 {
-    align-items: center;
-} */
-
 .container1 {
     width: 30%;
-    /*  background: rgb(212, 212, 212); */
     padding: 10px;
     height: 40%;
 }
@@ -96,11 +88,9 @@
 }
 
 .box {
-    /* margin-top: 30px; */
     width: 100%;
     height: 200px;
     perspective: 1000px;
-    /* background: hotpink; */
     padding: 10px;
 }
 
@@ -127,7 +117,6 @@ img {
 
 .front h4 {
     color: rgb(23, 14, 105);
-    /* font-size: 150%; */
 }
 
 .front.back {
@@ -166,14 +155,6 @@ img {
     margin-top: 60px;
 }
 
-
-/* mat-list h1 {
-    margin-top: -15px;
-    font-size: 50px;
-    text-align: center;
-    font-family: Channel; 
-} */
-
 button {
     background: rgb(212, 212, 212);
     color: black;
@@ -187,18 +168,10 @@ mat-icon {
     font-size: 20px;
 }
 
-
-/* button:hover {
-    background: rgb(127, 185, 18);
-    color: black;
-    cursor: pointer;
-} */
-
 mat-card {
     width: 100%;
     height: 200px;
     background-color: floralwhite;
-    /* border: solid black; */
 }
 
 .color1 {
@@ -244,9 +217,6 @@ h6 {
     color: rgb(23, 180, 180);
 }
 
-
-/*CSS para tabla de presentacion */
-
 table {
     background-color: white;
     width: 100%;
@@ -282,7 +252,6 @@ mat-divider {
     margin: 0 auto;
     height: 80%;
     width: 85%;
-    /* background-color: rgb(212, 212, 212); */
 }
 
 .example-header-image {

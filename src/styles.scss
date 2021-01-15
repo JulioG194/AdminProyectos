@@ -1,18 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-
-//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import 'assets/scss/my-theme.scss';
 @import 'assets/scss/my-theme2.scss';
 @import 'assets/scss/my-theme3.scss';
-
-/* @import '~igniteui-angular/lib/core/styles/themes/index';
-@include igx-core();
-@include igx-theme($default-palette);
- */
-
-
-/* autoprefixer grid: on */
-
 html,
 body {
     height: 100%;
@@ -136,26 +124,18 @@ $green-palette: igx-palette($primary: #09f, $secondary: #72da67, $surface: #333)
 }
 
 .mat-tab-label {
-    // min-width: 25px !important;
     padding: 5px;
     background-color: transparent;
     color: white;
     font-weight: 700;
 }
-
-
-/* Styles for the active tab label */
 
 .mat-tab-label.mat-tab-label-active {
-    // min-width: 25px !important;
     padding: 5px;
     background-color: transparent;
     color: white;
     font-weight: 700;
 }
-
-
-/* Styles for the ink bar */
 
 .mat-ink-bar {
     background-color: green;

@@ -15,4 +15,5 @@ export interface Project {
     delegates?: User[];
     comments?: number;
     resources?: number;
+    manager?: User;
 }

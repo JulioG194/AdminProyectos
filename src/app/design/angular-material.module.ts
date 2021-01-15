@@ -18,8 +18,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatNativeDateModule } from '@angular/material';
 
-// import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
 //
 // Navigation
 //
@@ -69,7 +67,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -88,7 +85,6 @@ const modules: any[] = [
   MatSlideToggleModule,
 
   MatNativeDateModule,
-  // MatMomentDateModule,
 
   MatMenuModule,
   MatSidenavModule,
@@ -121,7 +117,6 @@ const modules: any[] = [
   MatTableModule,
   FormsModule,
   ReactiveFormsModule
-  //BrowserAnimationsModule
 
 ];
 

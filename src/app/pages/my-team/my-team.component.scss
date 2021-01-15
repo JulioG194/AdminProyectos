@@ -13,9 +13,6 @@ mat-divider {
     border-top-color: white;
 }
 
-
-/*CSS para selecion de equipo*/
-
 .card {
     min-width: 200px;
     min-height: 50px;
@@ -23,10 +20,7 @@ mat-divider {
     border: solid 1px rgb(65, 37, 42);
 }
 
-ul {
-    /* align-items: center; */
-    /* margin: 0px auto; */
-}
+ul {}
 
 li {
     display: grid;
@@ -43,7 +37,6 @@ mat-list-option {
 .end {
     display: flex;
     justify-content: space-between;
-    /* background: white; */
     padding: 10px;
 }
 
@@ -60,13 +53,6 @@ button {
     padding: 7px;
     font-size: 18px;
 }
-
-
-/* button:hover {
-    background: rgb(78, 122, 115);
-    color: white;
-}
- */
 
 .post {
     display: flex;
@@ -93,9 +79,6 @@ button {
     margin-top: 100px;
 }
 
-
-/* CSS equipo ya formado  */
-
 .container {
     width: 100%;
     margin: 0px auto;
@@ -105,7 +88,6 @@ table {
     width: 100%;
     background: rgb(12, 27, 34);
     text-align: left;
-    /* border-collapse: collapse; */
     min-width: 400px;
     overflow-x: auto;
     border: 3px solid black;
@@ -115,7 +97,6 @@ table {
 
 th,
 td {
-    /* border: 1px solid black; */
     padding: 10px;
     text-align: center;
 }
@@ -125,7 +106,6 @@ td {
 }
 
 thead {
-    /* background-color:rgb(21, 128, 101); */
     background: rgb(212, 212, 212);
     color: black;
     border-bottom: solid 3px black;
@@ -135,12 +115,6 @@ tr:nth-child(even) {
     background-color: rgb(42, 49, 61);
     color: rgb(212, 212, 212);
 }
-
-
-/* tr:hover td {
-    background-color: rgb(245, 213, 125);
-    color: white;
-} */
 
 .style {
     width: 200px;
@@ -223,11 +197,6 @@ a.mat-stroked-button .mat-icon {
     }
 }
 
-// .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-//     color: white;
-//     background-color: #082330;
-// }
-
 .empty {
     width: 70%;
     text-align: center;
@@ -245,4 +214,3 @@ a.mat-stroked-button .mat-icon {
     background: rgb(161, 2, 2);
     color: white;
 }
-

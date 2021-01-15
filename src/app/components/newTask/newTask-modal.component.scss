@@ -3,16 +3,12 @@
     height: 635px;
     background-color: rgb(42, 49, 61);
     color: rgb(212, 212, 212);
-    /* border: solid rgb(77, 83, 71); */
     margin: 0px auto;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    /* border: solid rgb(92, 92, 92); */
-    /*  padding: -10px; */
-    /* max-width: 500px; */
     padding: 25px;
 }
 
@@ -31,7 +27,6 @@ mat-form-field {
 
 .container .placeholder {
     color: white;
-    /* font-size: 20px; */
 }
 
 button {
@@ -42,16 +37,7 @@ button {
     border-radius: 10px;
     padding: 10px;
     font-size: 15px;
-    /* margin-top: 6%; */
 }
-
-
-/* button:hover {
-    background: rgb(20, 109, 112);
-    color: black;
-}
-
- */
 
 .close-button {
     float: right;
@@ -59,20 +45,6 @@ button {
     right: -24px;
 }
 
-// .close-icon {
-//     transition: 1s ease-in-out;
-// }
-// .close-icon:hover {
-//     transform: rotate(180deg);
-// }
-// ::ng-deep .icon-outside .close-button {
-//     float: right;
-//     top: -52px;
-//     right: -52px;
-// }
-// ::ng-deep .icon-outside .mat-dialog-container {
-//     overflow: unset
-// }
 button:focus {
     outline: none !important;
 }

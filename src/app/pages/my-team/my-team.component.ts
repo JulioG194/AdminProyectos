@@ -8,9 +8,8 @@ import Swal from 'sweetalert2/src/sweetalert2.js';
 import { Project } from '../../models/project.interface';
 import { ProjectService } from '../../services/project.service';
 import * as _ from 'lodash';
-import { last, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { TasksComponent } from '../tasks/tasks.component';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
 import { OpenResourceModalComponent } from 'src/app/components/openResource/openResource-modal.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -35,6 +34,7 @@ export class MyTeamComponent implements OnInit, OnDestroy {
   partnersAll: User[] = [];
   projectsTeam: Project[] = [];
   numbersTasks = 0;
+  manager: User;
 
   userGugo: User = {
     displayName: '',
@@ -64,7 +64,6 @@ export class MyTeamComponent implements OnInit, OnDestroy {
   teamsAux1: Team[] = [];
   delegatesAux: User[] = [];
   delegatesAux1: User[] = [];
-  // managers: string[] = [];
   managerAux: User = {
       displayName: '',
       email: '',
@@ -104,17 +103,23 @@ onGroupsChangePlus(selectedUsersPlus: User[]) {
 async addNewTeam() {
   if ( this.selectedUsers.length > 0) {
     try {
-      await this.teamService.setTeamtoUser(this.userGugo, this.selectedUsers);
+      console.log('************', this.selectedUsers);
+      await this.setTeam(this.userGugo, this.selectedUsers);
       Swal.fire({
           allowOutsideClick: false,
           icon: 'success',
-          title: 'Guardado con exito',
+          title: 'Equipo Guardado',
+          text: 'Delegados agregados al equipo con éxito',
+          showCloseButton: true,
+          confirmButtonText: 'Listo!'
         });
     } catch (error) {
       Swal.fire({
           icon: 'error',
           title: 'Error al guardar',
           text: error,
+          showCloseButton: true,
+          confirmButtonText: 'Listo!'
         });
     }
   } else {
@@ -124,6 +129,20 @@ async addNewTeam() {
       text: 'No se han seleccionado personas para tu equipo'
     });
   }
+}
+
+async setTeam(manager: User, users: User[]) {
+  await this.teamService.setTeamtoUser(manager, users);
+  this.teamService.sendNotificationNewTeam(manager, users).subscribe(data => {
+        console.log(data);
+      });
+}
+
+removeTeam(managerId: string, delegateId: string) {
+  this.teamService.deleteDelegate(managerId, delegateId);
+  this.teamService.sendNotificationRemoveTeam(managerId, delegateId).subscribe(data => {
+        console.log(data);
+      });
 }
 
 updateTeam() {
@@ -175,11 +194,15 @@ updateTeam() {
          this.teamId = id;
          this.teamService.getDelegatesId(this.teamId).pipe(untilDestroyed(this)).subscribe(delegates => {
          this.usersGugo = _.xorBy(usersGugoArray, delegates, 'uid');
+         this.usersGugo = _.reject(this.usersGugo, {manager: true});
+         console.log(this.usersGugo);
          this.teamGugo.delegates = delegates;
          this.isLoading = false;
         });
        } else {
          this.usersGugo = usersGugoArray;
+         console.log(this.usersGugo);
+         this.usersGugo = _.reject(this.usersGugo, {manager: true});
          this.isLoading = false;
        }
     });
@@ -192,6 +215,7 @@ updateTeam() {
       this.projectsTeam = projs;
       this.projectsTeam.map(proj => {
         // proj.delegates = _.uniqBy(proj.delegates, 'uid');
+        proj.manager = this.userGugo;
         proj.delegates = [];
         this.projectService.getActivities(proj.id).subscribe(acts => {
           acts.map(act => {
@@ -223,7 +247,9 @@ updateTeam() {
                                             this.projectsTeam.map(proj => {
         // proj.delegates = _.uniqBy(proj.delegates, 'uid');
         proj.delegates = [];
-        this.projectService.getActivities(proj.id).subscribe(acts => {
+        this.authService.getUserById(proj.ownerId).subscribe(mnger => {
+          proj.manager = mnger;
+          this.projectService.getActivities(proj.id).subscribe(acts => {
           acts.map(act => {
             this.projectService.getTasks(proj.id, act.id).subscribe(tskz => {
               tskz.map(tsk => {
@@ -232,6 +258,7 @@ updateTeam() {
               });
             });
           });
+        });
         });
       });
                                          });
@@ -315,18 +342,29 @@ updateTeam() {
             Swal.fire({
             allowOutsideClick: false,
             icon: 'warning',
-            text: 'No se puede borrar al delegado, tiene tareas en proceso asignadas'
+            text: 'No se puede remover al delegado, tiene tareas en proceso asignadas',
+            title: 'Aviso Equipo',
+            confirmButtonText: 'Listo!',
+            showCloseButton: true
             });
           } else {
-            this.teamService.deleteDelegate(this.teamId, delegateId);
-            Swal.fire('Listo!', 'Delegado removido de tu equipo.', 'success');
+            // this.teamService.deleteDelegate(this.teamId, delegateId);
+            this.removeTeam(this.teamId, delegateId);
+            Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            text: 'Delegado removido del equipo de trabajo',
+            title: 'Equipo Actualizado',
+            confirmButtonText: 'Listo!',
+            showCloseButton: true
+            });
           }
         });
       }
     });
   }
 
-  openResources(projectId: string) {
+  openResources(projectId: string, delegates: User[], projectName: string, manager: User) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
@@ -334,9 +372,11 @@ updateTeam() {
     // dialogConfig.height = '700px';
     dialogConfig.panelClass = 'custom-dialog2';
     dialogConfig.data = {
-      // delegates: this.delegates
+      delegates,
       user: this.userGugo,
-      projectId
+      projectId,
+      projectName,
+      manager
     };
     this.dialog.open(OpenResourceModalComponent, dialogConfig);
     }

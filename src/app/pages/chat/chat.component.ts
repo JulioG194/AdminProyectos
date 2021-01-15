@@ -132,7 +132,6 @@ export class ChatComponent implements OnInit {
                                            }
                                            this.removeDelegate(this.userGugo);
                                            this.delegatesAux1 = this.delegatesAux1.sort();
-                                           // this.getUniqueDelegates();
                                        });
                           });
                         });
@@ -140,25 +139,6 @@ export class ChatComponent implements OnInit {
                       }
                      });
   }
-
-  // getUniqueDelegates() {
-  //   this.delegatesAux1.filter((elem, pos) => this.delegatesAux1.indexOf(elem) === pos);
-  //   let element = 0;
-  //   let decrement = this.delegatesAux1.length - 1;
-  //   while (element < this.delegatesAux1.length) {
-  //                 while (element < decrement) {
-  //                   if (this.delegatesAux1[element].email === this.delegatesAux1[decrement].email) {
-  //                       this.delegatesAux1.splice(decrement, 1);
-  //                       decrement--;
-  //                   } else {
-  //                       decrement--;
-  //                   }
-  //                 }
-  //                 decrement = this.delegatesAux1.length - 1;
-  //                 element++;
-  //                                                           }
-
-  // }
 
   removeDelegate(delegate) {
     this.delegatesAux1.forEach( (item, index) => {

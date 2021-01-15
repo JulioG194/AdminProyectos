@@ -25,7 +25,7 @@ import Swal from 'sweetalert2';
     types: any = ['Proyecto de Investigación',
                   'Proyecto de Inversión',
                   'Proyecto de Infraestructura',
-                  'Proyecto de Informática',
+                  'Proyecto de Desarrollo de Software',
                   'Proyecto de Construcción',
                   'Proyecto de Desarrollo de Productos y Servicios',
                   'Proyecto de Desarrollo Sostenible',
@@ -101,13 +101,7 @@ import Swal from 'sweetalert2';
               confirmButtonText: 'Sí, editar el proyecto!'
           }).then((result) => {
               if (result.value) {
-              // this.projectService.deleteProject(projectId);
               this.dialogRef.close(this.form.value);
-              // Swal.fire(
-              //   'Listo!',
-              //   'Tu proyecto ha sido eliminado.',
-              // 'success'
-              // );
             }
           });
       }

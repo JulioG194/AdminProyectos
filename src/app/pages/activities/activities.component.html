@@ -3,10 +3,6 @@
         <h1>{{ projectApp.name }}</h1>
         <div class="container">
             <h5>Agrege las actividades del proyecto:</h5>
-            <!-- <mat-form-field>
-            <input matInput type="text" [(ngModel)]="projectApp.name" disabled required>
-        </mat-form-field> -->
-
             <mat-form-field>
                 <input matInput placeholder="Nombre de la actividad" type="text" name="name" [(ngModel)]="activityProject.name" required>
             </mat-form-field>
@@ -23,10 +19,6 @@
         </div>
     </form>
 
-
-    <!-- 
-    <mat-label>Tareas a realizar</mat-label><br>
- -->
     <div *ngIf="tasks.length > 0 ; else postTasks ">
         <div>
             <br>
@@ -76,20 +68,4 @@
         </div>
     </ng-template>
 
-
-
-
-    <!-- <div>
-                <mat-form-field>
-                    <input matInput placeholder="Evidencia" type="file" accept=".pdf,.jpg,.png" multiple>
-                </mat-form-field>
-            </div>
-             -->
-    <!-- 
-    </div> -->
 </div>
-
-<!-- 
-<div *ngIf="post2 == true; else postTasks ">
-    <br>
-</div> -->

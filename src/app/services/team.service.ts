@@ -14,6 +14,7 @@ import { User } from '../models/user.interface';
 import Swal from 'sweetalert2';
 import * as firebase from 'firebase/app';
 import { Task } from '../models/task.interface';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -42,11 +43,12 @@ export class TeamService {
   usersToChooseS: string[];
   usersCompany: Observable<User[]>;
   tasksDelegate: Observable<Task[]>;
-
+  data$: Observable<any>;
   constructor(
     private http: HttpClient,
     private afs: AngularFirestore,
-    private authService: AuthService
+    private authService: AuthService,
+    private fns: AngularFireFunctions
   ) {
     this.loadTeams(afs);
     this.teamsObs.subscribe((teams) => {
@@ -304,6 +306,48 @@ export class TeamService {
         })
       );
     return this.tasksDelegate;
+  }
+
+  sendNotificationNewTeam(manager: User, delegates: User[]) {
+    console.log(delegates);
+    const callable = this.fns.httpsCallable('notificationNewTeam');
+    this.data$ = callable({ manager, delegates });
+    // Imprimir el resultado que puedes enviar desde el functions
+    return this.data$;
+    // this.data$.subscribe(data => console.log(data));
+  }
+
+   sendNotificationRemoveTeam(managerId: string, delegateId: string) {
+    const callable = this.fns.httpsCallable('notificationRemoveDelegateTeam');
+    this.data$ = callable({ managerId, delegateId });
+    // Imprimir el resultado que puedes enviar desde el functions
+    return this.data$;
+    // this.data$.subscribe(data => console.log(data));
+  }
+
+  sendNotificationFileResource(user: User, delegates: User[], projectName: string) {
+    const callable = this.fns.httpsCallable('notificationNewFileResources');
+    this.data$ = callable({ user, delegates, projectName });
+    return this.data$;
+  }
+
+  sendNotificationFileResourceDel(user: User, delegates: User[], projectName: string, manager: User) {
+    const callable = this.fns.httpsCallable('notificationNewFileResourcesDel');
+    this.data$ = callable({ user, delegates, projectName, manager });
+    return this.data$;
+  }
+
+
+  sendNotificationCommentResource(user: User, delegates: User[], projectName: string) {
+    const callable = this.fns.httpsCallable('notificationNewCommentResources');
+    this.data$ = callable({ user, delegates, projectName });
+    return this.data$;
+  }
+
+  sendNotificationCommentResourceDel(user: User, delegates: User[], projectName: string, manager: User) {
+    const callable = this.fns.httpsCallable('notificationNewCommentResourcesDel');
+    this.data$ = callable({ user, delegates, projectName, manager });
+    return this.data$;
   }
 
 }

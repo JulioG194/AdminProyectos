@@ -4,7 +4,6 @@ import { ProjectService } from '../../services/project.service';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/models/project.interface';
 import { NgForm, FormGroup, FormControl } from '@angular/forms';
-// tslint:disable-next-line:import-spacing
 import  Swal  from 'sweetalert2/src/sweetalert2.js';
 
 import { Activity } from 'src/app/models/activity.interface';
@@ -26,16 +25,10 @@ export interface DialogData {
 })
 export class ActivitiesComponent implements OnInit {
 
- /*  dialog: any; */
-
   test = true;
   empty = true;
   id: string;
   idActivity: string;
-  team: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers', 'Alexa', 'Julio', 'Yeye', 'Anto'];
-  /* tasks: string[] = [];
-  tasks1: string[] = [];  */
-
   tasks: Task[] = [];
 
   projectApp: Project = {
@@ -69,31 +62,16 @@ export class ActivitiesComponent implements OnInit {
     this._projectService.getProject(this.id).subscribe(project => {
       this.projectApp = project;
       console.log(this.projectApp);
-    /*   if ( !this.empty) {
-
-    } */
     });
-
-/*     if ( this.empty === false ) {
-          this._projectService.getTasks(this.projectApp, this.activityProject).subscribe(tasks => {
-          this.tasks = tasks;
-          console.log(this.tasks);
-    });
-    } */
-
 
   }
 
-  openTask():void {
+  openTask(): void {
     const dialogRef = this.dialog.open(TaskComponent, {
     width: '700px',
     data: { activity: this.activityProject, project: this.projectApp }
   });
 
-   /*  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed')
-  }); */
-    // console.log(this.activityProject);
   }
 
   onSaveActivity( form: NgForm ) {
@@ -109,7 +87,6 @@ export class ActivitiesComponent implements OnInit {
 
 
     this._projectService.setActivitiestoProject(this.projectApp.id, this.activityProject);
-   // this.activityProject.id = this._projectService.idActivity;
     this.post = false;
     this.activities = [];
     this._projectService.getActivitybyName(this.activityProject, this.projectApp).subscribe(activities => {
@@ -122,7 +99,6 @@ export class ActivitiesComponent implements OnInit {
             console.log(this.tasks);
         });
     });
-  //  this.empty = false;
 
     Swal.close();
 
@@ -187,9 +163,6 @@ export class TaskComponent implements OnInit {
         text: 'Espere por favor...'
       });
       Swal.showLoading();
-
-      // this._projectService.setTaskstoActivity(this.data.project, this.data.activity.id, this.task);
-
       Swal.close();
 
 

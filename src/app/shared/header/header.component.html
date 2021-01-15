@@ -1,16 +1,13 @@
 <mat-toolbar *ngIf="!isLoading" class="align">
-    <!-- <img style="width: 50px;" src="../../../assets/img/poli.png" /> -->
     <div class="name">GuGo</div>
     <div class="name">Version Web v1.0.0-2020.26.10 - {{manager}}</div>
     <div class="headerTools">
         <button mat-icon-button color="primary" [matMenuTriggerFor]="notification">
-            <mat-icon matBadge="15" matBadgeColor="warn" matTooltip="Ver notificaciones">notifications</mat-icon>
+            <mat-icon [matBadge]="nots.length" matBadgeColor="warn" matTooltip="Ver notificaciones">notifications</mat-icon>
         </button>
 
         <button class="btn btn-outline-info shadow-none" mat-button [matMenuTriggerFor]="profile">
-      <!-- <div > -->
             <img class="image" matTooltip="Ver mi perfil" [src]="userGugo.photoURL" alt="" />
-      <!-- </div> -->
         </button>
 
         <mat-menu #notification="matMenu" class="containerNotification">
@@ -18,8 +15,8 @@
                 <h6 style="color:black">Notificaciones</h6>
                 <mat-divider></mat-divider>
                 <br />
-                <div *ngFor="let notif of notifications; let indice = index" class="btnNot">
-                    <label>{{ notif }}{{ indice + 1 }}</label>
+                <div *ngFor="let notif of nots; let indice = index" class="btnNot">
+                    <label>{{ notif.body }}</label>
                 </div>
                 <div>
                     <button (click)="openNotifications()">Ver todas</button>
@@ -46,9 +43,6 @@
             </div>
         </mat-menu>
     </div>
-    <!-- <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; background: white;">
-        <mat-spinner class="spinner" diameter="20" style="background-color: midnightblue;"></mat-spinner>
-    </div> -->
 
 </mat-toolbar>
 

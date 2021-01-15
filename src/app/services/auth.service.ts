@@ -256,7 +256,8 @@ export class AuthService {
               id: snap.cid,
               name: snap.name,
               address: snap.address,
-              ref: snap.ref
+              ref: snap.ref,
+              logo: snap.logo
             };
           });
       } else if ( company === 'Empresa' && role === 'false' ) {

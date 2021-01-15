@@ -8,11 +8,9 @@
 }
 
 .box {
-    /* margin-top: 30px; */
     width: 100%;
     height: 200px;
     perspective: 1000px;
-    /* background: hotpink; */
     padding: 10px;
 }
 
@@ -34,12 +32,10 @@
 img {
     width: 150px;
     height: 150px;
-    border-radius: 75px;
 }
 
 .front h4 {
     color: rgb(23, 14, 105);
-    /* font-size: 150%; */
 }
 
 .front.back {
@@ -82,7 +78,6 @@ mat-card {
     width: 100%;
     height: 200px;
     background-color: floralwhite;
-    /* border: solid black; */
 }
 
 .color1 {
@@ -127,9 +122,6 @@ mat-card-title {
 h6 {
     color: rgb(23, 180, 180);
 }
-
-
-/*CSS para tabla de presentacion */
 
 table {
     background-color: white;

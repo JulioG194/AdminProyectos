@@ -7,9 +7,6 @@
     src: url(../../../assets/fuente/Channel.ttf);
 }
 
-
-/*header*/
-
 .align1 {
     display: flex;
     flex-direction: row;
@@ -57,14 +54,8 @@
     background: rgb(8, 35, 48);
 }
 
-
-/*Login-registro*/
-
 .container2 {
     width: 30%;
-    /* background: linear-gradient(to bottom, rgb(21, 128, 101), rgb(11, 113, 131)); */
-    /* background: white; */
-    /* padding-top: 2.5%; */
     margin: 0px auto;
     padding: 3%;
     padding-top: 2%;
@@ -79,7 +70,6 @@
 
 .btn-sign {
     width: 100%;
-    /*  background: rgb(112, 43, 58); */
     background: rgb(74, 105, 109);
     color: white;
     padding: 7px;
@@ -121,9 +111,6 @@ h3 {
 .test {
     float: right;
 }
-
-
-/*logo*/
 
 .logo {
     text-align: center;

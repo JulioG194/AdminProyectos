@@ -23,7 +23,7 @@ import { ContactFormModalComponent } from '../../components/contactForm/contactF
 })
 export class LoginRegisterComponent implements OnInit {
   storagePhoto =
-    'https://firebasestorage.googleapis.com/v0/b/epn-gugo.appspot.com/o/iconfinder-3-avatar-2754579_120516.png?alt=media&token=ca4223d0-47c4-44c9-a84d-3486af99ae74';
+    'https://firebasestorage.googleapis.com/v0/b/epn-gugo.appspot.com/o/uni-avtar.jpg?alt=media&token=04e188b6-35cb-4bc0-bd5e-9f100307878f';
   serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp();
   userRegister: User = {
     uid: '',
@@ -201,7 +201,8 @@ export class LoginRegisterComponent implements OnInit {
         icon: 'error',
         title: 'Error al registrar',
         text: this.modalError(error),
-        confirmButtonText: 'Listo!'
+        confirmButtonText: 'Listo!',
+        showCloseButton: true,
       });
     }
   }
@@ -283,7 +284,7 @@ export class LoginRegisterComponent implements OnInit {
       this.userRegister.employment = 'Gestor de proyectos';
     } else {
       this.userRegister.manager = false;
-      this.userRegister.employment = 'Delegado en poyectos';
+      this.userRegister.employment = 'Delegado de proyectos';
     }
   }
 

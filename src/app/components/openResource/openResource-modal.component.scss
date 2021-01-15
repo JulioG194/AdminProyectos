@@ -2,24 +2,19 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-
 .h1 {
-    //color: white;
     font-size: 25px;
     color: rgb(12, 27, 34);
-    //padding: 15px;
     text-align: left;
 }
 
 button {
     background: rgb(212, 212, 212);
     color: black;
-    //width: 100%;
     border: none;
     border-radius: 10px;
     padding: 10px;
     font-size: 15px;
-    /* margin-top: 6%; */
 }
 
 .close-button {
@@ -28,11 +23,9 @@ button {
     right: -24px;
 }
 
-
 .align {
     display: flex;
     flex-direction: row;
-    /*   align-items: center; */
 }
 
 mat-toolbar {
@@ -61,22 +54,15 @@ mat-icon {
     font-size: 25px;
 }
 
-
-
 .msgTx {
     max-width: 100%;
-    //min-width: 10%;
     border-radius: 15px;
-    //border: 1px solid white;
     color: white;
-    //padding-right: 1%;
-    /* background: rgb(71, 65, 65); */
     background: transparent;
     display: flex;
     flex-direction: row;
     align-items: left;
 }
-
 
 .test>div {
     max-width: 80%;
@@ -89,21 +75,15 @@ mat-icon {
 }
 
 .archivo {
-    //padding: 5px;
-    //border: 1px solid white;
-    //color: black;
-    //background: rgb(212, 212, 212);
     height: 100%;
 }
 
 .scroll {
     max-height: 525px;
     overflow-y: scroll;
-    //min-height: 250px;
 }
 
 .scroll2 {
-    //max-height: 500px;
     overflow-y: scroll;
     max-height: 300px;
 }
@@ -119,13 +99,10 @@ mat-icon {
     margin: 0 auto;
 }
 
-
 .mat-dialog-content {
     height: 600px;
     overflow: scroll;
-
 }
-
 
 .custom-dialog2 {
     height: 100%;
@@ -133,16 +110,15 @@ mat-icon {
 
 .align {
     display: flex;
-    flex-direction: row ;
-    //justify-content: space-between;
+    flex-direction: row;
     justify-content: space-evenly;
 }
 
-.align input{
+.align input {
     width: 90%;
 }
 
-.align button{
+.align button {
     width: 10%;
     background: transparent;
     color: white;
@@ -164,6 +140,7 @@ mat-icon {
 .obs2 {
     text-align: center;
 }
+
 .obs2 circle-progress {
     align-items: center;
     margin: 0 auto;
@@ -180,16 +157,15 @@ mat-icon {
     align-items: center;
     text-align: center;
     display: flex;
-    flex-direction: row ;
+    flex-direction: row;
     justify-content: space-evenly;
 }
-.align1 button{
+
+.align1 button {
     width: 10%;
     background: transparent;
     color: white;
 }
-
-
 
 .files {
     align-items: center;
@@ -197,13 +173,12 @@ mat-icon {
     margin-right: 10px;
 }
 
-.files button{
+.files button {
     width: 45px;
     height: 35px;
     background: #0c1b22;
     color: white;
 }
-
 
 mat-icon {
     font-size: 20px;
@@ -233,9 +208,9 @@ mat-icon {
     background: #0c1b22;
 }
 
-.user p{
- color: rgb(190, 190, 190);
- font-size: 12px;
+.user p {
+    color: rgb(190, 190, 190);
+    font-size: 12px;
 }
 
 .coment2 {
@@ -243,10 +218,9 @@ mat-icon {
     font-size: 12px;
     text-align: center;
     font-weight: bolder;
-    
 }
 
-.info{
+.info {
     display: flex;
     flex-direction: column;
 }

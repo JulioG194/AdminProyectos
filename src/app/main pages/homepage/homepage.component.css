@@ -15,17 +15,14 @@
 
 .header {
     display: flex;
-    /* background: black; */
     justify-content: space-between;
 }
 
 .header p {
     font-family: Channel;
     font-size: 45px;
-    /*background: rgb(49, 48, 48); */
     color: black;
     padding: 25px;
-    /* margin: right; */
 }
 
 .all {
@@ -35,7 +32,6 @@
 ul,
 ol {
     list-style: none;
-    /*   margin-top: -5px; */
 }
 
 .slideshow {

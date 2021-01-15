@@ -115,6 +115,10 @@
             <mat-icon>delete</mat-icon>
             <span>Eliminar actividad</span>
           </button>
+                                <button mat-menu-item (click)="deleteActivity(act.id)">
+            <mat-icon>books</mat-icon>
+            <span>Agregar Tarea</span>
+          </button>
                             </mat-menu>
                         </div>
 
@@ -202,14 +206,14 @@
                         <mat-icon>delete</mat-icon>
                         <span>Eliminar tarea</span>
                       </button>
-                                                        <button mat-menu-item (click)="openEvidence(task.id,act.id,task.progress)">
+                                                        <button mat-menu-item (click)="openEvidence(act.projectId,act.id,task.id,task.delegate, task.name)">
                         <mat-icon>folder_open</mat-icon>
-                        <span>Evidencia</span>
+                        <span>Ver Evidencia</span>
                       </button>
-                                                        <button mat-menu-item (click)="checkTask(act.id, task.id, task.progress)">
+                                                        <!-- <button mat-menu-item (click)="checkTask(act.id, task.id, task.progress)">
                                                             <mat-icon>done_outline</mat-icon>
                                                             <span>Verificado</span>
-                                                        </button>
+                                                        </button> -->
                                                     </mat-menu>
                                                 </td>
                                                 <td class="position24"></td>

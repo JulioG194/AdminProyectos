@@ -32,8 +32,6 @@ import {IgxButtonModule,
     IgxNavbarModule
   ],
   exports: [
-   // BrowserModule,
- //   BrowserAnimationsModule,
     FormsModule,
     IgxButtonModule,
     IgxIconModule,

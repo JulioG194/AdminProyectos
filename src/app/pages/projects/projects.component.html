@@ -76,7 +76,7 @@
 
                 <div>
                     <button class="btnProject" (click)="openNewProject()">
-        Crear Nuevo Proyecto
+        Nuevo Proyecto
       </button>
                 </div>
             </div>
@@ -134,11 +134,11 @@
                         <input class="progress" type="number" placeholder="Ingrese % avance" #box (keyup.enter)="
                 updateTskProg(tsk.project.id, tsk.activity.id, tsk.tsk.id, box.value)
               " /> -->
-                        <div>{{ tsk.tsk.progress }}%</div>
+                    <div>{{ tsk.tsk.progress }}%</div>
                     <!-- </div> -->
                 </td>
                 <td class="position5">
-                    <button (click)= "openEvidenceDelegate()" matTooltip="Subir evidencia">
+                    <button (click)="openEvidenceDelegate(tsk.project.id, tsk.activity.id, tsk.tsk.id, tsk.manager, tsk.tsk.name )" matTooltip="Subir evidencia">
             <mat-icon>folder</mat-icon>
           </button>
                 </td>

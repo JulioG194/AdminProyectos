@@ -12,8 +12,6 @@ import { Team } from 'src/app/models/team.interface';
 import format from 'date-fns/format';
 import { datos } from '../gantt/data';
 
-// import { Foo, datos } from './data';
-
 export interface DataG {
   actividad: string;
   datos: any[];
@@ -31,7 +29,6 @@ export class GanttComponent implements OnInit {
   data = [];
   data1 = [];
   post = false;
-  // data: Data[] = [];
   datos: DataG[] = [];
   projectApp: Project = {
     name: '',
@@ -114,12 +111,10 @@ aux7: number;
   lables = [];
   lables1 = [];
   title = '';
-  // lables: string [] = [];
 
   createChart() {
     const that = this;
     this.chartData = {
-      // labels: this.data.map(t => t.task),
       labels: this.lables,
       datasets: [
         {
@@ -199,7 +194,6 @@ aux7: number;
   }
 
   dateDiffInDays(a: Date, b: Date) {
-    // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
@@ -255,9 +249,7 @@ aux7: number;
                                                                                                                                  this.activitiesProject[i].tasks[j].startDate = new Date(this.activitiesProject[i].tasks[j].startDate['seconds'] * 1000);
                                                                                                                                  let st: string;
                                                                                                                                  st = format(this.activitiesProject[i].tasks[j].startDate, 'yyyy-MM-dd HH:mm:ss');
-                                                                                                                                 // console.log( );
                                                                                                                                  let end: string;
-                                                                                                                                 ////
                                                                                                                                  this.activitiesProject[i].tasks[j].endDate = new Date(this.activitiesProject[i].tasks[j].endDate['seconds'] * 1000);
                                                                                                                                  end = format(this.activitiesProject[i].tasks[j].endDate, 'yyyy-MM-dd HH:mm:ss');
                                                                                                                                  const dato: any = {
@@ -269,7 +261,6 @@ aux7: number;
                                                                                                                                  };
                                                                                                                                  this.data.push(dato);
                                                                                                                                  console.log(this.data);
-                                                                                                                                 // console.log(this.data);
                                                                                                                                  this.lables.push(this.activitiesProject[i].tasks[j].name);
                                                                                                                                 }
                                                                                                                     });

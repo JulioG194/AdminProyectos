@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-header',
@@ -14,19 +15,7 @@ import { User } from 'src/app/models/user.interface';
 export class HeaderComponent implements OnInit {
   panelOpenState = false;
   post = true;
-  notifications: string[] = [
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-    'Notificacion',
-  ];
+  nots: any[] = [];
 
   userGugo: User = {
     displayName: '',
@@ -53,7 +42,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit() {
@@ -65,6 +55,7 @@ export class HeaderComponent implements OnInit {
         this.manager = 'Delegado';
       }
       this.isLoading = false;
+      this.getNotifications(this.userGugo.uid);
     });
   }
   public ProbarlaApp() {
@@ -83,6 +74,13 @@ export class HeaderComponent implements OnInit {
     await this.authService.logout();
     this.router.navigate(['']).then(() => {
       location.reload();
+    });
+  }
+
+  getNotifications(uid: string) {
+    this.projectService.getNotifications(uid).subscribe(nots => {
+      this.nots = nots;
+      console.log(this.nots);
     });
   }
 }

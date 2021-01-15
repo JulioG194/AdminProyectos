@@ -9,8 +9,8 @@
             <mat-form-field>
                 <mat-label>Delegado</mat-label>
                 <mat-select name="taskdelegate" [(ngModel)]="task.delegate">
-                    <mat-option *ngFor="let delegate of delegates" [value]="delegate.name">
-                        {{ delegate.name }}
+                    <mat-option *ngFor="let delegate of delegates" [value]="delegate.displayName">
+                        {{ delegate.displayName }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

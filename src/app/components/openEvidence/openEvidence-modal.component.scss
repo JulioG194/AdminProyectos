@@ -2,25 +2,19 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-
-
 .h1 {
-    //color: white;
     font-size: 25px;
     color: rgb(12, 27, 34);
-    //padding: 15px;
     text-align: left;
 }
 
 button {
     background: rgb(212, 212, 212);
     color: black;
-    //width: 100%;
     border: none;
     border-radius: 10px;
     padding: 10px;
     font-size: 15px;
-    /* margin-top: 6%; */
 }
 
 .close-button {
@@ -29,11 +23,9 @@ button {
     right: -24px;
 }
 
-
 .align {
     display: flex;
     flex-direction: row;
-    /*   align-items: center; */
 }
 
 mat-toolbar {
@@ -62,22 +54,15 @@ mat-icon {
     font-size: 25px;
 }
 
-
-
 .msgTx {
     max-width: 100%;
-    //min-width: 10%;
     border-radius: 15px;
-    //border: 1px solid white;
     color: white;
-    //padding-right: 1%;
-    /* background: rgb(71, 65, 65); */
     background: transparent;
     display: flex;
     flex-direction: row;
     align-items: left;
 }
-
 
 .test>div {
     max-width: 80%;
@@ -89,21 +74,14 @@ mat-icon {
     border-radius: 150px;
 }
 
-.archivo {
-    //padding: 5px;
-    //border: 1px solid white;
-    //color: black;
-    //background: rgb(212, 212, 212);
-}
+.archivo {}
 
 .scroll {
     max-height: 525px;
     overflow-y: scroll;
-    //min-height: 250px;
 }
 
 .scroll2 {
-    //max-height: 500px;
     overflow-y: scroll;
     max-height: 250px;
 }
@@ -119,15 +97,9 @@ mat-icon {
     margin: opx auto;
 }
 
-
 .mat-dialog-content {
-    //display: block;
-    //padding: 0 24px;
-    //max-height: 65vh;
     overflow-y: scroll;
-    //-webkit-overflow-scrolling: touch;
 }
-
 
 .custom-dialog2 {
     height: 100%;
@@ -135,15 +107,14 @@ mat-icon {
 
 .align {
     display: flex;
-    flex-direction: row ;
-    //justify-content: space-between;
+    flex-direction: row;
 }
 
-.align input{
+.align input {
     width: 90%;
 }
 
-.align button{
+.align button {
     width: 10%;
     background: transparent;
     color: white;
@@ -165,6 +136,7 @@ mat-icon {
 .obs2 {
     text-align: center;
 }
+
 .obs2 circle-progress {
     align-items: center;
     margin: 0 auto;
@@ -177,13 +149,14 @@ mat-icon {
 }
 
 .accept {
-    //background-color: rgb(42, 49, 61);
     color: rgb(212, 212, 212);
 }
+
 .avance {
     margin: 0 auto;
 }
-.avance input{
+
+.avance input {
     width: 45%;
     background: transparent;
     border: none;
@@ -192,7 +165,6 @@ mat-icon {
 
 .avance button {
     width: 15%;
-
 }
 
 .align1 {
@@ -200,14 +172,16 @@ mat-icon {
     align-items: center;
     text-align: center;
     display: flex;
-    flex-direction: row ;
+    flex-direction: row;
     justify-content: space-evenly;
 }
-.align1 button{
+
+.align1 button {
     width: 10%;
     background: transparent;
     color: white;
 }
+
 .clear button {
     float: right;
     height: 30px;
@@ -223,15 +197,14 @@ mat-icon {
     justify-content: space-between;
 }
 
-.user p{
+.user p {
     color: rgb(190, 190, 190);
     font-size: 12px;
-   }
-   
+}
+
 .coment2 {
     color: black;
     font-size: 12px;
     text-align: center;
     font-weight: bolder;
-    
 }

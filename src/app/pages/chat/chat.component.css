@@ -23,14 +23,12 @@ mat-divider {
 
 .rigth {
     width: 70%;
-    /* background: rgb(241, 243, 242); */
     background: rgb(42, 49, 61);
 }
 
 .align {
     display: flex;
     flex-direction: row;
-    /*   align-items: center; */
 }
 
 mat-toolbar {
@@ -38,15 +36,12 @@ mat-toolbar {
 }
 
 .header1 {
-    /* background: rgb(64, 90, 94); */
     background: rgb(12, 27, 34);
     color: white;
 }
 
 .header2 {
-    /* background: wheat; */
     background: rgb(212, 212, 212);
-    /* background: white; */
     color: black;
 }
 
@@ -77,14 +72,12 @@ mat-toolbar {
 }
 
 .contacts button:hover {
-    /* background: #d1ffa6; */
     background: white;
 }
 
 .send {
     height: 10%;
     padding: 5px;
-    /* background: rgb(255, 255, 255); */
     background: white;
 }
 
@@ -92,7 +85,6 @@ mat-toolbar {
     width: 100%;
     border-radius: 5px;
     border: 2px solid gray;
-    /* margin-top: 25px; */
 }
 
 .send button {
@@ -146,7 +138,6 @@ mat-icon {
     border: 1px solid white;
     color: black;
     padding-right: 1%;
-    /* background: rgb(71, 65, 65); */
     background: white;
 }
 
@@ -156,7 +147,6 @@ mat-icon {
     border-radius: 15px;
     border: 1px solid black;
     color: rgb(212, 212, 212);
-    /*  padding-right: 1%; */
     background: rgb(12, 27, 34);
 }
 

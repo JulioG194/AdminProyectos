@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
     types: any = ['Proyecto de Investigación',
                   'Proyecto de Inversión',
                   'Proyecto de Infraestructura',
-                  'Proyecto de Informática',
+                  'Proyecto de Desarrollo de Software',
                   'Proyecto de Construcción',
                   'Proyecto de Desarrollo de Productos y Servicios',
                   'Proyecto de Desarrollo Sostenible',
@@ -78,7 +78,6 @@ import Swal from 'sweetalert2';
           });
           return;
         }
-        // console.log(this.form.value
         this.dialogRef.close(this.form.value);
       }
   }

@@ -129,7 +129,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             Swal.fire({
             allowOutsideClick: false,
             icon: 'success',
-            title: 'Proyecto agregado con exito'
+            title: 'Proyectos',
+            text: 'Proyecto agregado con éxito',
+            showCloseButton: true,
+            confirmButtonText: 'Listo!'
           });
           }
         },
@@ -165,7 +168,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             Swal.fire({
             allowOutsideClick: false,
             icon: 'success',
-            title: 'actividad editada con exito'
+            title: 'Avance Tarea',
+            text: 'Se ha corregido el progreso en la tarea ',
+            confirmButtonText: 'Listo!',
+            showCloseButton: true
           });
           }
         },
@@ -203,16 +209,19 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       resp.map(r => {
          const {project, activity, taskId} = r;
          this.projectService.getTask(project.id, activity.id, taskId).subscribe(tsk => {
-             tsk.startDate =  new Date(tsk.startDate['seconds'] * 1000);
-             tsk.endDate =  new Date(tsk.endDate['seconds'] * 1000);
-             const obj = {
-              ...r,
-              tsk
-            };
-             this.tskDelegates.unshift(obj);
+             console.log(tsk);
+             if (tsk) {
+                tsk.startDate =  new Date(tsk.startDate['seconds'] * 1000);
+                tsk.endDate =  new Date(tsk.endDate['seconds'] * 1000);
+                const obj = {
+                         ...r,
+                        tsk
+                  };
+                this.tskDelegates.unshift(obj);
              // this.tskDelegates.push(obj);
-             console.log(obj);
-             this.tskDelegates = _.uniqBy(this.tskDelegates, 'taskId');
+                console.log(obj);
+                this.tskDelegates = _.uniqBy(this.tskDelegates, 'taskId');
+             }
          });
       });
       this.isLoading = false;
@@ -234,31 +243,40 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sí, eliminar el proyecto!'
+      confirmButtonText: 'Sí, eliminar el proyecto!',
+      showCloseButton: true
     }).then((result) => {
       if (result.value) {
         this.projectService.deleteProject(projectId);
-        Swal.fire(
-          'Listo!',
-          'Tu proyecto ha sido eliminado.',
-          'success'
-        );
+        Swal.fire({
+            allowOutsideClick: false,
+            icon: 'success',
+            text: 'Proyecto eliminado con éxito',
+            title: 'Proyectos Actualizados',
+            confirmButtonText: 'Listo!',
+            showCloseButton: true
+            });
       }
     });
   }
 
-  openEvidenceDelegate() {
+  openEvidenceDelegate(projectId: string, activityId: string, taskId: string, manager: User, taskName: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
     dialogConfig.width = '750px';
     dialogConfig.panelClass = 'custom-dialog2';
     dialogConfig.data = {
-      delegates: this.delegates
+      // delegates: this.delegates
+      projectId,
+      activityId,
+      taskId,
+      userGugo: this.userApp,
+      manager,
+      taskName,
     };
     this.dialog.open(OpenEvidenceDelegateModalComponent, dialogConfig);
     }
-    
   }
 
 // @Component({

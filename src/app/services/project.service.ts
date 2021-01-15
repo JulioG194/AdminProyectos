@@ -61,8 +61,11 @@ export class ProjectService {
   data$: Observable<any>;
   dataDelete$: Observable<any>;
   comments: Observable<any>;
+  observations: Observable<any>;
   resources: Observable<any[]>;
   tasksPrjs: Observable<any[]>;
+  notifications: Observable<any>;
+  notificationsD: Observable<any>;
 
   constructor(private http: HttpClient, private afs: AngularFirestore, private fns: AngularFireFunctions) {
     this.loadProjects(afs);
@@ -243,6 +246,24 @@ export class ProjectService {
     return this.projectListObservable;
   }
 
+  getProjectByOwnerDate(user: User) {
+    const { uid } = user;
+    this.projectListObservable = this.afs
+      .collection('projects', (ref) =>
+        ref.where('ownerId', '==', uid).orderBy('endDate'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as Project;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.projectListObservable;
+  }
+
   getActivitybyName(activity: Activity, project: Project) {
     this.activityObservable = this.afs
       .collection('projects')
@@ -282,6 +303,42 @@ export class ProjectService {
         })
       );
     return this.activities;
+  }
+
+  getNotifications(userId: string) {
+    this.notifications = this.afs
+      .collection('users')
+      .doc(userId)
+      .collection('notifications', (ref) => ref.where('active', '==', true).orderBy('createdAt', 'desc'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.notifications;
+  }
+
+  getNotificationsD(userId: string) {
+    this.notificationsD = this.afs
+      .collection('users')
+      .doc(userId)
+      .collection('notifications', (ref) => ref.orderBy('createdAt', 'desc'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.notificationsD;
   }
 
   getTasks(projectId: string, activityId: string) {
@@ -370,6 +427,13 @@ export class ProjectService {
       description: project.description,
     });
   }
+
+  updateNotification(user: User, idNotification: string) {
+    this.afs.collection('users').doc(user.uid).collection('notifications').doc(idNotification).update({
+      active: false
+    });
+  }
+
   updateActivity(projectId: string, activityId: string, activity: Activity) {
     this.afs
       .collection('projects')
@@ -446,6 +510,18 @@ export class ProjectService {
     // this.data$.subscribe(data => console.log(data));
   }
 
+  sendNotificationNewTask(manager: User, delegate: User, taskName: string) {
+    const callable = this.fns.httpsCallable('notificationNewTask');
+    this.data$ = callable({ manager, delegate, taskName });
+    return this.data$;
+  }
+
+  sendNotificationSetProgTask(manager: User, delegate: User, taskName: string, projectId: string) {
+    const callable = this.fns.httpsCallable('notificationSetProgTask');
+    this.data$ = callable({ manager, delegate, taskName, projectId });
+    return this.data$;
+  }
+
   createComment(projectId: string, user: User, comment: string, createdAt: any) {
     const id = this.afs.createId();
     this.afs.collection('projects')
@@ -455,6 +531,22 @@ export class ProjectService {
                   user,
                   createdAt,
                   comment
+            });
+  }
+
+  createObservation(projectId: string, activityId: string, taskId: string, user: User, observation: string, createdAt: any) {
+    const id = this.afs.createId();
+    this.afs.collection('projects')
+            .doc(projectId)
+            .collection('activities')
+            .doc(activityId)
+            .collection('tasks')
+            .doc(taskId)
+            .collection('observations')
+            .doc(id).set({
+                  user,
+                  createdAt,
+                  observation
             });
   }
 
@@ -474,6 +566,28 @@ export class ProjectService {
         })
       );
     return this.comments;
+  }
+
+  getObservations(projectId: string, activityId: string, taskId: string) {
+    this.observations = this.afs
+      .collection('projects')
+      .doc(projectId)
+      .collection('activities')
+      .doc(activityId)
+      .collection('tasks')
+      .doc(taskId)
+      .collection('observations', (ref) => ref.orderBy('createdAt'))
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.id = action.payload.doc.id;
+            return data;
+          });
+        })
+      );
+    return this.observations;
   }
 
   getResources(projectId: string) {

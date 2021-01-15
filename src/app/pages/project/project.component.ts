@@ -120,16 +120,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   differenceTime: number;
   differenceDays: number;
   exp: boolean;
-  userApp: User = {
-    displayName: '',
-    email: '',
-    password: '',
-    uid: '',
-    birthdate: new Date(),
-    description: '',
-    gender: '',
-    photoURL: '',
-  };
+  userApp: User;
   allstartdates: Date[] = [];
   allenddates: Date[] = [];
   allstartdatesT: Date[] = [];
@@ -159,6 +150,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.id = this.route.snapshot.paramMap.get('id');
     this.panelOpenState = false;
+    this.userApp = this.authService.userAuth;
     this.getProject(this.id);
     this.getDelegates();
   }
@@ -288,7 +280,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
             Swal.fire({
             allowOutsideClick: false,
             icon: 'success',
-            title: 'Actividad editada con exito'
+            title: 'Actividades Actualizadas',
+            text: 'Actividad editada con éxito',
+            confirmButtonText: 'Listo!',
+            showCloseButton: true
           });
           }
         },
@@ -325,7 +320,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
             Swal.fire({
             allowOutsideClick: false,
             icon: 'success',
-            title: 'Tarea editada con exito'
+            title: 'Tareas actualizadas',
+            text: 'Tarea editada con éxito',
+            showCloseButton: true,
+            confirmButtonText: 'Listo!'
           });
           }
         },
@@ -358,6 +356,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
           };
           if (newTask.name) {
             await this.projectService.setTaskstoActivity(this.projectApp.id, activityId, newTask);
+            this.projectService.sendNotificationNewTask(this.userApp, newTask.delegate, newTask.name).subscribe(dat => console.log(dat));
             this.newActivityId = activityId;
             // this.panelOpenState = fals
             Swal.fire({
@@ -371,51 +370,24 @@ export class ProjectComponent implements OnInit, OnDestroy {
         });
   }
 
-  openEvidence(taskId: string, activityId: string, progress: number) {
+  openEvidence(projectId: string, activityId: string, taskId: string, delegate: User, taskName: string) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = false;
   dialogConfig.width = '750px';
   dialogConfig.panelClass = 'custom-dialog2';
   dialogConfig.data = {
-    delegates: this.delegates,
-    projectId: this.projectApp.id,
-    activity: activityId,
-    task: taskId,
-    progressTask: progress
+    projectId,
+    activityId,
+    taskId,
+    delegate,
+    userGugo: this.userApp,
+    taskName
   };
 
 
   this.dialog.open(OpenEvidenceModalComponent, dialogConfig);
-
-
-  // dialogRef.afterClosed().subscribe(
-  //       async (data) => {
-  //         const newTask: Task = {
-  //           name: data.name as string,
-  //           description: data.description as string,
-  //           startDate: data.startDate as Date,
-  //           endDate: data.endDate as Date,
-  //           delegate: data.delegateTask as User
-  //         };
-  //         if (newTask.name) {
-  //           await this.projectService.setTaskstoActivity(this.projectApp.id, activityId, newTask);
-  //           this.newActivityId = activityId;
-  //           // this.panelOpenState = fals
-  //           Swal.fire({
-  //             allowOutsideClick: false,
-  //             text: 'Tarea Agregada con Exito...Recargando Tabla...' ,
-  //             icon: 'success',
-  //             timer: 2000
-  //           });
-  //           Swal.showLoading();
-  //         }
-  //       });
-
-
   }
-
-  
 
   editProject() {
     this.post1 = !this.post1;
@@ -450,9 +422,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
       text: 'No podrás revertir esta acción!',
       icon: 'warning',
       showCancelButton: true,
+      cancelButtonText: 'Cancelar',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminar la actividad!',
+      showCloseButton: true
     }).then((result) => {
       if (result.value) {
         this.projectService.deleteActivityFn(this.projectApp.id, id).subscribe(data => {
@@ -471,11 +445,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar la actividad!',
+      confirmButtonText: 'Sí, eliminar la tarea!',
+      showCloseButton: true,
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.value) {
         this.projectService.deleteTask(this.projectApp.id, activityId, taskId);
-        Swal.fire('Listo!', 'Tu actividad ha sido eliminada.', 'success');
+        Swal.fire('Listo!', 'Tu tarea ha sido eliminada.', 'success');
       }
     });
   }

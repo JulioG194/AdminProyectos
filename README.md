@@ -1,27 +1,51 @@
-# AdminProyectos
+# GuGo-Web
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
+Es la versión web de la aplicación de administración de proyectos, y control de tareas, con envío de notificaciones en tiempo real.
 
-## Development server
+## Tecnologías usadas
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Angular
+- Angular material
+  
 
-## Code scaffolding
+Los datos del sistema como bases de datos, autenticación y notificaciones se [encuentran configurados en Firebase](https://firebase.google.com/).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Instalación
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+1. Descarga el código fuente
+2. Descarga e instala `nodeJS` en tu computador, lo puedes [descargar su página oficial para Windows ó Mac](https://nodejs.org/es/download/)
+3. [Descarga VSCode](https://code.visualstudio.com/download) para visualizar el código fuente y correr el proyecto
+4. Ejecuta VSCode, presiona `Ctrl + O` ó `Command + O` para seleccionar el directorio del proyecto
+5. Una vez seleccionado el proyecto presiona `Ctrl + J` ó `Command + J`, esto abrirá una terminal en la parte inferior de la pantalla
+6. Nos posicionamos en la terminal e ingresamos el siguiente comando y esperamos a que termine
+   ```
+   npm install
+   ```
+7. Una vez termine el comando anterior ejecutamos el siguiente comando:
+   ```
+   ng serve -o
+   ```
+8. Abrimos nuestro navegador prefereido (recomendación abrir Chrome) y vamos a la siguiente dirección [http://localhost:4200](http://localhost:3000)
 
-## Running unit tests
+## Funcionalidades
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Flujo de autenticación del usuario
+- Flujo de registro de un usuario
+- Flujo de recuperación de contraseña
+- Flujo de creación de Proyectos
+- Flujo de creación de Actividades
+- Flujo de creación de Tareas
+- Flujo de creación de Cronograma
+- Flujo de notificaciones
+- Flujo de chat
+- Conexión con Firebasae Auth, Firestore y Push Notifications
+- Login con email
 
-## Running end-to-end tests
+**Creadores:** 
+- Julio González
+- Alexandra Gualotuña
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+**Dirigido por:** 
+- Ing. Pablo Hidalgo
+               

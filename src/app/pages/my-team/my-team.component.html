@@ -34,7 +34,39 @@
         </div>
     </mat-tab>
 
-    <mat-tab label="Ver Equipo">
+    <mat-tab *ngIf="userGugo.manager == true" label="Editar Equipo">
+        <div *ngIf="userGugo.manager; else delegate">
+            <div *ngIf="teamGugo.delegates?.length > 0; else NoFormedTeam">
+                <h5>Delegados de tu Equipo</h5>
+                <table class="space">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Nombre</td>
+                            <td>Correo</td>
+                            <td>Celular</td>
+                            <td>Cargo</td>
+                            <td>Herramientas</td>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let delegate of teamGugo.delegates">
+                        <td><img matListAvatar [src]="delegate.photoURL" style="width: 50px; height: 50px;border-radius: 150px"></td>
+                        <td> {{delegate.displayName}} </td>
+                        <td> {{delegate.email}} </td>
+                        <td> {{delegate.phoneNumber}} </td>
+                        <td> {{delegate.employment}} </td>
+                        <td class="borrar">
+                            <button matTooltip="Eliminar del equipo" (click)="removeDelegates(delegate.uid)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="userGugo.manager == false" label="Ver Equipo">
         <div *ngIf="userGugo.manager; else delegate">
             <div *ngIf="teamGugo.delegates?.length > 0; else NoFormedTeam">
                 <h5>Delegados de tu Equipo</h5>
@@ -79,7 +111,14 @@
                         <p>
                             {{ proj.name }}
                         </p>
+                        <p>Gestor</p>
+                        <div class="list-card-members" fxLayout="row">
+                            <div class="list-card-member">
 
+                                <img class="list-card-member-avatar" [src]="proj.manager?.photoURL" [matTooltip]="proj.manager?.displayName">
+                            </div>
+                        </div>
+                        <p>Delegados</p>
                         <div *ngIf="proj.delegates?.length > 0" class="list-card-members" fxLayout="row">
 
                             <div class="list-card-member" *ngFor="let delegate of proj.delegates">
@@ -89,7 +128,7 @@
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="end center">
-                            <button (click)="openResources(proj.id)" mat-button style="width: 5px; height: 35px; background-color: #082330; color:mintcream">
+                            <button (click)="openResources(proj.id, proj.delegates, proj.name, proj.manager)" mat-button style="width: 5px; height: 35px; background-color: #082330; color:mintcream">
                                 <mat-icon class="s-18">remove_red_eye</mat-icon>
                             </button>
                         </div>

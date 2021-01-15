@@ -1,18 +1,14 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from 'src/app/models/user.interface';
 import { ProjectService } from '../../services/project.service';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../models/team.interface';
 import { Project } from 'src/app/models/project.interface';
 import { Activity } from 'src/app/models/activity.interface';
 import { Task } from 'src/app/models/task.interface';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import * as firebase from 'firebase/app';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { untilDestroyed } from '@orchestrator/ngx-until-destroyed';
@@ -404,8 +400,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-      // this.subscriptionGetProjects.unsubscribe();
-      // this.subscriptionGetActivities.unsubscribe();
   }
 
 

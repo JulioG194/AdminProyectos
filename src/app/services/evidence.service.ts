@@ -15,6 +15,7 @@ import * as firebase from 'firebase/app';
 
 import 'firebase/storage';
 import { Evidence } from '../models/evidence.interface';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -24,14 +25,14 @@ export class EvidenceService {
   evidenceDoc: AngularFirestoreDocument<Evidence>;
   evidencesObs: Observable<Evidence[]>;
   evidenceObs: Observable<Evidence>;
-
   files: Evidence[];
   evidences: Observable<Evidence[]>;
+  data$: Observable<any>;
 
   private RESOURCES_FOLDER = 'resources';
-  private FILES_FOLDER = 'files';
+  private FILES_FOLDER = 'evidences';
 
-  constructor(private http: HttpClient, private afs: AngularFirestore) {
+  constructor(private http: HttpClient, private afs: AngularFirestore, private fns: AngularFireFunctions) {
     // this.loadFiles(afs);
     // this.evidencesObs.subscribe((files) => {
     //   this.files = files;
@@ -51,9 +52,8 @@ export class EvidenceService {
     );
   }
 
-  uploadFilesFirebase(files: Evidence[], uid: User, tid: string) {
+  uploadEvidencesFirebase(files: Evidence[], user: User, tid: string) {
     const storageRef = firebase.storage().ref();
-    // let url: string;
     for (const item of files) {
       item.isUploading = true;
       if (item.progress >= 100) {
@@ -61,7 +61,7 @@ export class EvidenceService {
       }
 
       const uploadTask: firebase.storage.UploadTask = storageRef
-        .child(`${uid.uid}/${this.FILES_FOLDER}/${tid}/ ${item.fileName}`)
+        .child(`${user.uid}/${this.FILES_FOLDER}/${tid}/ ${item.fileName}`)
         .put(item.file);
 
       uploadTask.on(
@@ -84,7 +84,7 @@ export class EvidenceService {
               item.isUploading = false;
               item.tid = tid;
               // console.log(url);
-              this.onSavePhoto(item, uid);
+              this.onSaveEvidence(item, user);
             });
         }
       );
@@ -97,7 +97,7 @@ export class EvidenceService {
     return a;
   }
 
-  private onSavePhoto(photo: Evidence, uid: User) {
+  private onSaveEvidence(photo: Evidence, user: User) {
     const id = this.afs.createId();
     this.afs.collection('evidences').doc(photo.tid).set({
       tid: photo.tid,
@@ -111,9 +111,9 @@ export class EvidenceService {
         fileName: photo.fileName,
         url: photo.url,
         type: photo.file.type,
-        userPhoto: uid.photoURL,
-        userId: uid.uid,
-        userName: uid.displayName,
+        userPhoto: user.photoURL,
+        userId: user.uid,
+        userName: user.displayName,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
   }
@@ -185,5 +185,23 @@ export class EvidenceService {
         })
       );
     return this.evidences;
+  }
+
+  sendNotificationSendCommentEvid(manager: User, delegate: User, taskName: string) {
+    const callable = this.fns.httpsCallable('notificationCommentEvidence');
+    this.data$ = callable({ manager, delegate, taskName });
+    return this.data$;
+  }
+
+  sendNotificationCheckTaskProgress(manager: User, delegate: User, taskName: string) {
+    const callable = this.fns.httpsCallable('notificationCheckTaskProgress');
+    this.data$ = callable({ manager, delegate, taskName });
+    return this.data$;
+  }
+
+  sendNotificationCorrectTaskProgress(manager: User, delegate: User, taskName: string) {
+    const callable = this.fns.httpsCallable('notificationCorrectTaskProgress');
+    this.data$ = callable({ manager, delegate, taskName });
+    return this.data$;
   }
 }

@@ -8,7 +8,7 @@
                 <th>Proyecto</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de fin</th>
-                <th>Duracion</th>
+                <th>Dias de Duracion</th>
                 <th>Dias restantes</th>
                 <th>Dias de atraso</th>
                 <th>Herramientas</th>
@@ -20,9 +20,9 @@
                 <td flex>{{item.name}}</td>
                 <td>{{item.startDate | date : "dd/MM/y"}}</td>
                 <td>{{item.endDate | date : "dd/MM/y"}}</td>
-                <td>25</td>
-                <td>2</td>
-                <td>0</td>
+                <td>{{durations[i]}}</td>
+                <td>{{rests[i]}}</td>
+                <td style="color: red;">{{delayed[i]}}</td>
                 <td>
                     <button matTooltip="Ver Calendario" (click)="mostrar(item.id)">
                         <mat-icon>notes</mat-icon>
@@ -37,7 +37,8 @@
 
 
     <div>
-        <div *ngIf="post == true" #chartDiv class="gantt"></div>
+        <div #chartDiv class="gantt"></div>
+        <p *ngIf="post == false" style="color: white;">Seleccione el proyecto para mostrar el cronograma</p>
     </div>
 
 </div>

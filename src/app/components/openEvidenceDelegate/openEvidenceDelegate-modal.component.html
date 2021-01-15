@@ -3,45 +3,74 @@
 </button>
 <div class="align3">
     <h1 mat-dialog-title class="h1">Evidencia</h1>
-    <label>100 %</label>
+    <label>{{tskProgress}} %</label>
 </div>
-<mat-dialog-content [formGroup]="form" class="mat-dialog-content">
+<mat-dialog-content class="mat-dialog-content" [formGroup]="form">
     <mat-tab-group style="background-color: #082330;" mat-align-tabs="center">
         <mat-tab label="Archivos">
             <br>
             <div class="aling">
                 &nbsp;&nbsp;&nbsp;
-                <label style="color: white;">Ingrese su % de avance</label> &nbsp;&nbsp;&nbsp;
-                <input type="number">&nbsp;&nbsp;&nbsp;
-                <button style="background: #0c1b22;">
+                <label style="color: white; ">Ingrese su % de avance</label> &nbsp;&nbsp;&nbsp;
+                <input type="number" min="0" max="100" formControlName="progress" [disabled]="disableButton">&nbsp;&nbsp;&nbsp;
+                <button style="background: #0c1b22;" (click)="getValueProgress()">
                     <mat-icon style="color: white;">send</mat-icon>
                 </button>
             </div>
             <div class="scroll" style="height: 600px;">
                 <br>
                 <div class="files align">
-                    <input style="color: white;" type="file" name="archivosubido" id="file" multiple>
-                    <button>
-                        <mat-icon style="color: white;">check</mat-icon>
+                    <input style="color: white;" type="file" formControlName="file" id="file" style="color: white;" (change)="handleFileInput($event.target.files)" multiple>
+                    <button (click)="onUpdateFiles()">
+                        <mat-icon style="color: white;" >check</mat-icon>
                     </button> &nbsp;
-                    <button>
+                    <button (click)="onClearFiles()">
                         <mat-icon style="color: white;">close</mat-icon>
                     </button>
                 </div>
                 <div class="grid">
-                    <div *ngFor="let num of [1,2,3]" class="archivo">
+                    <div *ngFor="let evd of evidences; let i = index" class="archivo">
                         <mat-card class="mat-elevation-z4">
                             <div class="clear" style="margin: 0 auto;">
-                                <button><mat-icon style="color: white;">close</mat-icon></button>
+                                <button><mat-icon style="color: white;">arrow_downward</mat-icon></button>
                             </div>
 
                             <mat-card-header>
-                                <mat-card-title style="font-size: 14px;">Evidencia {{num}}</mat-card-title>
+                                <mat-card-title style="font-size: 14px;">Evidencia {{i + 1}}</mat-card-title>
                             </mat-card-header>
-                            <img mat-card-image src="../../../assets/img/pdf.png">
+                            <img *ngIf="
+                  evd.type == 'image/jpeg' ||
+                  evd.type == 'image/png' ||
+                  evd.type == 'image/gif' ||
+                  evd.type == 'image/bmp'
+                " [src]="evd.url" style="width: 100px; height: 100px;" alt="img" />
+                            <img *ngIf="evd.type == 'application/pdf'" style="width: 100px; height: 100px;" src="../../../assets/img/pdf.png" alt="pdf" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                  evd.type == 'application/msword' ||
+                  evd.type == 'application/vnd.oasis.opendocument.text'
+                " src="../../../assets/img/word.png" style="width: 100px; height: 100px;" alt="word" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                  evd.type == 'application/vnd.ms-excel' ||
+                  evd.type == 'application/vnd.oasis.opendocument.spreadsheet'
+                " src="../../../assets/img/excel.jpg" style="width: 100px; height: 100px;" alt="excel" />
+                            <img *ngIf="evd.type == 'text/plain'" style="width: 100px; height: 100px;" src="../../../assets/img/txt.png" alt="" />
+                            <img *ngIf="
+                  evd.type ==
+                    'application/vnd.oasis.opendocument.presentation' ||
+                  evd.type ==
+                    'application/vnd.openxmlformats-officedocument.presentationml.presentation' ||
+                  evd.type == 'application/vnd.ms-powerpoint'
+                " src="../../../assets/img/pp.jpg" style="width: 100px; height: 100px;" alt="ppt" />
                             <mat-card-content>
-                                <p class="coment2">Documento {{num}}</p>
-                                <p class="coment2">19/11/2020 - 19:51</p>
+                                <p class="coment2">{{evd.fileName}}</p>
+                                <div class="photo align">
+                                    <img [src]="evd.userPhoto" alt="photURL" [matTooltip]="evd.userName" /> &nbsp;&nbsp;
+                                    <p class="coment2">{{evd.createdAt | date: 'dd/MM/y HH:mm' }}</p>
+                                </div>
                             </mat-card-content>
 
                         </mat-card>
@@ -53,16 +82,16 @@
             <br>
             <div class="obs">
                 <div class="scroll2" style="height: 300px;">
-                    <div *ngFor="let num of [1]">
+                    <div *ngFor="let obs of observations">
                         <div class="align3 user">
-                            <p>Alexandra Gualotuña</p>
-                            <p>25/11/2020</p>
+                            <p>{{obs.user.displayName}}</p>
+                            <p>{{obs.createdAt | date: 'dd/MM/y HH:mm' }}</p>
                         </div>
                         <div class="align photo">
                             <div class="container space1">
                                 <div class="msgTx">
-                                    <img src="../../../assets/img/fondo1.jpg" alt="" /> &nbsp;
-                                    <p class="coment">La evidencia no esta tan clara podria repetirla por favor</p>
+                                    <img [src]="obs.user.photoURL" [matTooltip]="obs.user.displayName" alt="photo" /> &nbsp;
+                                    <p class="coment">{{obs.observation}}</p>
                                 </div>
                             </div>
                         </div>
